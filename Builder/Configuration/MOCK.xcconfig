@@ -1,0 +1,14 @@
+//
+//  MOCK.xcconfig
+//  Builder
+//
+//  Created by Michael Long on 1/18/21.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+API_BASE_PROTOCOL = mock
+API_BASE_URL = "//mock"
+BUNDLE_SUFFIX = .mock
+PRODUCT_SUFFIX = -MOCK
