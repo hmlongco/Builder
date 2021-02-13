@@ -10,13 +10,18 @@ import UIKit
 
 class ScrollView: UIScrollView {
 
-    convenience public init(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+    convenience public init(_ view: View?, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         self.init(frame: .zero)
-        self.embed(view, padding: padding, safeArea: safeArea)
+        if let view = view {
+            self.embed(view, padding: padding, safeArea: safeArea)
+        }
     }
 
-    convenience public init(@UIViewFunctionBuilder _ builder: () -> UIViewConvertable) {
-        self.init(builder().asView())
+    convenience public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewFunctionBuilder _ builder: () -> UIViewConvertable) {
+        self.init(frame: .zero)
+        if let view = builder().asViewConvertable().first {
+            self.embed(view, padding: padding, safeArea: safeArea)
+        }
     }
 
     @discardableResult

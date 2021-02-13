@@ -10,8 +10,12 @@
 		4C147A8E25B55C7E000DC2FC /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C147A8D25B55C7E000DC2FC /* APIError.swift */; };
 		4C147A9625B5C3C5000DC2FC /* RandomUserSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C147A9525B5C3C5000DC2FC /* RandomUserSessionManager.swift */; };
 		4C147AAD25B5C779000DC2FC /* MainCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C147AAC25B5C779000DC2FC /* MainCardView.swift */; };
+		4C1F571E25CE344600B6086F /* Dismissible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1F571D25CE344600B6086F /* Dismissible.swift */; };
 		4C249B1025C5CE5900EAA1E9 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C249B0F25C5CE5900EAA1E9 /* DetailViewModel.swift */; };
 		4C249B1825C5CEE500EAA1E9 /* _Details+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C249B1725C5CEE500EAA1E9 /* _Details+Injection.swift */; };
+		4C249B6825C656AF00EAA1E9 /* Builder+ZStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C249B6725C656AF00EAA1E9 /* Builder+ZStack.swift */; };
+		4C57859225CA2958005D42BB /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C57859125CA2958005D42BB /* DetailViewController.swift */; };
+		4C57859725CAEA60005D42BB /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C57859625CAEA60005D42BB /* Rx+Extensions.swift */; };
 		4C878EDF25C38C8A004D7216 /* UserImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C878EDE25C38C8A004D7216 /* UserImageCache.swift */; };
 		4C9CC36525B4F078002BE06D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC36425B4F078002BE06D /* AppDelegate.swift */; };
 		4C9CC36725B4F078002BE06D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC36625B4F078002BE06D /* SceneDelegate.swift */; };
@@ -79,10 +83,14 @@
 		4C147A8D25B55C7E000DC2FC /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		4C147A9525B5C3C5000DC2FC /* RandomUserSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomUserSessionManager.swift; sourceTree = "<group>"; };
 		4C147AAC25B5C779000DC2FC /* MainCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCardView.swift; sourceTree = "<group>"; };
+		4C1F571D25CE344600B6086F /* Dismissible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissible.swift; sourceTree = "<group>"; };
 		4C249B0F25C5CE5900EAA1E9 /* DetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		4C249B1725C5CEE500EAA1E9 /* _Details+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "_Details+Injection.swift"; sourceTree = "<group>"; };
+		4C249B6725C656AF00EAA1E9 /* Builder+ZStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+ZStack.swift"; sourceTree = "<group>"; };
 		4C288FB925B612DD004D54AC /* API.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = API.xcconfig; sourceTree = "<group>"; };
 		4C288FBA25B612F0004D54AC /* MOCK.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MOCK.xcconfig; sourceTree = "<group>"; };
+		4C57859125CA2958005D42BB /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		4C57859625CAEA60005D42BB /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
 		4C878EDE25C38C8A004D7216 /* UserImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCache.swift; sourceTree = "<group>"; };
 		4C9CC36125B4F078002BE06D /* Builder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Builder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C9CC36425B4F078002BE06D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -269,6 +277,7 @@
 				4C9CC3B325B4F2D4002BE06D /* Builder+Switch.swift */,
 				4C9CC3BC25B4F2D4002BE06D /* Builder+View.swift */,
 				4C9CC3BE25B4F2D4002BE06D /* Builder+ViewController.swift */,
+				4C249B6725C656AF00EAA1E9 /* Builder+ZStack.swift */,
 			);
 			path = Builder;
 			sourceTree = "<group>";
@@ -292,6 +301,7 @@
 			isa = PBXGroup;
 			children = (
 				4C9CC3E525B4F499002BE06D /* UIImage+Extensions.swift */,
+				4C57859625CAEA60005D42BB /* Rx+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -323,6 +333,7 @@
 				4C147A9525B5C3C5000DC2FC /* RandomUserSessionManager.swift */,
 				4C9CC3FD25B5099D002BE06D /* UserService.swift */,
 				4C878EDE25C38C8A004D7216 /* UserImageCache.swift */,
+				4C1F571D25CE344600B6086F /* Dismissible.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -332,6 +343,7 @@
 			children = (
 				4C249B1725C5CEE500EAA1E9 /* _Details+Injection.swift */,
 				4CD0524725B7AECC0099B277 /* DetailCardView.swift */,
+				4C57859125CA2958005D42BB /* DetailViewController.swift */,
 				4C249B0F25C5CE5900EAA1E9 /* DetailViewModel.swift */,
 			);
 			path = Details;
@@ -482,11 +494,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C9CC3EC25B4F627002BE06D /* User.swift in Sources */,
+				4C249B6825C656AF00EAA1E9 /* Builder+ZStack.swift in Sources */,
 				4C9CC3CA25B4F2D4002BE06D /* Builder+View.swift in Sources */,
 				4C147AAD25B5C779000DC2FC /* MainCardView.swift in Sources */,
 				4CD0524825B7AECC0099B277 /* DetailCardView.swift in Sources */,
 				4C9CC3FE25B5099D002BE06D /* UserService.swift in Sources */,
 				4C9CC3C225B4F2D4002BE06D /* Builder+ScrollView.swift in Sources */,
+				4C57859725CAEA60005D42BB /* Rx+Extensions.swift in Sources */,
+				4C57859225CA2958005D42BB /* DetailViewController.swift in Sources */,
 				4C9CC3E625B4F499002BE06D /* UIImage+Extensions.swift in Sources */,
 				4C9CC36925B4F078002BE06D /* MainViewController.swift in Sources */,
 				4C9CC3C825B4F2D4002BE06D /* Builder+Image.swift in Sources */,
@@ -504,6 +519,7 @@
 				4C878EDF25C38C8A004D7216 /* UserImageCache.swift in Sources */,
 				4C9CC3E025B4F2DF002BE06D /* URLSessionManager.swift in Sources */,
 				4C9CC3C925B4F2D4002BE06D /* Builder+Dynamic.swift in Sources */,
+				4C1F571E25CE344600B6086F /* Dismissible.swift in Sources */,
 				4C9CC3C625B4F2D4002BE06D /* Builder+Navigation.swift in Sources */,
 				4C9CC3C525B4F2D4002BE06D /* Builder+Button.swift in Sources */,
 				4C249B1025C5CE5900EAA1E9 /* DetailViewModel.swift in Sources */,

@@ -42,12 +42,46 @@ struct Location: Codable {
     let street: Street?
     let city: String?
     let state: String?
-//    let postcode: String?
+    let postcode: String?
+
+    enum CodingKeys: String, CodingKey {
+        case street
+        case city
+        case state
+        case postcode
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        street = try values.decode(Street.self, forKey: .street)
+        city = try values.decode(String.self, forKey: .city)
+        state = try values.decode(String.self, forKey: .state)
+        if let value = try? values.decode(Int.self, forKey: .postcode) {
+            postcode = "\(value)"
+        } else {
+            postcode =  try? values.decode(String.self, forKey: .postcode)
+        }
+    }
 }
 
 struct Street: Codable {
-    let number: Int?
+    let number: String?
     let name: String?
+
+    enum CodingKeys: String, CodingKey {
+        case number
+        case name
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        if let value = try? values.decode(Int.self, forKey: .number) {
+            number = "\(value)"
+        } else {
+            number =  try? values.decode(String.self, forKey: .number)
+        }
+        name = try values.decode(String.self, forKey: .name)
+    }
 }
 
 // MARK: - Login

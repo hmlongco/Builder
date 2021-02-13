@@ -9,7 +9,7 @@ import UIKit
 import Resolver
 import RxSwift
 
-struct DetailCardView: UIViewBuilder {
+struct DetailCardView: UIViewBuilder {    
 
     @Injected var viewModel: DetailViewModel
 
@@ -31,21 +31,28 @@ struct DetailCardView: UIViewBuilder {
                 .alignment(.center)
                 
                 VStackView {
-                    NameValueView(name: "Email", value: viewModel.email)
-                    if true {
-                        NameValueView(name: "Phone1", value: viewModel.phone)
-                        NameValueView(name: "Phone2", value: viewModel.phone)
-                    }
+                    NameValueView(name: "Address", value: viewModel.street)
+                    NameValueView(name: "", value: viewModel.cityStateZip)
                 }
-                .spacing(10)
-                
-                SpacerView()
+                .spacing(2)
+
+                VStackView {
+                    NameValueView(name: "Email", value: viewModel.email)
+                    NameValueView(name: "Phone1", value: viewModel.phone)
+                }
+                .spacing(2)
+
+                VStackView {
+                    NameValueView(name: "Age", value: viewModel.age)
+                }
+                .spacing(2)
+
             }
             .spacing(15)
-            .padding(UIEdgeInsets(padding: 10))
+            .padding(UIEdgeInsets(padding: 20))
         )
         .backgroundColor(.quaternarySystemFill)
-        .cornerRadius(8)
+        .cornerRadius(16)
     }
 
 }

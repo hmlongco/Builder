@@ -10,11 +10,11 @@ import UIKit
 
 extension UIStackView {
 
-    public func addArrangedSubviews(_ views: UIView?...) {
+    public func addArrangedSubviews(_ views: View?...) {
         self.addArrangedSubviews(views)
     }
 
-    public func addArrangedSubviews(_ views: [UIView?]) {
+    public func addArrangedSubviews(_ views: [View?]) {
         for view in views {
             if let view = view {
                 self.addArrangedSubview(view)
@@ -51,7 +51,7 @@ extension UIStackView {
 
 class VStackView: UIStackView {
 
-    public init(_ views: [UIView?]) {
+    public init(_ views: [View]) {
          super.init(frame: .zero)
          self.translatesAutoresizingMaskIntoConstraints = false
          self.axis = .vertical
@@ -68,20 +68,16 @@ class VStackView: UIStackView {
     private var builder: ViewListBuilder?
 
     convenience public init(_ builder: ViewListBuilder) {
-        self.init(builder.build().compactMap { $0.asConvertableView() })
+        self.init(builder.build().compactMap { $0 })
         self.builder = builder
         self.builder?.onChange { [weak self] in
             self?.subviews.forEach { $0.removeFromSuperview() }
-            self?.addArrangedSubviews(builder.build().map { $0.asConvertableView() })
+            self?.addArrangedSubviews(builder.build())
         }
     }
 
-    convenience public init(@UIViewFunctionBuilder _ builder: () -> UIViewConvertable) {
-        self.init([builder().asConvertableView()])
-    }
-
-    convenience public init(@UIViewFunctionBuilder _ builder: () -> [UIViewConvertable]) {
-        self.init(builder().map { $0.asConvertableView() })
+    convenience public init(@ViewFunctionBuilder _ builder: () -> UIViewConvertable) {
+        self.init(builder().asViewConvertable())
     }
 
     required public init(coder: NSCoder) {
@@ -104,7 +100,7 @@ class VStackView: UIStackView {
 
 class HStackView: UIStackView {
 
-   public init(_ views: [UIView?]) {
+   public init(_ views: [View]) {
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.axis = .horizontal
@@ -121,20 +117,16 @@ class HStackView: UIStackView {
     private var builder: ViewListBuilder?
 
     convenience public init(_ builder: ViewListBuilder) {
-        self.init(builder.build().compactMap { $0.asConvertableView() })
+        self.init(builder.build().compactMap { $0 })
         self.builder = builder
         self.builder?.onChange { [weak self] in
             self?.subviews.forEach { $0.removeFromSuperview() }
-            self?.addArrangedSubviews(builder.build().map { $0.asConvertableView() })
+            self?.addArrangedSubviews(builder.build().map { $0 })
         }
     }
 
-//    convenience public init(@UIViewFunctionBuilder _ builder: () -> UIViewConvertable) {
-//        self.init([builder().asConvertableView()])
-//    }
-
-    convenience public init(@UIViewFunctionBuilder _ builder: () -> [UIViewConvertable]) {
-        self.init(builder().map { $0.asConvertableView() })
+    convenience public init(@ViewFunctionBuilder _ builder: () -> UIViewConvertable) {
+        self.init(builder().asViewConvertable())
     }
 
     required public init(coder: NSCoder) {

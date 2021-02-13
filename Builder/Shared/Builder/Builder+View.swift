@@ -9,29 +9,19 @@
 import UIKit
 import RxSwift
 
-extension UIView: UIViewConvertable {
-
-    convenience public init(_ view: UIView, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
-        self.init(frame: .zero)
-        self.embed(view, padding: padding, safeArea: safeArea)
-    }
+extension UIView {
 
     @discardableResult
-    public func embed(_ view: UIView, padding: UIEdgeInsets? = nil, safeArea: Bool = false) -> UIView {
+    public func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) -> View {
         addSubviewWithConstraints(view, padding, safeArea)
         return view
     }
 
     @discardableResult
-    public func embed<View:UIView>(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, _ handler: (_ view: View) -> Void) -> View {
+    public func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, _ handler: (_ view: View) -> Void) -> View {
         addSubviewWithConstraints(view, padding, safeArea)
         handler(view)
         return view
-    }
-
-    public func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
-        guard let view = view.asConvertableView() else { return }
-        addSubviewWithConstraints(view, padding, safeArea)
     }
 
     public func addSubviewWithConstraints(_ view: UIView, _ padding: UIEdgeInsets?, _ safeArea: Bool) {

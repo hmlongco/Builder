@@ -25,6 +25,7 @@ struct UserService: UserServiceType {
             .rx
             .send(.get)
             .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .utility))
+            .retry(1)
             .map { (results: UserResultType) in results.results }
     }
 

@@ -11,9 +11,18 @@ import RxSwift
 
 class ContainerView: UIView {
 
-    convenience public init(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+    convenience public init(_ view: View?, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         self.init(frame: .zero)
-        self.embed(view, padding: padding, safeArea: safeArea)
+        if let view = view {
+            self.embed(view, padding: padding, safeArea: safeArea)
+        }
+    }
+
+    convenience public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewFunctionBuilder _ builder: () -> UIViewConvertable) {
+        self.init(frame: .zero)
+        if let view = builder().asViewConvertable().first {
+            self.embed(view, padding: padding, safeArea: safeArea)
+        }
     }
 
     @discardableResult
@@ -24,44 +33,6 @@ class ContainerView: UIView {
 
     @discardableResult
     public func with(_ configuration: (_ view: ContainerView) -> Void) -> Self {
-        configuration(self)
-        return self
-    }
-
-}
-
-final class ZStackView: UIView {
-
-    public init(_ views: [UIView?]) {
-        super.init(frame: .zero)
-        self.translatesAutoresizingMaskIntoConstraints = false
-        views.forEach {
-            if let view = $0 {
-                self.addSubviewWithConstraints(view, nil, false)
-            }
-        }
-     }
-
-     convenience public init(@UIViewFunctionBuilder _ builder: () -> UIViewConvertable) {
-         self.init([builder().asConvertableView()])
-     }
-
-     convenience public init(@UIViewFunctionBuilder _ builder: () -> [UIViewConvertable]) {
-         self.init(builder().map { $0.asConvertableView() })
-     }
-
-    required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    @discardableResult
-    public func reference(_ reference: inout ZStackView?) -> Self {
-        reference = self
-        return self
-    }
-
-    @discardableResult
-    public func with(_ configuration: (_ view: ZStackView) -> Void) -> Self {
         configuration(self)
         return self
     }

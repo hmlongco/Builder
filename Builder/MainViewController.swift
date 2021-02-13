@@ -14,13 +14,10 @@ class MainViewController: UIViewController {
     @Injected var viewModel: MainViewModel
 
     lazy var userViewBuilder = DynamicViewBuilder<User>(array: []) { [weak self] user in
-        MainCardView(user: user).asView()
+        MainCardView(user: user).build()
             .onTapGesture {
-                let view = VStackView {
-                    DetailCardView(user: user)
-                    SpacerView()
-                }
-                self?.navigationController?.push(view: view, animated: true)
+                let vc = DetailViewController(user: user)
+                self?.navigationController?.pushViewController(vc, animated: true)
             }
     }
 
@@ -35,7 +32,7 @@ class MainViewController: UIViewController {
         setupSubscriptions()
     }
 
-    func mainContentView() -> UIView {
+    func mainContentView() -> View {
         return VerticalScrollView {
                 VStackView(userViewBuilder)
                     .padding(UIEdgeInsets(padding: 20))

@@ -8,79 +8,63 @@
 
 import UIKit
 
-public typealias View = UIViewConvertable
 
-@_functionBuilder public struct UIViewFunctionBuilder {
+public typealias View = UIView
 
-    static public func buildBlock() -> [View?] {
-        return []
+
+
+@_functionBuilder public struct ViewFunctionBuilder {
+    public static func buildBlock() -> [View] {
+        []
     }
-
-    static public func buildBlock(_ views: View?...) -> [View] {
-        return views
-            .compactMap { $0 }
+    public static func buildBlock(_ values: UIViewConvertable...) -> [View] {
+        values.flatMap { $0.asViewConvertable() }
     }
-
-    static public func buildBlock(_ views: [View?]...) -> [View] {
-        return views
-            .flatMap { $0 }
-            .compactMap { $0 }
+    public static func buildIf(_ value: UIViewConvertable?) -> UIViewConvertable {
+        value ?? []
     }
-
-    static public func buildIf(_ view: View?) -> [View] {
-        if let view = view {
-            return [view]
-        }
-        return []
+    public static func buildEither(first: UIViewConvertable) -> UIViewConvertable {
+        first
     }
-
-    static public func buildEither(first: View) -> [View] {
-        [first]
-    }
-
-    static public func buildEither(first: View...) -> [View] {
-        first.compactMap { $0 }
-    }
-
-    static public func buildEither(second: View) -> [View] {
-        [second]
-    }
-
-    static public func buildEither(second: View...) -> [View] {
-        second.compactMap { $0 }
+    public static func buildEither(second: UIViewConvertable) -> UIViewConvertable {
+        second
     }
 
 }
+
+
 
 public protocol UIViewConvertable {
-    func asConvertableView() -> UIView?
+    func asViewConvertable() -> [View]
 }
 
-extension UIViewConvertable {
-    public func asConvertableView() -> UIView? {
-        return self as? UIView
-    }
-    public func asView() -> UIView {
-        // swiftlint:disable:next force_cast
-        return self.asConvertableView()!
-    }
+extension Array: UIViewConvertable where Element == View {
+    public func asViewConvertable() -> [View] { self }
 }
 
-extension Array: UIViewConvertable where Element == UIViewConvertable {
-    public func asConvertableView() -> UIView? {
-        return self.first?.asConvertableView()
+extension View {
+    public struct Empty: UIViewConvertable {
+        public func asViewConvertable() -> [View] { [] }
     }
 }
 
-public protocol UIViewBuilder: View {
+
+
+public protocol UIViewBuilder: UIViewConvertable {
     func build() -> View
 }
 
+extension UIView: UIViewConvertable {
+    public func asViewConvertable() -> [View] { [self] }
+}
+
 extension UIViewBuilder {
-    public func asConvertableView() -> UIView? {
-        return build().asConvertableView()
+    public func asViewConvertable() -> [View] {
+        return [build()]
     }
 }
+
+
 
 struct UIViewBuilderEnvironment {
     static public var defaultButtonFont: UIFont?

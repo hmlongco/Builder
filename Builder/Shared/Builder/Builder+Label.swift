@@ -17,12 +17,12 @@ class LabelView: UILabel {
         self.text = text
     }
 
-//    public init(_ text: String?, configuration: (_ view: UILabel) -> Void) {
-//        super.init(frame: .zero)
-//        self.common()
-//        self.text = text
-//        configuration(self)
-//    }
+    public init(_ text: String?, configuration: (_ view: UILabel) -> Void) {
+        super.init(frame: .zero)
+        self.common()
+        self.text = text
+        configuration(self)
+    }
 
     public init(_ text: Observable<String>) {
         super.init(frame: .zero)
