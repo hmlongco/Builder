@@ -13,7 +13,7 @@ public typealias View = UIView
 
 
 
-@_functionBuilder public struct ViewFunctionBuilder {
+@resultBuilder public struct ViewFunctionBuilder {
     public static func buildBlock() -> [View] {
         []
     }
@@ -29,7 +29,9 @@ public typealias View = UIView
     public static func buildEither(second: UIViewConvertable) -> UIViewConvertable {
         second
     }
-
+    public static func buildArray(_ components: [[View]]) -> [View] {
+        components.flatMap { $0 }
+    }
 }
 
 
@@ -54,14 +56,15 @@ public protocol UIViewBuilder: UIViewConvertable {
     func build() -> View
 }
 
-extension UIView: UIViewConvertable {
-    public func asViewConvertable() -> [View] { [self] }
-}
-
 extension UIViewBuilder {
     public func asViewConvertable() -> [View] {
         return [build()]
     }
+}
+
+
+extension UIView: UIViewConvertable {
+    public func asViewConvertable() -> [View] { [self] }
 }
 
 

@@ -9,7 +9,7 @@ import UIKit
 import Resolver
 import RxSwift
 
-struct MainCardView: UIViewBuilder {
+struct MainCardBuilder: UIViewBuilder {
 
     @Injected var viewModel: MainViewModel
 

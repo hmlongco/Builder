@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 
-protocol ClientSessionManagerType: class {
+protocol ClientSessionManagerType: AnyObject {
 
     var wrappedSessionManager: ClientSessionManagerType? { get set }
     func wrap(_ parent: ClientSessionManagerType) -> ClientSessionManagerType
