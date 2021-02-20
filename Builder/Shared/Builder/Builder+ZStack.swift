@@ -9,13 +9,11 @@ import UIKit
 
 final class ZStackView: UIView {
 
-    public init(_ views: [View?]) {
+    public init(_ convertableViews: [UIViewConvertable]) {
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
-        views.forEach {
-            if let view = $0 {
-                self.addSubviewWithConstraints(view, nil, false)
-            }
+        convertableViews.asViews().forEach {
+            self.addSubviewWithConstraints($0, nil, false)
         }
      }
 

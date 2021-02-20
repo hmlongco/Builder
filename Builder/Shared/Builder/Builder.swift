@@ -44,6 +44,10 @@ extension Array: UIViewConvertable where Element == View {
     public func asViewConvertable() -> [View] { self }
 }
 
+extension Array where Element == UIViewConvertable {
+    public func asViews() -> [View] { self.flatMap { $0.asViewConvertable() } }
+}
+
 extension View {
     public struct Empty: UIViewConvertable {
         public func asViewConvertable() -> [View] { [] }

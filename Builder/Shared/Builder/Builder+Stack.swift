@@ -55,7 +55,7 @@ extension UIStackView {
 
 class VStackView: UIStackView {
 
-    public init(_ views: [View]) {
+    public init(_ convertableViews: [UIViewConvertable]) {
          super.init(frame: .zero)
          self.translatesAutoresizingMaskIntoConstraints = false
          self.axis = .vertical
@@ -66,7 +66,7 @@ class VStackView: UIStackView {
          } else {
              self.spacing = 8
          }
-         self.addArrangedSubviews(views)
+        self.addArrangedSubviews(convertableViews.asViews())
     }
 
     private var builder: ViewListBuilder?
@@ -104,7 +104,7 @@ class VStackView: UIStackView {
 
 class HStackView: UIStackView {
 
-   public init(_ views: [View]) {
+   public init(_ convertableViews: [UIViewConvertable]) {
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.axis = .horizontal
@@ -115,7 +115,7 @@ class HStackView: UIStackView {
         } else {
             self.spacing = 8
         }
-        self.addArrangedSubviews(views)
+        self.addArrangedSubviews(convertableViews.asViews())
     }
 
     private var builder: ViewListBuilder?
