@@ -22,12 +22,12 @@ class MainViewController: UIViewController {
         title = viewModel.title
         view.embed(mainContentView())
         setupSubscriptions()
+        viewModel.load()
     }
 
     func mainContentView() -> View {
         return VerticalScrollView {
             VStackView {
-                self.loadingView()
             }
             .padding(UIEdgeInsets(padding: 20))
             .reference(&stackView)
@@ -36,43 +36,56 @@ class MainViewController: UIViewController {
     }
 
     func setupSubscriptions() {
-        viewModel.load()
-            .subscribe(onSuccess: { (users) in
-                self.displayUsers(users)
+        viewModel.state
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (state) in
+                switch state {
+                case .loading:
+                    self?.displayLoadingView()
+                case .loaded(let users):
+                    self?.displayUsers(users)
+                case .empty(let message):
+                    self?.displayEmptyView(message)
+                case .error(let error):
+                    self?.displayErrorView(error)
+                }
             })
             .disposed(by: disposeBag)
     }
 
+    func displayLoadingView() {
+        let view = UIActivityIndicatorView()
+        view.color = .systemGray
+        view.startAnimating()
+        stackView?.reset(to: view)
+    }
+
     func displayUsers(_ users: [User]) {
         stackView?.reset()
-        if users.isEmpty {
-            stackView?.addArrangedSubview(emptyView())
-        } else {
-            users.forEach { user in
-                self.stackView?.addArrangedSubview(self.card(forUser: user))
-            }
+        users.forEach { user in
+            self.stackView?.addArrangedSubview(self.card(forUser: user))
         }
     }
 
     func card(forUser user: User) -> View {
         MainCardBuilder(user: user)
-            .build()
+            .build() // convert to view so we can add a tap gesture to it
             .onTapGesture { [weak self] in
                 let vc = DetailViewController(user: user)
                 self?.navigationController?.pushViewController(vc, animated: true)
             }
     }
 
-    func loadingView() -> View {
-        let view = UIActivityIndicatorView()
-        view.color = .systemGray
-        view.startAnimating()
-        return view
+    func displayEmptyView(_ message: String) {
+        let view = LabelView(message)
+            .color(.systemGray)
+        stackView?.reset(to: view)
     }
 
-    func emptyView() -> View {
-        LabelView("No test users found...")
-            .color(.systemGray)
+    func displayErrorView(_ error: String) {
+        let view = LabelView(error)
+            .color(.red)
+        stackView?.reset(to: view)
     }
 
 }

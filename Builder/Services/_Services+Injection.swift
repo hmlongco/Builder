@@ -30,11 +30,10 @@ extension Resolver {
         }
 
         register { UserImageCache() }.scope(.shared)
+        register { UserService() as UserServiceType }
 
         #if MOCK
-        register { MockUserService() as UserServiceType }
-        #else
-        register { UserService() as UserServiceType }
+        mock.register { MockUserService() as UserServiceType }
         #endif
 
 //        register { resolve(name: .apiMode) as UserServiceType }

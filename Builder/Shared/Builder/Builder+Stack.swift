@@ -26,6 +26,16 @@ extension UIStackView {
         subviews.forEach { $0.removeFromSuperview() }
     }
 
+    public func reset(to view: View) {
+        reset()
+        addArrangedSubview(view)
+    }
+
+    public func reset(to views: [View]) {
+        reset()
+        addArrangedSubviews(views)
+    }
+
     @discardableResult
     public func alignment(_ alignment: Alignment) -> Self {
         self.alignment = alignment

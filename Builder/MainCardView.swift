@@ -18,7 +18,7 @@ import RxSwift
         func build() -> View {
             ContainerView(
                 HStackView {
-                    ImageView(viewModel.thumbnail(forUser: user).asObservable())
+                    ImageView(thumbnail())
                         .cornerRadius(25)
                         .frame(height: 50, width: 50)
                     VStackView {
@@ -34,6 +34,12 @@ import RxSwift
             )
             .backgroundColor(.quaternarySystemFill)
             .cornerRadius(8)
+        }
+        
+        func thumbnail() -> Observable<UIImage?> {
+            return viewModel.thumbnail(forUser: user)
+                .asObservable()
+                .observe(on: MainScheduler.instance)
         }
 
     }
