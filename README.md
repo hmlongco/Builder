@@ -148,65 +148,58 @@ When an instance of `UserServiceType` is needed, Resolver will grab the mock ver
 
 When writing unit tests you often want to supply different data to test different scenarios, like what happens when we have data...
 ```swift
-    func testLoadedState() throws {
-        Resolver.mock.register { MockUserService() as UserServiceType }
-        let vm = MainViewModel()
-        vm.load()
+func testLoadedState() throws {
+    Resolver.mock.register { MockUserService() as UserServiceType }
+    
+    let vm = MainViewModel()
 
-        expect("Test loaded state") { e in
-            _ = vm.state
-                .subscribe(onNext: { (state) in
-                    if case .loaded(let users) = state {
-                        XCTAssert(users.count == 2)
-                        XCTAssert(users[0].fullname == "Jonny Quest") // should be in sort order
-                        XCTAssert(users[1].fullname == "Tom Swift")
-                    } else {
-                        XCTFail("Invalid loaded state")
-                    }
-                    e.fulfill()
-                })
-        }
-    }
+    let expectation = XCTestExpectation(description: "Test loaded state")
+    
+    _ = vm.state
+        .subscribe(onNext: { (state) in
+            if case .loaded(let users) = state {
+                XCTAssert(users.count == 2)
+                XCTAssert(users[0].fullname == "Jonny Quest")
+                XCTAssert(users[1].fullname == "Tom Swift")
+                expectation.fulfill()
+            }
+        })
+    vm.load()
+    
+    wait(for: [expectation], timeout: 5.0)
+}
 ```
 Verses what happens when we do not?
 ```swift
-    func testEmptyState() throws {
-        Resolver.mock.register { MockEmptyUserService() as UserServiceType }
-        let vm = MainViewModel()
-        vm.load()
+func testEmptyState() throws {
+    Resolver.mock.register { MockEmptyUserService() as UserServiceType }
+    
+    let vm = MainViewModel()
+    vm.load()
 
-        expect("Test empty state") { e in
-            _ = vm.state
-                .subscribe(onNext: { (state) in
-                    if case .empty(let message) = state {
-                        XCTAssert(message == "No current users found...")
-                    } else {
-                        XCTFail("Invalid empty state")
-                    }
-                    e.fulfill()
-                })
+    test("Test empty state", observable: vm.state) { (state) -> Bool in
+        if case .empty(let message) = state {
+            return message == "No current users found..."
         }
+        return false
     }
+}
 ```
 Or if we have an error.
 ```swift
-    func testErrorState() throws {
-        Resolver.mock.register { MockErrorUserService() as UserServiceType }
-        let vm = MainViewModel()
-        vm.load()
+func testErrorState() throws {
+    Resolver.mock.register { MockErrorUserService() as UserServiceType }
+    
+    let vm = MainViewModel()
+    vm.load()
 
-        expect("Test error state") { e in
-            _ = vm.state
-                .subscribe(onNext: { (state) in
-                    if case .error(let message) = state {
-                        XCTAssert(message.contains("Builder.APIError"))
-                    } else {
-                        XCTFail("Invalid error state")
-                    }
-                    e.fulfill()
-                })
+    test("Test error state", observable: vm.state) { (state) -> Bool in
+        if case .error(let message) = state {
+            return message.contains("Builder.APIError")
         }
+        return false
     }
+}
 ```
 By changing the type provided for `UserServiceType` prior to constructing the view model we can test all of the above scenarios... and more.
 
