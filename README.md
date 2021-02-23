@@ -4,8 +4,8 @@
 
 Builder is a simple iOS Master/Detail app written in Swift that demonstrates...
 
-1. Using Builder patterns for constructing the user interface construction.
-2. Using builder patterns to construct network requests.
+1. Using declarative function-builder design patterns for constructing UIKit-based user interfaces.
+2. Using Builder patterns to construct network requests.
 3. Using the [Resolver](https://github.com/hmlongco/Resolver.git) dependency injection system to construct MVVM architectures.
 4. Using RxSwift for MVVM data binding.
 5. Using Resolver to mock user data for application development.
