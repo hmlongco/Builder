@@ -15,60 +15,50 @@ class MainViewModelSpec: XCTestCase {
     
     func testInitialState() throws {
         Resolver.mock.register { MockUserService() as UserServiceType }
+        
         let vm = MainViewModel()
 
-        expect("Test initial state") { e in
-            _ = vm.state
-                .subscribe(onNext: { (state) in
-                    if case .loading = state {
-                        XCTAssert(true, "Initial state is .loading")
-                    } else {
-                        XCTFail("Invalid initial state")
-                    }
-                    e.fulfill()
-                })
+        test("Test initial state", observable: vm.state) {
+            if case .loading = $0 {
+                return true
+            }
+            return false
         }
     }
 
     func testLoadedState() throws {
         Resolver.mock.register { MockUserService() as UserServiceType }
+        
         let vm = MainViewModel()
-        vm.load()
 
-        expect("Test loaded state") { e in
-            _ = vm.state
-                .subscribe(onNext: { (state) in
-                    if case .loaded(let users) = state {
-                        XCTAssert(users.count == 2)
-                        XCTAssert(users[0].fullname == "Jonny Quest") // should be in sort order
-                        XCTAssert(users[1].fullname == "Tom Swift")
-                    } else {
-                        XCTFail("Invalid loaded state")
-                    }
-                    e.fulfill()
-                })
-        }
+        let expectation = XCTestExpectation(description: "Test loaded state")
+        
+        _ = vm.state
+            .subscribe(onNext: { (state) in
+                if case .loaded(let users) = state {
+                    XCTAssert(users.count == 2)
+                    XCTAssert(users[0].fullname == "Jonny Quest")
+                    XCTAssert(users[1].fullname == "Tom Swift")
+                    expectation.fulfill()
+                }
+            })
+        vm.load()
+        
+        wait(for: [expectation], timeout: 5.0)
     }
     
     func testThumbnails() throws {
         Resolver.mock.register { MockUserService() as UserServiceType }
+        
         let vm = MainViewModel()
         vm.load()
 
-        expect("Test have thumbnail for user") { e in
-            _ = vm.thumbnail(forUser: User.mockJQ)
-                .subscribe(onSuccess: { (image) in
-                    XCTAssert(image == UIImage(named: "User-JQ"))
-                    e.fulfill()
-                })
+        test("Test has thumbnail for user", observable: vm.thumbnail(forUser: User.mockJQ)) {
+            $0 == UIImage(named: "User-JQ")
         }
 
-        expect("Test have placeholder for user") { e in
-            _ = vm.thumbnail(forUser: User.mockTS)
-                .subscribe(onSuccess: { (image) in
-                    XCTAssert(image == UIImage(named: "User-Unknown"))
-                    e.fulfill()
-                })
+        test("Test has placeholder for user", observable: vm.thumbnail(forUser: User.mockTS)) {
+            $0 == UIImage(named: "User-Unknown")
         }
     }
     
@@ -83,19 +73,15 @@ class MainViewModelSpec: XCTestCase {
 
     func testEmptyState() throws {
         Resolver.mock.register { MockEmptyUserService() as UserServiceType }
+        
         let vm = MainViewModel()
         vm.load()
 
-        expect("Test empty state") { e in
-            _ = vm.state
-                .subscribe(onNext: { (state) in
-                    if case .empty(let message) = state {
-                        XCTAssert(message == "No current users found...")
-                    } else {
-                        XCTFail("Invalid empty state")
-                    }
-                    e.fulfill()
-                })
+        test("Test empty state", observable: vm.state) { (state) -> Bool in
+            if case .empty(let message) = state {
+                return message == "No current users found..."
+            }
+            return false
         }
     }
 
@@ -110,19 +96,15 @@ class MainViewModelSpec: XCTestCase {
 
     func testErrorState() throws {
         Resolver.mock.register { MockErrorUserService() as UserServiceType }
+        
         let vm = MainViewModel()
         vm.load()
 
-        expect("Test error state") { e in
-            _ = vm.state
-                .subscribe(onNext: { (state) in
-                    if case .error(let message) = state {
-                        XCTAssert(message.contains("Builder.APIError"))
-                    } else {
-                        XCTFail("Invalid error state")
-                    }
-                    e.fulfill()
-                })
+        test("Test error state", observable: vm.state) { (state) -> Bool in
+            if case .error(let message) = state {
+                return message.contains("Builder.APIError")
+            }
+            return false
         }
     }
 
