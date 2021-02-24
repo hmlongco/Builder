@@ -120,6 +120,8 @@ extension User {
 
 #if MOCK
 extension User {
+    
+    static var users = [mockTS, mockJQ] // deliberately provided our of sort order
 
     static var mockJQ: User {
         return User(

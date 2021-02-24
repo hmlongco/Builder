@@ -14,7 +14,6 @@ extension Resolver {
 }
 #endif
 
-
 extension Resolver: ResolverRegistering {
     public static func registerAllServices() {
         registerServices()

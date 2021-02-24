@@ -46,7 +46,7 @@ struct UserService: UserServiceType {
 struct MockUserService: UserServiceType {
 
     func list() -> Single<[User]> {
-        return .just([User.mockTS, User.mockJQ])
+        return .just(User.users)
     }
 
     func thumbnail(forUser user: User) -> Single<UIImage?> {
@@ -56,6 +56,24 @@ struct MockUserService: UserServiceType {
         return .just(nil)
     }
 
+}
+
+struct MockEmptyUserService: UserServiceType {
+    func list() -> Single<[User]> {
+        return .just([])
+    }
+    func thumbnail(forUser user: User) -> Single<UIImage?> {
+        return .just(nil)
+    }
+}
+
+struct MockErrorUserService: UserServiceType {
+    func list() -> Single<[User]> {
+        return .error(APIError.unexpected)
+    }
+    func thumbnail(forUser user: User) -> Single<UIImage?> {
+        return .error(APIError.unexpected)
+    }
 }
 #endif
 
