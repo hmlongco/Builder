@@ -137,7 +137,7 @@ Injections tie together the master view, detail view, the view models, and the A
 
 Using dependency injection and protocol-oriented programing allows us the ability to easily mock data and application behavior. Here our `MainViewModel` depends on a protocol, `UserServiceType`, that's used to return data from our API.
 
-```
+```swift
 class MainViewModel {
     
     @Injected var service: UserServiceType
@@ -147,12 +147,12 @@ class MainViewModel {
 ```
 And here's the protocol.
 
-```
+```swift
 protocol UserServiceType {
     func list() -> Single<[User]>
     func thumbnail(forUser user: User) -> Single<UIImage?>
 }
-```
+```swift
 The demo app has a MOCK scheme that, when built, allows the app to run in a mock data mode. That scheme includes a `MOCK` compiler flag we can check in our code.  
 
 So let's use that to make a mock version of this service.
@@ -175,7 +175,7 @@ struct MockUserService: UserServiceType {
 ### Depndency Injection Setup
 
 To use it we first setup a `mock` container in our main injection file.
-```
+```swift
 #if MOCK
 extension Resolver {
     static var mock = Resolver(parent: main)
@@ -241,7 +241,7 @@ extension Resolver {
 We  also create a helper function that constructs a new test container and makes it the root container each time its called. It also provides some common registrations that will be used in many of our tests. 
 
 Then we call our helper function in each of our XCTestCase setup functions.
-```
+```swift
 class MainViewModelSpec: XCTestCase {
     
     override func setUp() {
@@ -322,7 +322,7 @@ And then we call load and test that our view model is returning the proper state
 
 We can also make sure we're getting proper placeholder data when we don't have a user image.
 
-```
+```swift
 func testThumbnails() throws {
     let vm = MainViewModel()
     vm.load()
