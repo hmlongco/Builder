@@ -152,11 +152,11 @@ protocol UserServiceType {
     func list() -> Single<[User]>
     func thumbnail(forUser user: User) -> Single<UIImage?>
 }
-```swift
+```
 The demo app has a MOCK scheme that, when built, allows the app to run in a mock data mode. That scheme includes a `MOCK` compiler flag we can check in our code.  
 
 So let's use that to make a mock version of this service.
-```
+```swift
 #if MOCK
 struct MockUserService: UserServiceType {
     func list() -> Single<[User]> {
@@ -175,6 +175,7 @@ struct MockUserService: UserServiceType {
 ### Depndency Injection Setup
 
 To use it we first setup a `mock` container in our main injection file.
+
 ```swift
 #if MOCK
 extension Resolver {
@@ -213,6 +214,7 @@ extension Resolver {
     }
 }
 ```
+
 In this example when an instance of `UserServiceType` is needed in our `MainViewModel`, Resolver will grab the mock version from the mock container as that's the version it finds first.
 
 ## Using Resolver to mock user data for unit tests
@@ -241,6 +243,7 @@ extension Resolver {
 We  also create a helper function that constructs a new test container and makes it the root container each time its called. It also provides some common registrations that will be used in many of our tests. 
 
 Then we call our helper function in each of our XCTestCase setup functions.
+
 ```swift
 class MainViewModelSpec: XCTestCase {
     
@@ -254,6 +257,7 @@ class MainViewModelSpec: XCTestCase {
 
     ...
 ```
+
 This ensures that each test gets a brand new container with no side effects from previous tests.
 
 One thing to note is that our `test` container points to our `mock` container, and that it in turn points to our `main` container. As a consequence, any service not found in `test` or `mock` will be pulled from `main`. 
