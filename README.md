@@ -310,15 +310,15 @@ func testLoadedState() throws {
     }
 }
 ```
-We instantiate our view model, setup our subscription and call `load()`.  
+We instantiate our view model, setup our subscription, call `load()`, and then wait to see what happens.  
 
-We then wait to see if our `state` is updated accordingly.
+Our initial state is `.loading` so we check that one. 
 
-Our initial state is `.loading` so we check that one and then wait to see what's next. 
+If we next get a `.loaded` state we have our data. First we check to make sure we've seen `.loading` at least once. 
 
-If we get `.loaded` we have our data. First we check to make sure we've seen `.loading` at least once, and then we check to make sure we have the expected number of users, and that they're in the correct order. 
+We then do a couple of tests to make sure we have the expected number of users, and that they're in the correct order. 
 
-In regard to the test cases for `.empty` or `.error`, it's true that our `MockUserService` should never return empty data or an error, but it's possible that we *could* have a logic error in our code that maps to the wrong state, so we check for that.
+There are also test cases for `.empty` or `.error`. The data provided by `MockUserService` should never cause those, but the emphasis there is *should never cause those*. After all, it's possible that we could have a logic error in our code that maps to the wrong state, so we check for that. 
 
 It is, after all, why we do unit tests.
 
