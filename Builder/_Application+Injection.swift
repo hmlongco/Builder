@@ -16,12 +16,12 @@ extension Resolver {
 
 extension Resolver: ResolverRegistering {
     public static func registerAllServices() {
-        registerServices()
-        registerMain()
-        registerDetails()
-        
         #if MOCK
         root = mock
         #endif
+        registerNetworking()
+        registerServices()
+        registerMain()
+        registerDetails()
     }
 }

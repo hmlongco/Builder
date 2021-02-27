@@ -8,11 +8,11 @@
 
 import Foundation
 
-class URLSessionManager: ClientSessionManagerType {
+class URLSessionManager: ClientSessionManager {
 
     var base: String
-    var wrappedSessionManager: ClientSessionManagerType?
-
+    var wrappedSessionManager: ClientSessionManager?
+    
     init(base: String) {
         self.base = base
     }

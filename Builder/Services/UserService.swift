@@ -8,6 +8,7 @@
 import UIKit
 import Resolver
 import RxSwift
+import RxCocoa
 
 protocol UserServiceType {
     func list() -> Single<[User]>
@@ -16,17 +17,29 @@ protocol UserServiceType {
 
 struct UserService: UserServiceType {
     
-    @Injected var session: ClientSessionManagerType
+    @Injected var session: ClientSessionManager
+    
+    init() {
+        session.wrapper { (wrapper: SSOAuthenticationWrapper) in
+            wrapper.token = "F129038AF30912830E8120938"
+        }
+    }
 
     func list() -> Single<[User]> {
         session.builder()
             .add(path: "/")
-            .add(parameters: ["results":20, "nat":"us", "seed":"999"])
-            .rx
-            .send(.get)
-            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .utility))
-            .retry(1)
-            .map { (results: UserResultType) in results.results }
+            .add(queryItems: [
+                URLQueryItem(name: "results", value: "20"),
+                URLQueryItem(name: "seed", value: "999"),
+                URLQueryItem(name: "nat", value: "us")
+            ])
+            .with { r in
+                print(r)
+            }
+            .get()
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .decode(type: UserResultType.self, decoder: JSONDecoder())
+            .map { $0.results }
     }
 
     func thumbnail(forUser user: User) -> Single<UIImage?> {
@@ -34,8 +47,7 @@ struct UserService: UserServiceType {
             return .just(nil)
         }
         return session.builder(forURL: URL(string: path))
-            .rx
-            .send(.get)
+            .get()
             .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .utility))
             .map { (data: Data) -> UIImage? in UIImage(data: data) }
     }
