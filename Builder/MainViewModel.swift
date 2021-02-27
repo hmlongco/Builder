@@ -45,6 +45,7 @@ class MainViewModel {
 
     func thumbnail(forUser user: User) -> Single<UIImage?> {
         return cache.thumbnail(forUser: user)
+            .catchAndReturn(UIImage(named: "User-Unknown"))
             .map { $0 ?? UIImage(named: "User-Unknown") }
     }
 

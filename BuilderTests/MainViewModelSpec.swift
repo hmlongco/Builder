@@ -8,6 +8,7 @@
 import XCTest
 import Resolver
 import RxSwift
+import RxCocoa
 
 @testable import Builder
 
@@ -36,7 +37,7 @@ class MainViewModelSpec: XCTestCase {
     func testInitialState() throws {
         let vm = MainViewModel()
 
-        test("Test initial state", subscribe: vm.state) {
+        test("Test initial state", value: vm.state) {
             if case .loading = $0 {
                 return true
             }
@@ -46,15 +47,27 @@ class MainViewModelSpec: XCTestCase {
 
     func testLoadedState() throws {
         let vm = MainViewModel()
+        var loaded = 0
         
-        test("Test loaded state") { (e) in
+        test("Test loaded state") { done in
             _ = vm.state
                 .subscribe(onNext: { (state) in
-                    if case .loaded(let users) = state {
+                    switch state {
+                    case .loading:
+                        loaded += 1
+                        XCTAssert(loaded == 1)
+                    case .loaded(let users):
+                        XCTAssert(loaded == 1)
                         XCTAssert(users.count == 2)
                         XCTAssert(users[0].fullname == "Jonny Quest")
                         XCTAssert(users[1].fullname == "Tom Swift")
-                        e.fulfill()
+                        done()
+                    case .empty(_):
+                        XCTFail("Should not be empty")
+                        done()
+                    case .error(_):
+                        XCTFail("Should not error")
+                        done()
                     }
                 })
             vm.load()
@@ -63,13 +76,14 @@ class MainViewModelSpec: XCTestCase {
     
     func testThumbnails() throws {
         let vm = MainViewModel()
-        vm.load()
 
-        test("Test has thumbnail for user", subscribe: vm.thumbnail(forUser: User.mockJQ)) {
+        let image1 = vm.thumbnail(forUser: User.mockJQ).asObservable()
+        test("Test has thumbnail for user", value: image1) {
             $0 == UIImage(named: "User-JQ")
         }
 
-        test("Test has placeholder for user", subscribe: vm.thumbnail(forUser: User.mockTS)) {
+        let image2 = vm.thumbnail(forUser: User.mockTS).asObservable()
+        test("Test has placeholder for user", value: image2) {
             $0 == UIImage(named: "User-Unknown")
         }
     }
@@ -80,7 +94,7 @@ class MainViewModelSpec: XCTestCase {
         let vm = MainViewModel()
         vm.load()
 
-        test("Test empty state", subscribe: vm.state) { (state) -> Bool in
+        test("Test empty state", value: vm.state) { (state) -> Bool in
             if case .empty(let message) = state {
                 return message == "No current users found..."
             }
@@ -94,7 +108,7 @@ class MainViewModelSpec: XCTestCase {
         let vm = MainViewModel()
         vm.load()
 
-        test("Test list error state", subscribe: vm.state) { (state) -> Bool in
+        test("Test list error state", value: vm.state) { (state) -> Bool in
             if case .error(let message) = state {
                 return message.contains("Builder.APIError")
             }
@@ -106,17 +120,26 @@ class MainViewModelSpec: XCTestCase {
         Resolver.test.register { MockErrorUserService() as UserServiceType }
 
         let vm = MainViewModel()
- 
-        let observable = vm.thumbnail(forUser: User.mockJQ)
-            .asObservable()
-            .materialize()
+        let image = vm.thumbnail(forUser: User.mockJQ).asObservable()
 
-        test("Test image error state", subscribe: observable) { (event) -> Bool in
-            if case .error(let error) = event {
-                return error.localizedDescription.contains("Builder.APIError")
-            }
-            return false
+        test("Test receiving placeholder image on error", value: image) {
+            $0 == UIImage(named: "User-Unknown")
         }
     }
 
+
+    func testTestFunctions() throws {
+        let relay = BehaviorRelay(value: "initial")
+        
+        DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 0.5) {
+            relay.accept("updated")
+        }
+
+        test("Test relay current value", value: relay.asObservable()) {
+            $0 == "initial"
+        }
+        test("Test relay eventual value", value: relay.asObservable()) {
+            $0 == "updated"
+        }
+    }
 }

@@ -11,9 +11,10 @@ import RxSwift
 
 extension XCTestCase {
     
-    func test(_ description: String, delay: Double = 5.0, handler: (_ expectation: XCTestExpectation) -> Void) {
+    func test(_ description: String, delay: Double = 5.0, handler: (_ done: @escaping () -> Void) -> Void) {
         let expectation = XCTestExpectation(description: description)
-        handler(expectation)
+        let done = { () in expectation.fulfill() }
+        handler(done)
         wait(for: [expectation], timeout: delay)
     }
     
@@ -21,27 +22,53 @@ extension XCTestCase {
 
 extension XCTestCase {
     
-    func test<T>(_ description: String, subscribe o: Observable<T>, delay: Double = 5.0, test: @escaping (_ value: T) -> Bool) {
+    func test<T>(_ description: String, value o: Observable<T>, delay: Double = 5.0, test: @escaping (_ value: T) -> Bool) {
         let expectation = XCTestExpectation(description: description)
-        _ = o.subscribe(onNext: { (value) in
-            if !test(value) {
-                XCTFail(description)
-            }
-            expectation.fulfill()
-        })
+        var success = false
+        let disposable = o
+            .subscribe(onNext: { (value) in
+                guard success == false else { return }
+                if test(value) {
+                    success = true
+                    expectation.fulfill()
+                }
+            }, onCompleted: {
+                if success == false {
+                    XCTFail(description)
+                    expectation.fulfill()
+                }
+            })
         wait(for: [expectation], timeout: delay)
-    }
-
-    func test<T>(_ description: String, subscribe s: Single<T>, delay: Double = 5.0, test: @escaping (_ value: T) -> Bool) {
-        let expectation = XCTestExpectation(description: description)
-        _ = s.subscribe(onSuccess: { (value) in
-            if !test(value) {
-                XCTFail(description)
-            }
-            expectation.fulfill()
-        })
-        wait(for: [expectation], timeout: delay)
+        disposable.dispose()
     }
     
-}
+    func test<T>(_ description: String, completed o: Observable<T>, delay: Double = 5.0) {
+        let expectation = XCTestExpectation(description: description)
+        let disposable = o
+            .subscribe(onError: { (e) in
+                XCTFail(description)
+                expectation.fulfill()
+            }, onCompleted: {
+                expectation.fulfill()
+            })
+        wait(for: [expectation], timeout: delay)
+        disposable.dispose()
+    }
+    
+    func test<T>(_ description: String, error o: Observable<T>, delay: Double = 5.0, test: @escaping (_ error: Error) -> Bool) {
+        let expectation = XCTestExpectation(description: description)
+        let disposable = o
+            .subscribe(onError: { (e) in
+                if !test(e) {
+                    XCTFail(description)
+                }
+                expectation.fulfill()
+            }, onCompleted: {
+                XCTFail(description)
+                expectation.fulfill()
+            })
+        wait(for: [expectation], timeout: delay)
+        disposable.dispose()
+    }
 
+}
