@@ -12,18 +12,6 @@ import RxCocoa
 
 @testable import Builder
 
-extension Resolver {
-    
-    static var test: Resolver!
-    
-    static func resetUnitTestRegistrations() {
-        Resolver.test = Resolver(parent: .mock)
-        Resolver.root = .test
-        Resolver.test.register { MockUserService() as UserServiceType }
-        Resolver.test.register { UserImageCache() } // use our own and not global
-    }
-}
-
 class MainViewModelSpec: XCTestCase {
     
     override func setUp() {
@@ -38,96 +26,92 @@ class MainViewModelSpec: XCTestCase {
         let vm = MainViewModel()
 
         test("Test initial state", value: vm.state) {
-            if case .loading = $0 {
-                return true
-            }
-            return false
+            $0 == .initial
         }
     }
 
     func testLoadedState() throws {
         let vm = MainViewModel()
-        var loaded = 0
+        var previousState: MainViewModel.State!
         
         test("Test loaded state") { done in
             _ = vm.state
                 .subscribe(onNext: { (state) in
                     switch state {
+                    case .initial:
+                        XCTAssert(previousState == nil)
                     case .loading:
-                        loaded += 1
-                        XCTAssert(loaded == 1)
+                        XCTAssert(previousState == .initial)
                     case .loaded(let users):
-                        XCTAssert(loaded == 1)
-                        XCTAssert(users.count == 2)
-                        XCTAssert(users[0].fullname == "Jonny Quest")
-                        XCTAssert(users[1].fullname == "Tom Swift")
+                        XCTAssert(previousState == .loading)
+                        XCTAssert(users.count == 2, "Test user count")
+                        XCTAssert(users[0].fullname == "Jonny Quest", "Test user order 0")
+                        XCTAssert(users[1].fullname == "Tom Swift", "Test user order 1")
                         done()
-                    case .empty(_):
-                        XCTFail("Should not be empty")
-                        done()
-                    case .error(_):
-                        XCTFail("Should not error")
+                    default:
+                        XCTFail("No other state is valid")
                         done()
                     }
+                    previousState = state
                 })
             vm.load()
         }
     }
     
-    func testThumbnails() throws {
-        let vm = MainViewModel()
-
-        let image1 = vm.thumbnail(forUser: User.mockJQ).asObservable()
-        test("Test has thumbnail for user", value: image1) {
-            $0 == UIImage(named: "User-JQ")
-        }
-
-        let image2 = vm.thumbnail(forUser: User.mockTS).asObservable()
-        test("Test has placeholder for user", value: image2) {
-            $0 == UIImage(named: "User-Unknown")
-        }
-    }
-    
     func testEmptyState() throws {
         Resolver.test.register { MockEmptyUserService() as UserServiceType }
-
+        
         let vm = MainViewModel()
-        vm.load()
+        var previousState: MainViewModel.State!
 
-        test("Test empty state", value: vm.state) { (state) -> Bool in
-            if case .empty(let message) = state {
-                return message == "No current users found..."
-            }
-            return false
+        test("Test empty state") { done in
+            _ = vm.state
+                .subscribe(onNext: { (state) in
+                    switch state {
+                    case .initial:
+                        XCTAssert(previousState == nil)
+                    case .loading:
+                        XCTAssert(previousState == .initial)
+                    case .empty(let message):
+                        XCTAssert(message == "No current users found...")
+                        done()
+                    default:
+                        XCTFail("No other state is valid")
+                        done()
+                    }
+                    previousState = state
+                })
+            vm.load()
         }
     }
 
-    func testListErrorState() throws {
+    func testErrorState() throws {
         Resolver.test.register { MockErrorUserService() as UserServiceType }
         
         let vm = MainViewModel()
-        vm.load()
+        var previousState: MainViewModel.State!
 
-        test("Test list error state", value: vm.state) { (state) -> Bool in
-            if case .error(let message) = state {
-                return message.contains("Builder.APIError")
-            }
-            return false
+        test("Test list error state") { done in
+            _ = vm.state
+                .subscribe(onNext: { (state) in
+                    switch state {
+                    case .initial:
+                        XCTAssert(previousState == nil)
+                    case .loading:
+                        XCTAssert(previousState == .initial)
+                    case .error(let message):
+                        XCTAssert(message.contains("Builder.APIError"))
+                        done()
+                    default:
+                        XCTFail("No other state is valid")
+                        done()
+                    }
+                    previousState = state
+                })
+            vm.load()
         }
     }
-
-    func testImageErrorState() throws {
-        Resolver.test.register { MockErrorUserService() as UserServiceType }
-
-        let vm = MainViewModel()
-        let image = vm.thumbnail(forUser: User.mockJQ).asObservable()
-
-        test("Test receiving placeholder image on error", value: image) {
-            $0 == UIImage(named: "User-Unknown")
-        }
-    }
-
-
+    
     func testTestFunctions() throws {
         let relay = BehaviorRelay(value: "initial")
         

@@ -11,7 +11,7 @@ import RxSwift
 import Combine
 
 // MARK: - User
-struct User: Codable {
+struct User: Codable, Equatable {
     let id: ID
     let name: Name
     let gender: String?
@@ -26,19 +26,19 @@ struct User: Codable {
 }
 
 // MARK: - Dob
-struct Dob: Codable {
+struct Dob: Codable, Equatable {
     let date: String?
     let age: Int?
 }
 
 // MARK: - ID
-struct ID: Codable {
+struct ID: Codable, Equatable {
     let name: String?
     let value: String?
 }
 
 // MARK: - Location
-struct Location: Codable {
+struct Location: Codable, Equatable {
     let street: Street?
     let city: String?
     let state: String?
@@ -64,7 +64,7 @@ struct Location: Codable {
     }
 }
 
-struct Street: Codable {
+struct Street: Codable, Equatable {
     let number: String?
     let name: String?
 
@@ -85,7 +85,7 @@ struct Street: Codable {
 }
 
 // MARK: - Login
-struct Login: Codable {
+struct Login: Codable, Equatable {
     let uuid: String?
     let username: String?
     let password: String?
@@ -96,14 +96,14 @@ struct Login: Codable {
 }
 
 // MARK: - Name
-struct Name: Codable {
+struct Name: Codable, Equatable {
     let title: String?
     let first: String
     let last: String
 }
 
 // MARK: - Picture
-struct Picture: Codable {
+struct Picture: Codable, Equatable {
     let large: String?
     let medium: String?
     let thumbnail: String?

@@ -28,6 +28,12 @@ class UserImageCache {
             })
     }
 
+    func thumbnailOrPlaceholder(forUser user: User) -> Single<UIImage?> {
+        thumbnail(forUser: user)
+            .catchAndReturn(UIImage(named: "User-Unknown"))
+            .map { $0 ?? UIImage(named: "User-Unknown") }
+    }
+
     private var thumbnailCache = NSCache<NSString, UIImage>()
 
 }

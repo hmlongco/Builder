@@ -22,7 +22,6 @@ class MainViewController: UIViewController {
         title = viewModel.title
         view.embed(mainContentView())
         setupSubscriptions()
-        viewModel.load()
     }
 
     func mainContentView() -> View {
@@ -40,6 +39,8 @@ class MainViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (state) in
                 switch state {
+                case .initial:
+                    self?.viewModel.load()
                 case .loading:
                     self?.displayLoadingView()
                 case .loaded(let users):
@@ -77,15 +78,23 @@ class MainViewController: UIViewController {
     }
 
     func displayEmptyView(_ message: String) {
-        let view = LabelView(message)
-            .color(.systemGray)
-        stackView?.reset(to: view)
+        stackView?.reset(to: standardEmptyView(message))
     }
 
     func displayErrorView(_ error: String) {
-        let view = LabelView(error)
-            .color(.red)
-        stackView?.reset(to: view)
+        stackView?.reset(to: standardErrorView(error))
     }
 
+}
+
+extension UIViewController {
+    func standardEmptyView(_ message: String) -> View {
+        return LabelView(message)
+            .color(.systemGray)
+    }
+
+    func standardErrorView(_ error: String) -> View {
+        return LabelView(error)
+            .color(.red)
+    }
 }

@@ -135,7 +135,13 @@ Injections tie together the master view, detail view, the view models, and the A
 
 ## Using Resolver to mock user data for application development
 
-Using dependency injection and protocol-oriented programing allows us the ability to easily mock data and application behavior. Here our `MainViewModel` depends on a protocol, `UserServiceType`, that's used to return data from our API.
+### Overview
+
+Using dependency injection and protocol-oriented programing allows us the ability to easily mock data and application behavior.
+
+### Testing Dependencies
+
+ Here our `MainViewModel` depends on a service that's based on a protocol, `UserServiceType`.
 
 ```swift
 class MainViewModel {
@@ -153,6 +159,12 @@ protocol UserServiceType {
     func thumbnail(forUser user: User) -> Single<UIImage?>
 }
 ```
+
+
+
+
+### The MOCK scheme
+
 The demo app has a MOCK scheme that, when built, allows the app to run in a mock data mode. That scheme includes a `MOCK` compiler flag we can check in our code.  
 
 So let's use that to make a mock version of this service.
@@ -193,9 +205,15 @@ extension Resolver: ResolverRegistering {
     }
 }
 ```
-Note that the mock's parent points to `main`, and that we switch the "root" container to point to `mock`. This means that our mock container will be searched first when Resolver attempts to resolve service dependencies.
+Remember that by default Resolver will register objects in the `main` container, but when its asked to resolve them it will pull registrations from the container referenced by `root`. Normally the two are one and the same: `root` simply points to `main`. 
 
-But in order to find something there has to be something to find.
+But we can change that if we wish... and we do.
+
+Because changing `root` lets us perform the magic trick we're about to do now. We set the mock container's parent to `main`, and then we switch the "root" container to point to `mock`. This means that our mock container will now be searched first when Resolver attempts to resolve service dependencies. Should it not find the registered factory it's looking for in `mock` it will move on to `main`.
+
+Got it? Resolver will now search `mock` first, then `main`.
+
+But in order to find something in `mock` there has to be something to find.
 
 ### Registering mock data
 
@@ -216,6 +234,18 @@ extension Resolver {
 ```
 
 In this example when an instance of `UserServiceType` is needed in our `MainViewModel`, Resolver will grab the mock version from the mock container as that's the version it finds first.
+
+This is an *extremely* powerful concept.
+
+### With data? Or without?
+
+I'm not limited to just a single mock. I can create an `MockEmptyUserService` that returns empty data, register *that* class instead, and then see how my app and view model will behave if our app doesn't have any users at all. :(
+
+Or I can create a `MockErrorUserService` that does nothing but return errors when called, which means I can make sure my error handling and display functionality is working correctly.
+
+My standard mock dataset can even be enhanced with problematic data. I can add users like "Michael ThisIsAnExtremelyLongUserName" to make sure my display code doesn't break. Or I can add users that don't have addresses, or email addresses, or... whatever.
+
+The point is that I can add all of the edge cases I need to make sure my app will behave properly under any and all circumstances.
 
 ## Using Resolver to mock user data for unit tests
 
@@ -260,6 +290,8 @@ class MainViewModelSpec: XCTestCase {
 
 This ensures that each test gets a brand new container with no side effects from previous tests.
 
+### Application dependencies
+
 One thing to note is that our `test` container points to our `mock` container, and that it in turn points to our `main` container. As a consequence, any service not found in `test` or `mock` will be pulled from `main`. 
 
 This includes services that might have been setup with `.application` or `.shared` scopes **and that were instantiated and run when the application was launched**. With that in mind, we also reregistered `UserImageCache` so that our tests will get a clean version and not the singleton used by the application.
@@ -274,7 +306,7 @@ Simply making a new instance of `MainViewModel` will trigger automatic dependenc
 
 Remember, our `setup` function is called before each test in our `XCTestCase` . That in turn calls `resetUnitTestRegistrations` and *that* sets up a new test container that registers the `MockUserService` factory that should be used when we need an instance of `UserServiceType`.
 
-Note that these tests use some helper functions to manage XCTest expectations and to make testing RxSwift observables easier. You can find them in the project.
+Note that these tests use some helper functions to manage XCTest expectations and to make testing RxSwift observables easier. If you want to borrow them you can find them in the project.
 
 ### Testing load data...
 
@@ -283,17 +315,17 @@ This is the primary function of our view model and as such, its biggest test cas
 ```swift
 func testLoadedState() throws {
     let vm = MainViewModel()
-    var loaded = 0
+    var eventCounter = 0
     
     test("Test loaded state") { done in
         _ = vm.state
             .subscribe(onNext: { (state) in
+                eventCounter += 1
                 switch state {
                 case .loading:
-                    loaded += 1
-                    XCTAssert(loaded == 1)
+                    XCTAssert(eventCounter == 1)
                 case .loaded(let users):
-                    XCTAssert(loaded == 1)
+                    XCTAssert(eventCounter == 2)
                     XCTAssert(users.count == 2)
                     XCTAssert(users[0].fullname == "Jonny Quest")
                     XCTAssert(users[1].fullname == "Tom Swift")
@@ -310,19 +342,19 @@ func testLoadedState() throws {
     }
 }
 ```
-We instantiate our view model, setup our subscription, call `load()`, and then wait to see what happens.  
+We instantiate our view model, setup our subscription, and then call `load()`.  
 
-Our initial state is `.loading` so we check that one. 
+Our initial state is `.loading` so we make sure we see that first. 
 
-If we next get a `.loaded` state we have our data. First we check to make sure we've seen `.loading` at least once. 
+The next event we get should be a `.loaded` state which has our data. Before we move on we check our counter to make sure we've seen `.loading` at least once and that our sequence of events is correct. 
 
-We then do a couple of tests to make sure we have the expected number of users, and that they're in the correct order. 
+We then test to make sure we've received the correct number of users. One of the functions of our view model is sorting the results from our API, and so we also check to make sure our list of users is in the proper order. (Our `MockUserService` builds the list of users out of order specifically so we can test this criteria.)
 
-There are also test cases for `.empty` or `.error`. The data provided by `MockUserService` should never cause those, but the emphasis there is *should never cause those*. After all, it's possible that we could have a logic error in our code that maps to the wrong state, so we check for that. 
+Notice there are also test cases for `.empty` or `.error`. The data provided by `MockUserService` should never cause those to appear, but the operative word in that sentence is *should*. After all, it's possible that we could have a logic error in our code that's mapping to the wrong state, so we check for that. 
 
 It is, after all, why we do unit tests.
 
-Finally, note that in the later three cases we call `done()` to signify our test is complete and that it's okay for our test expectation to move on.
+Finally, note that in the later three cases we call `done()` to signify our test is complete and that it's okay for our test expectation to move on and not wait to time out.
 
 ### No data?
 
@@ -335,23 +367,32 @@ Now when we instantiate our `MainViewModel` it will receive and use our `MockEmp
 ```swift
 func testEmptyState() throws {
     Resolver.test.register { MockEmptyUserService() as UserServiceType }
-
+    
     let vm = MainViewModel()
-    vm.load()
-
-    test("Test empty state", value: vm.state) { (state) -> Bool in
-        if case .empty(let message) = state {
-            return message == "No current users found..."
-        }
-        return false
+    
+    test("Test empty state") { done in
+        _ = vm.state
+            .subscribe(onNext: { (state) in
+                switch state {
+                case .loading:
+                    break
+                case .empty(let message):
+                    XCTAssert(message == "No current users found...")
+                    done()
+                default:
+                    XCTFail("No other state is valid")
+                    done()
+                }
+            })
+        vm.load()
     }
 }
 ```
-And then we call load and test that our view model is returning the proper state and message when the API call returns an empty list of users.
+And then we call load and test that our view model is returning the proper state and message when the API call returns an empty list of users. Any other states are errors and treated as such.
 
 ### Thumbnails?
 
-We can also make sure we're getting proper image data for our users. Or make sure that we get placeholder data if that user doesn't have an image available.
+We can also test to make sure we're getting the proper thumbnail images for our users. If no user image is available we want to show a placeholder image instead, so we check to make sure that's working as well.
 
 ```swift
 func testThumbnails() throws {
@@ -370,47 +411,56 @@ func testThumbnails() throws {
 ```
 ### Error handling.
 
-We can do the same for errors.
+Finally,  we should also test to make sure we're handling our errors correctly.
 
-Again we reregister and replace our  `UserServiceType`  with a `MockErrorUserService` that (surprise) returns errors on its API calls.
+Once more we reregister and replace our  `UserServiceType`  with a `MockErrorUserService` that (surprise) returns errors on its API calls.
 
 In which case `load()` should map the error *type* to an error *state*.
 ```swift
-func testListErrorState() throws {
+func testErrorState() throws {
     Resolver.test.register { MockErrorUserService() as UserServiceType }
     
     let vm = MainViewModel()
-    vm.load()
-
-    test("Test list error state", value: vm.state) { (state) -> Bool in
-        if case .error(let message) = state {
-            return message.contains("Builder.APIError")
-        }
-        return false
+    
+    test("Test list error state") { done in
+        _ = vm.state
+            .subscribe(onNext: { (state) in
+                switch state {
+                case .loading:
+                    break
+                case .error(let message):
+                    XCTAssert(message.contains("Builder.APIError"))
+                    done()
+                default:
+                    XCTFail("No other state is valid")
+                    done()
+                }
+            })
+        vm.load()
     }
 }
 ```
 We can also test our image handler for errors.
 ```swift
-func testImageErrorState() throws {
+func testThumbnailImageError() throws {
     Resolver.test.register { MockErrorUserService() as UserServiceType }
 
     let vm = MainViewModel()
     let imageObservable = vm.thumbnail(forUser: User.mockJQ).asObservable()
 
-    test("Test image error state", error: imageObservable) { (error) -> Bool in
+    test("Test image error returned", error: imageObservable) { (error) -> Bool in
         error.localizedDescription.contains("Builder.APIError")
     }
 }
 
 ```
-Note here we're actually expecting to see an `Error` returned, whereas in the earlier example our view model was actually mapping any errors returned into an error state. 
+Note here we're actually expecting to see an `Error` returned, whereas in the earlier example our view model was actually mapping errors returned into an error state. 
 
-Writing this test, however, made me realize that this function should probably *never* error out and should always at least return a placeholder image.
+Writing this test, however, made me realize that this function should probably *never* error out and should always return a placeholder image.
 
-I'll go back into the code and fix that. And, of course, update my unit test accordingly.
+I'll go back into the code and fix that. And, of course, update my unit test accordingly. Mock user Jonny Quest has an image available, but here I should see the placeholder since the image API is returning an error.
 ```swift
-func testImageErrorState() throws {
+func testThumbnailImageError() throws {
     Resolver.test.register { MockErrorUserService() as UserServiceType }
 
     let vm = MainViewModel()
@@ -421,7 +471,15 @@ func testImageErrorState() throws {
     }
 }
 ```
-Another win for unit tests.
+And I do. Another win for unit tests.
+
+### Complexity
+
+It may look like a lot of code to test my view model and--in a way-- it is. But from an implementation standpoint the hardest test to write was my first test, `testLoadedState`. The others were largely copy and paste versions of the first, which meant that, effectively, each additional test only took a minute or so to write.
+
+But I'm now confident that my view model is performing exactly as it should. Both under normal conditions and if and when it runs into an error. Further, should I update my model, say by adding a `refresh` state, I can be confident that should I manage to break something I'll be the one to find out about it.
+
+And not my users.
 
 ### Wrapup
 

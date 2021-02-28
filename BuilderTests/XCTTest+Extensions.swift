@@ -9,9 +9,12 @@ import Foundation
 import XCTest
 import RxSwift
 
+
 extension XCTestCase {
     
-    func test(_ description: String, delay: Double = 5.0, handler: (_ done: @escaping () -> Void) -> Void) {
+    static var defaultDelay: Double = 2.0
+
+    func test(_ description: String, delay: Double = defaultDelay, handler: (_ done: @escaping () -> Void) -> Void) {
         let expectation = XCTestExpectation(description: description)
         let done = { () in expectation.fulfill() }
         handler(done)
@@ -22,7 +25,7 @@ extension XCTestCase {
 
 extension XCTestCase {
     
-    func test<T>(_ description: String, value o: Observable<T>, delay: Double = 5.0, test: @escaping (_ value: T) -> Bool) {
+    func test<T>(_ description: String, value o: Observable<T>, delay: Double = defaultDelay, test: @escaping (_ value: T) -> Bool) {
         let expectation = XCTestExpectation(description: description)
         var success = false
         let disposable = o
@@ -42,7 +45,7 @@ extension XCTestCase {
         disposable.dispose()
     }
     
-    func test<T>(_ description: String, completed o: Observable<T>, delay: Double = 5.0) {
+    func test<T>(_ description: String, completed o: Observable<T>, delay: Double = defaultDelay) {
         let expectation = XCTestExpectation(description: description)
         let disposable = o
             .subscribe(onError: { (e) in
@@ -55,7 +58,7 @@ extension XCTestCase {
         disposable.dispose()
     }
     
-    func test<T>(_ description: String, error o: Observable<T>, delay: Double = 5.0, test: @escaping (_ error: Error) -> Bool) {
+    func test<T>(_ description: String, error o: Observable<T>, delay: Double = defaultDelay, test: @escaping (_ error: Error) -> Bool) {
         let expectation = XCTestExpectation(description: description)
         let disposable = o
             .subscribe(onError: { (e) in

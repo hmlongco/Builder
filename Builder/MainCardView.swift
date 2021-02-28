@@ -9,37 +9,37 @@ import UIKit
 import Resolver
 import RxSwift
 
-    struct MainCardBuilder: UIViewBuilder {
+struct MainCardBuilder: UIViewBuilder {
 
-        @Injected var viewModel: MainViewModel
+    @Injected var cache: UserImageCache
 
-        let user: User
+    let user: User
 
-        func build() -> View {
-            ContainerView(
-                HStackView {
-                    ImageView(thumbnail())
-                        .cornerRadius(25)
-                        .frame(height: 50, width: 50)
-                    VStackView {
-                        LabelView(user.fullname)
-                        LabelView(user.email)
-                            .font(.footnote)
-                            .color(.secondaryLabel)
-                        SpacerView()
-                    }
-                    .spacing(4)
+    func build() -> View {
+        ContainerView(
+            HStackView {
+                ImageView(thumbnail())
+                    .cornerRadius(25)
+                    .frame(height: 50, width: 50)
+                VStackView {
+                    LabelView(user.fullname)
+                    LabelView(user.email)
+                        .font(.footnote)
+                        .color(.secondaryLabel)
+                    SpacerView()
                 }
-                .padding(UIEdgeInsets(padding: 10))
-            )
-            .backgroundColor(.quaternarySystemFill)
-            .cornerRadius(8)
-        }
-        
-        func thumbnail() -> Observable<UIImage?> {
-            return viewModel.thumbnail(forUser: user)
-                .asObservable()
-                .observe(on: MainScheduler.instance)
-        }
-
+                .spacing(4)
+            }
+            .padding(UIEdgeInsets(padding: 10))
+        )
+        .backgroundColor(.quaternarySystemFill)
+        .cornerRadius(8)
     }
+    
+    func thumbnail() -> Observable<UIImage?> {
+        return cache.thumbnailOrPlaceholder(forUser: user)
+            .asObservable()
+            .observe(on: MainScheduler.instance)
+    }
+
+}

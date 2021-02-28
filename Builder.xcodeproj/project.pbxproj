@@ -26,6 +26,9 @@
 		4C65864725E9CB8D0073003C /* SSOAuthenticationWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C65864025E9CB360073003C /* SSOAuthenticationWrapper.swift */; };
 		4C65864825E9CB8D0073003C /* StandardHeadersWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C65863F25E9CB270073003C /* StandardHeadersWrapper.swift */; };
 		4C65864925E9CB8D0073003C /* SessionLoggingWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C65863E25E9CAFD0073003C /* SessionLoggingWrapper.swift */; };
+		4C65864E25EC3A6C0073003C /* Resolver+XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C65864D25EC3A6C0073003C /* Resolver+XCTest.swift */; };
+		4C65865625EC3C110073003C /* UserImageCacheSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C65865525EC3C110073003C /* UserImageCacheSpec.swift */; };
+		4C65865B25EC3C9A0073003C /* TestExrtensionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C65865A25EC3C9A0073003C /* TestExrtensionsSpec.swift */; };
 		4C878EDF25C38C8A004D7216 /* UserImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C878EDE25C38C8A004D7216 /* UserImageCache.swift */; };
 		4C9CC36525B4F078002BE06D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC36425B4F078002BE06D /* AppDelegate.swift */; };
 		4C9CC36725B4F078002BE06D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC36625B4F078002BE06D /* SceneDelegate.swift */; };
@@ -100,6 +103,9 @@
 		4C65863E25E9CAFD0073003C /* SessionLoggingWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionLoggingWrapper.swift; sourceTree = "<group>"; };
 		4C65863F25E9CB270073003C /* StandardHeadersWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardHeadersWrapper.swift; sourceTree = "<group>"; };
 		4C65864025E9CB360073003C /* SSOAuthenticationWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOAuthenticationWrapper.swift; sourceTree = "<group>"; };
+		4C65864D25EC3A6C0073003C /* Resolver+XCTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Resolver+XCTest.swift"; sourceTree = "<group>"; };
+		4C65865525EC3C110073003C /* UserImageCacheSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCacheSpec.swift; sourceTree = "<group>"; };
+		4C65865A25EC3C9A0073003C /* TestExrtensionsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestExrtensionsSpec.swift; sourceTree = "<group>"; };
 		4C878EDE25C38C8A004D7216 /* UserImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCache.swift; sourceTree = "<group>"; };
 		4C9CC36125B4F078002BE06D /* Builder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Builder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C9CC36425B4F078002BE06D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -259,8 +265,11 @@
 			isa = PBXGroup;
 			children = (
 				4C9CC37D25B4F079002BE06D /* Info.plist */,
+				4C65864D25EC3A6C0073003C /* Resolver+XCTest.swift */,
 				4C5FF94125E4189100E929A4 /* XCTTest+Extensions.swift */,
 				4C1FB28B25E3F5CC0040053A /* MainViewModelSpec.swift */,
+				4C65865A25EC3C9A0073003C /* TestExrtensionsSpec.swift */,
+				4C65865525EC3C110073003C /* UserImageCacheSpec.swift */,
 			);
 			path = BuilderTests;
 			sourceTree = "<group>";
@@ -587,8 +596,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C65865625EC3C110073003C /* UserImageCacheSpec.swift in Sources */,
 				4C1FB28C25E3F5CC0040053A /* MainViewModelSpec.swift in Sources */,
+				4C65865B25EC3C9A0073003C /* TestExrtensionsSpec.swift in Sources */,
 				4C5FF94225E4189100E929A4 /* XCTTest+Extensions.swift in Sources */,
+				4C65864E25EC3A6C0073003C /* Resolver+XCTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
