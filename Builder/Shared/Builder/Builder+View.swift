@@ -12,8 +12,12 @@ import RxSwift
 extension UIView {
 
     @discardableResult
-    public func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) -> View {
+    public func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, reset: Bool = true) -> View {
+        let existingSubviews = subviews
         addSubviewWithConstraints(view, padding, safeArea)
+        if reset {
+            existingSubviews.forEach { $0.removeFromSuperview() }
+        }
         return view
     }
 
@@ -21,6 +25,17 @@ extension UIView {
     public func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, _ handler: (_ view: View) -> Void) -> View {
         addSubviewWithConstraints(view, padding, safeArea)
         handler(view)
+        return view
+    }
+
+    @discardableResult
+    public func embed(_ builder: UIViewBuilder, padding: UIEdgeInsets? = nil, safeArea: Bool = false, reset: Bool = true) -> View {
+        let existingSubviews = subviews
+        let view = builder.build()
+        addSubviewWithConstraints(view, padding, safeArea)
+        if reset {
+            existingSubviews.forEach { $0.removeFromSuperview() }
+        }
         return view
     }
 

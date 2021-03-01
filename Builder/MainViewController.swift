@@ -13,88 +13,38 @@ class MainViewController: UIViewController {
     
     @Injected var viewModel: MainViewModel
 
-    weak var stackView: VStackView?
-
     let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = viewModel.title
-        view.embed(mainContentView())
+        view.backgroundColor(.systemBackground)
         setupSubscriptions()
-    }
-
-    func mainContentView() -> View {
-        return VerticalScrollView {
-            VStackView {
-            }
-            .padding(UIEdgeInsets(padding: 20))
-            .reference(&stackView)
-        }
-        .backgroundColor(.systemBackground)
     }
 
     func setupSubscriptions() {
         viewModel.state
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (state) in
+                guard let self = self else { return }
                 switch state {
                 case .initial:
-                    self?.viewModel.load()
+                    self.viewModel.load()
                 case .loading:
-                    self?.displayLoadingView()
+                    self.display(StandardLoadingPage())
                 case .loaded(let users):
-                    self?.displayUsers(users)
+                    self.display(MainUsersView(viewController: self, users: users))
                 case .empty(let message):
-                    self?.displayEmptyView(message)
+                    self.display(StandardEmptyPage(message: message))
                 case .error(let error):
-                    self?.displayErrorView(error)
+                    self.display(StandardErrorPage(error: error))
                 }
             })
             .disposed(by: disposeBag)
     }
-
-    func displayLoadingView() {
-        let view = UIActivityIndicatorView()
-        view.color = .systemGray
-        view.startAnimating()
-        stackView?.reset(to: view)
+    
+    func display(_ page: UIViewBuilder) {
+        view.embed(page)
     }
 
-    func displayUsers(_ users: [User]) {
-        stackView?.reset()
-        users.forEach { user in
-            self.stackView?.addArrangedSubview(self.card(forUser: user))
-        }
-    }
-
-    func card(forUser user: User) -> View {
-        MainCardBuilder(user: user)
-            .build() // convert to view so we can add a tap gesture to it
-            .onTapGesture { [weak self] in
-                let vc = DetailViewController(user: user)
-                self?.navigationController?.pushViewController(vc, animated: true)
-            }
-    }
-
-    func displayEmptyView(_ message: String) {
-        stackView?.reset(to: standardEmptyView(message))
-    }
-
-    func displayErrorView(_ error: String) {
-        stackView?.reset(to: standardErrorView(error))
-    }
-
-}
-
-extension UIViewController {
-    func standardEmptyView(_ message: String) -> View {
-        return LabelView(message)
-            .color(.systemGray)
-    }
-
-    func standardErrorView(_ error: String) -> View {
-        return LabelView(error)
-            .color(.red)
-    }
 }

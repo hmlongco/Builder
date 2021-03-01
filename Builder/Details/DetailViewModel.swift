@@ -39,7 +39,7 @@ class DetailViewModel {
         self.user = user
     }
 
-    func thumbnail() -> Single<UIImage?> {
+    func thumbnail() -> Observable<UIImage?> {
         return cache.thumbnail(forUser: user)
             .map { $0 ?? UIImage(named: "User-Unknown") }
             .observe(on: MainScheduler.instance)
