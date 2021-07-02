@@ -132,6 +132,34 @@ Above we're using Resolver's @Injected property wrapper to find and instantiate 
 
 Injections tie together the master view, detail view, the view models, and the API and data caching layers of the application.
 
+## Structuring Applications for Mocking and Testing
+
+Everyone knows that using an architecture like MVVM in your iOS application can help to avoid Massive-View-Controller-Syndrome, where the entirity of your screen's logic and code is shoehorned into a single, massive `UIViewController`. And everyone knows that breaking out all of that business logic can help make the components of your application easier to understand.
+
+That's a given... or is it? Something smaller is probably easier to understand, of course. But breaking components down into smaller components and services also tends to *increase* overall application complexity. After all, all of those pieces and parts are going to have to be created and wired back together again, and all of that wiring has an associated cost all of its own.
+
+So if we're going to "pay" more for our applications, then the cost-benefit ratio had better be worth it. In fact, I'd argue that the benefit gained would have to be *massive* in order to justify the increase in costs and complexity.
+
+Fortunately, there is a major benefit to be gained... and that benefit comes from unit testing.
+
+### Why test?
+
+Testing our view models and services lets us inspect our code to ensure that it's working as expected. It lets us see how our code behaves under error conditions and under uncommon but specific edge cases, like, say, when you fetch a list of accounts and the list is emtpy. 
+
+And it gives us confidence that our code will *continue* to work as expected when it's changed, either directly or when someone makes an unexpected change to a dependency that alters the contract between that code and your own.
+
+Further, if you or your company is an adherent of Continuous Integration/Continuous Deployment (CI/CD), then performing unit tests and integration tests on your code is almost an absolute requirement, as there's little to no time for QA to perform a full regression suite on your app for every point release.
+
+### What are the costs?
+
+Writing unit and integration tests incur costs of their own, obviously, as those tests have to be written and maintained, and that takes development time away from writing features and fixing bugs.
+
+On the flip side, no one likes fixing bugs, and writing unit tests on error conditions and edge cases tends to shine a spotlight into the very places where the pesky critters like to hide. Every bug found and patched due to an error in a unit test is one that failed to make its way into production code. In fact, it's probably one that failed to make its way to QA.
+
+Another set of wins.
+
+### 
+
 
 ## Using Resolver to mock user data for application development
 

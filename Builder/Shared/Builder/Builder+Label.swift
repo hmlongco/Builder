@@ -45,6 +45,7 @@ class LabelView: UILabel {
         self.font = UIViewBuilderEnvironment.defaultLabelFont ?? UIFont.preferredFont(forTextStyle: .callout)
         self.textColor = UIViewBuilderEnvironment.defaultLabelColor ?? textColor
         self.textAlignment = .left
+        self.adjustsFontForContentSizeCategory = true
         self.setContentCompressionResistancePriority(.required, for: .vertical)
         self.setContentCompressionResistancePriority(.required, for: .horizontal)
         self.setContentHuggingPriority(.defaultHigh, for: .vertical)
@@ -73,19 +74,21 @@ extension LabelView {
 
     @discardableResult
     public func bind(text: Observable<String>) -> Self {
-        text.subscribe { [weak self] (text) in
-            self?.text = text
-        }
+        text
+            .subscribe { [weak self] (text) in
+                self?.text = text
+            }
         .disposed(by: rxDisposeBag)
         return self
     }
 
     @discardableResult
     public func bind(text: Observable<String?>) -> Self {
-        text.subscribe { [weak self] (text) in
-            self?.text = text
-        }
-        .disposed(by: rxDisposeBag)
+        text
+            .subscribe { [weak self] (text) in
+                self?.text = text
+            }
+            .disposed(by: rxDisposeBag)
         return self
     }
 

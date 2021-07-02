@@ -11,34 +11,27 @@ import RxSwift
 
 extension UIView {
 
-    @discardableResult
-    public func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, reset: Bool = true) -> View {
+    func embed(_ convertableView: UIViewConvertable, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+        convertableView.asViewConvertable()
+            .forEach { self.addSubviewWithConstraints($0, padding, safeArea) }
+    }
+
+    func reset(_ convertableView: UIViewConvertable, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         let existingSubviews = subviews
-        addSubviewWithConstraints(view, padding, safeArea)
-        if reset {
-            existingSubviews.forEach { $0.removeFromSuperview() }
-        }
-        return view
+        convertableView.asViewConvertable()
+            .forEach { self.addSubviewWithConstraints($0, padding, safeArea) }
+        existingSubviews
+            .forEach { $0.removeFromSuperview() }
     }
 
+    // deprecated version
     @discardableResult
-    public func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, _ handler: (_ view: View) -> Void) -> View {
+    func embedModified<V:UIView>(_ view: V, padding: UIEdgeInsets? = nil, safeArea: Bool = false, _ modifier: (_ view: V) -> Void) -> V {
         addSubviewWithConstraints(view, padding, safeArea)
-        handler(view)
+        modifier(view)
         return view
     }
-
-    @discardableResult
-    public func embed(_ builder: UIViewBuilder, padding: UIEdgeInsets? = nil, safeArea: Bool = false, reset: Bool = true) -> View {
-        let existingSubviews = subviews
-        let view = builder.build()
-        addSubviewWithConstraints(view, padding, safeArea)
-        if reset {
-            existingSubviews.forEach { $0.removeFromSuperview() }
-        }
-        return view
-    }
-
+    
     public func addSubviewWithConstraints(_ view: UIView, _ padding: UIEdgeInsets?, _ safeArea: Bool) {
         view.translatesAutoresizingMaskIntoConstraints = false
         addSubview(view)
@@ -90,7 +83,11 @@ extension UIView {
 
     @discardableResult
     public func bind(hidden: Observable<Bool>) -> Self {
-        hidden.bind(to: rx.isHidden).disposed(by: rxDisposeBag)
+        hidden
+            .subscribe { [weak self] (hidden) in
+                self?.isHidden = hidden
+            }
+            .disposed(by: rxDisposeBag)
         return self
     }
 

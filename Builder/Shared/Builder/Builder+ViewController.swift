@@ -12,7 +12,11 @@ extension UIViewController {
 
     convenience public init(view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         self.init()
-        self.view.backgroundColor = .systemBackground
+        if #available(iOS 13, *) {
+            self.view.backgroundColor = .systemBackground
+        } else {
+            self.view.backgroundColor = .white
+        }
         self.view.embed(view, padding: padding, safeArea: safeArea)
     }
 
@@ -40,7 +44,11 @@ class BuilderViewController: UIViewController {
             fatalError()
         }
         self.view.embed(view)
-        self.view.backgroundColor = .systemBackground
+        if #available(iOS 13, *) {
+            self.view.backgroundColor = .systemBackground
+        } else {
+            self.view.backgroundColor = .white
+        }
         onViewDidLoadBlock?(self)
     }
 

@@ -13,7 +13,7 @@ public typealias View = UIView
 
 
 
-@_functionBuilder public struct ViewFunctionBuilder {
+@resultBuilder public struct ViewFunctionBuilder {
     public static func buildBlock() -> [View] {
         []
     }

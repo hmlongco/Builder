@@ -35,7 +35,11 @@ class SwitchView: UISwitch {
 
     @discardableResult
     public func bind(isOn: Observable<Bool>) -> Self {
-        isOn.bind(to: rx.isOn).disposed(by: rxDisposeBag)
+        isOn
+            .subscribe { [weak self] (isOn) in
+                self?.isOn = isOn
+            }
+            .disposed(by: rxDisposeBag)
         return self
     }
 

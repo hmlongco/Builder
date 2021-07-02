@@ -9,6 +9,12 @@ import UIKit
 import Resolver
 import RxSwift
 
+extension UIFont {
+    class func applicationFont(forTextStyle style: UIFont.TextStyle) -> UIFont {
+        return .preferredFont(forTextStyle: style)
+    }
+}
+
 struct MainCardBuilder: UIViewBuilder {
 
     @Injected var cache: UserImageCache
@@ -23,8 +29,9 @@ struct MainCardBuilder: UIViewBuilder {
                     .frame(height: 50, width: 50)
                 VStackView {
                     LabelView(user.fullname)
+                        .font(.preferredFont(forTextStyle: .body))
                     LabelView(user.email)
-                        .font(.footnote)
+                        .font(.preferredFont(forTextStyle: .footnote))
                         .color(.secondaryLabel)
                     SpacerView()
                 }
