@@ -9,12 +9,6 @@ import UIKit
 import Resolver
 import RxSwift
 
-extension UIFont {
-    class func applicationFont(forTextStyle style: UIFont.TextStyle) -> UIFont {
-        return .preferredFont(forTextStyle: style)
-    }
-}
-
 struct MainCardBuilder: UIViewBuilder {
 
     @Injected var cache: UserImageCache
