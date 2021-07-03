@@ -31,8 +31,8 @@ class ButtonView: UIButton {
 
     public func common() {
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.setTitleColor(UIViewBuilderEnvironment.defaultButtonColor ?? tintColor, for: .normal)
-        self.titleLabel?.font = UIViewBuilderEnvironment.defaultButtonFont ?? .preferredFont(forTextStyle: .headline)
+        self.setTitleColor(ViewBuilderEnvironment.defaultButtonColor ?? tintColor, for: .normal)
+        self.titleLabel?.font = ViewBuilderEnvironment.defaultButtonFont ?? .preferredFont(forTextStyle: .headline)
         self.setContentHuggingPriority(.required, for: .horizontal)
     }
 

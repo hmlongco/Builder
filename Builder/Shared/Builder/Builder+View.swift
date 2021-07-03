@@ -11,17 +11,18 @@ import RxSwift
 
 extension UIView {
 
-    func embed(_ convertableView: UIViewConvertable, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
-        convertableView.asViewConvertable()
-            .forEach { self.addSubviewWithConstraints($0, padding, safeArea) }
+    func embed(_ builder: ViewBuilder, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+        self.addSubviewWithConstraints(builder.build(), padding, safeArea)
     }
 
-    func reset(_ convertableView: UIViewConvertable, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+    func empty() {
+        self.subviews.forEach { $0.removeFromSuperview() }
+    }
+    
+    func reset(_ builder: ViewBuilder, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         let existingSubviews = subviews
-        convertableView.asViewConvertable()
-            .forEach { self.addSubviewWithConstraints($0, padding, safeArea) }
-        existingSubviews
-            .forEach { $0.removeFromSuperview() }
+        addSubviewWithConstraints(builder.build(), padding, safeArea)
+        existingSubviews.forEach { $0.removeFromSuperview() }
     }
 
     // deprecated version
@@ -119,17 +120,23 @@ extension UIView {
     @discardableResult
     public func frame(height: CGFloat? = nil, width: CGFloat? = nil) -> Self {
         if let height = height {
-            self.heightAnchor.constraint(equalToConstant: height).isActive = true
+            let c = self.heightAnchor.constraint(equalToConstant: height)
+            c.priority = UILayoutPriority(rawValue: 999)
+            c.isActive = true
         }
         if let width = width {
-            self.widthAnchor.constraint(equalToConstant: width).isActive = true
+            let c = self.widthAnchor.constraint(equalToConstant: width)
+            c.priority = UILayoutPriority(rawValue: 999)
+            c.isActive = true
         }
         return self
     }
 
     @discardableResult
     public func height(_ height: CGFloat) -> Self {
-        self.heightAnchor.constraint(equalToConstant: height).isActive = true
+        let c = self.heightAnchor.constraint(equalToConstant: height)
+        c.priority = UILayoutPriority(rawValue: 999)
+        c.isActive = true
         return self
     }
 
@@ -140,13 +147,13 @@ extension UIView {
     }
 
     @discardableResult
-    public func onTapGesture(_ handler: @escaping () -> Void) -> Self {
+    public func onTapGesture(_ handler: @escaping (_ view: View) -> Void) -> Self {
         let gesture = UITapGestureRecognizer()
         addGestureRecognizer(gesture)
         gesture.rx.event
             .asControlEvent()
             .subscribe { (e) in
-                handler()
+                handler(self)
             }
             .disposed(by: rxDisposeBag)
         return self
@@ -160,7 +167,9 @@ extension UIView {
 
     @discardableResult
     public func width(_ width: CGFloat) -> Self {
-        self.widthAnchor.constraint(equalToConstant: width).isActive = true
+        let c = self.widthAnchor.constraint(equalToConstant: width)
+        c.priority = UILayoutPriority(rawValue: 999)
+        c.isActive = true
         return self
     }
 

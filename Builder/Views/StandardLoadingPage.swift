@@ -9,24 +9,20 @@ import UIKit
 import Resolver
 import RxSwift
 
-struct StandardLoadingPage: UIViewBuilder {
+struct StandardLoadingPage: ViewBuilder {
 
     func build() -> View {
         return VerticalScrollView {
             VStackView {
-                indicator()
+                With(UIActivityIndicatorView()) {
+                    $0.color = .systemGray
+                    $0.startAnimating()
+                }
                 SpacerView()
             }
             .padding(UIEdgeInsets(padding: 16))
         }
         .backgroundColor(.systemBackground)
-    }
-
-    func indicator() -> View {
-        let indicator = UIActivityIndicatorView()
-        indicator.color = .systemGray
-        indicator.startAnimating()
-        return indicator
     }
 
 }

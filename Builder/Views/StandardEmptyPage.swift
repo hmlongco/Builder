@@ -9,7 +9,7 @@ import UIKit
 import Resolver
 import RxSwift
 
-struct StandardEmptyPage: UIViewBuilder {
+struct StandardEmptyPage: ViewBuilder {
 
     let message: String
 

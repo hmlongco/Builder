@@ -18,7 +18,6 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = viewModel.title
-        view.backgroundColor(.systemBackground)
         setupSubscriptions()
     }
 
@@ -31,20 +30,16 @@ class MainViewController: UIViewController {
                 case .initial:
                     self.viewModel.load()
                 case .loading:
-                    self.display(StandardLoadingPage())
+                    self.transtion(to: StandardLoadingPage())
                 case .loaded(let users):
-                    self.display(MainUsersView(viewController: self, users: users))
+                    self.transtion(to: MainUsersView(users: users))
                 case .empty(let message):
-                    self.display(StandardEmptyPage(message: message))
+                    self.transtion(to: StandardEmptyPage(message: message))
                 case .error(let error):
-                    self.display(StandardErrorPage(error: error))
+                    self.transtion(to: StandardErrorPage(error: error))
                 }
             })
             .disposed(by: disposeBag)
     }
     
-    func display(_ page: UIViewBuilder) {
-        view.embed(page)
-    }
-
 }

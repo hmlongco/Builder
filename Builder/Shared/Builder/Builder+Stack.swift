@@ -22,17 +22,13 @@ extension UIStackView {
         }
     }
 
-    public func reset() {
-        subviews.forEach { $0.removeFromSuperview() }
-    }
-
     public func reset(to view: View) {
-        reset()
+        empty()
         addArrangedSubview(view)
     }
 
     public func reset(to views: [View]) {
-        reset()
+        empty()
         addArrangedSubviews(views)
     }
 
@@ -65,7 +61,7 @@ extension UIStackView {
 
 class VStackView: UIStackView {
 
-    public init(_ convertableViews: [UIViewConvertable]) {
+    public init(_ convertableViews: [ViewConvertable]) {
          super.init(frame: .zero)
          self.translatesAutoresizingMaskIntoConstraints = false
          self.axis = .vertical
@@ -85,12 +81,12 @@ class VStackView: UIStackView {
         self.init(builder.build().compactMap { $0 })
         self.builder = builder
         self.builder?.onChange { [weak self] in
-            self?.subviews.forEach { $0.removeFromSuperview() }
+            self?.empty()
             self?.addArrangedSubviews(builder.build())
         }
     }
 
-    convenience public init(@ViewFunctionBuilder _ builder: () -> UIViewConvertable) {
+    convenience public init(@ViewFunctionBuilder _ builder: () -> ViewConvertable) {
         self.init(builder().asViewConvertable())
     }
 
@@ -114,7 +110,7 @@ class VStackView: UIStackView {
 
 class HStackView: UIStackView {
 
-   public init(_ convertableViews: [UIViewConvertable]) {
+   public init(_ convertableViews: [ViewConvertable]) {
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.axis = .horizontal
@@ -134,12 +130,12 @@ class HStackView: UIStackView {
         self.init(builder.build().compactMap { $0 })
         self.builder = builder
         self.builder?.onChange { [weak self] in
-            self?.subviews.forEach { $0.removeFromSuperview() }
+            self?.empty()
             self?.addArrangedSubviews(builder.build().map { $0 })
         }
     }
 
-    convenience public init(@ViewFunctionBuilder _ builder: () -> UIViewConvertable) {
+    convenience public init(@ViewFunctionBuilder _ builder: () -> ViewConvertable) {
         self.init(builder().asViewConvertable())
     }
 

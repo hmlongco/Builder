@@ -9,7 +9,7 @@ import UIKit
 import Resolver
 import RxSwift
 
-struct StandardErrorPage: UIViewBuilder {
+struct StandardErrorPage: ViewBuilder {
     
     let error: String
 

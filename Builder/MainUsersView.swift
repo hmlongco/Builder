@@ -16,27 +16,18 @@ import UIKit
 import Resolver
 import RxSwift
 
-struct MainUsersView: UIViewBuilder {
+struct MainUsersView: ViewBuilder {
 
-    weak var viewController: UIViewController?
     let users: [User]
     
     func build() -> View {
-        return VerticalScrollView {
-            VStackView(cards())
-            .padding(UIEdgeInsets(padding: 16))
-        }
-        .backgroundColor(.systemBackground)
-    }
-
-    func cards() -> [View] {
-        users.map { user in
+        TableView<User>(DynamicViewBuilder(array: users) { user in
             MainCardBuilder(user: user)
-                .build()
-                .onTapGesture {
-                    let vc = DetailViewController(user: user)
-                    viewController?.navigationController?.pushViewController(vc, animated: true)
-                }
+        })
+        .onSelect { (context, user) in
+            let vc = DetailViewController(user: user)
+            context.currentNavigationController?.pushViewController(vc, animated: true)
+            return false
         }
     }
 

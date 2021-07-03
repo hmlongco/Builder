@@ -17,11 +17,9 @@ class ScrollView: UIScrollView {
         }
     }
 
-    convenience public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewFunctionBuilder _ builder: () -> UIViewConvertable) {
+    convenience public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewFunctionBuilder _ builder: () -> ViewConvertable) {
         self.init(frame: .zero)
-        if let view = builder().asViewConvertable().first {
-            self.embed(view, padding: padding, safeArea: safeArea)
-        }
+        builder().asViewConvertable().forEach { self.embed($0, padding: padding, safeArea: safeArea) }
     }
 
     @discardableResult

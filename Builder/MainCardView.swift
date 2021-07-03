@@ -9,7 +9,7 @@ import UIKit
 import Resolver
 import RxSwift
 
-struct MainCardBuilder: UIViewBuilder {
+struct MainCardBuilder: ViewBuilder {
 
     @Injected var cache: UserImageCache
 
@@ -31,10 +31,8 @@ struct MainCardBuilder: UIViewBuilder {
                 }
                 .spacing(4)
             }
-            .padding(UIEdgeInsets(padding: 10))
+            .padding(UIEdgeInsets(h: 16, v: 12))
         )
-        .backgroundColor(.quaternarySystemFill)
-        .cornerRadius(8)
     }
     
     func thumbnail() -> Observable<UIImage?> {

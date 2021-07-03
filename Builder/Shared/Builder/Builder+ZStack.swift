@@ -9,7 +9,7 @@ import UIKit
 
 final class ZStackView: UIView {
 
-    public init(_ convertableViews: [UIViewConvertable]) {
+    public init(_ convertableViews: [ViewConvertable]) {
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
         convertableViews.asViews().forEach {
@@ -17,7 +17,7 @@ final class ZStackView: UIView {
         }
      }
 
-     convenience public init(@ViewFunctionBuilder _ builder: () -> UIViewConvertable) {
+     convenience public init(@ViewFunctionBuilder _ builder: () -> ViewConvertable) {
         self.init(builder().asViewConvertable())
      }
 

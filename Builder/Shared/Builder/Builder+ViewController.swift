@@ -19,17 +19,35 @@ extension UIViewController {
         }
         self.view.embed(view, padding: padding, safeArea: safeArea)
     }
+    
+    public func transtion(to page: ViewBuilder, padding: UIEdgeInsets? = nil, safeArea: Bool = false, delay: Double = 0.2) {
+        let newView = page.build()
+        if view.subviews.isEmpty {
+            view.embed(newView, padding: padding, safeArea: safeArea)
+            return
+        }
+        let oldViews = view.subviews
+        newView.alpha = 0.0
+        view.embed(newView, padding: padding, safeArea: safeArea)
+        UIView.animate(withDuration: delay) {
+            newView.alpha = 1.0
+        } completion: { completed in
+            if completed {
+                oldViews.forEach { $0.removeFromSuperview() }
+            }
+        }
+    }
 
 }
 
 class BuilderViewController: UIViewController {
 
-    private var builder: (() -> UIViewConvertable)?
+    private var builder: (() -> ViewConvertable)?
     private var onViewDidLoadBlock: ((_ viewController: BuilderViewController) -> Void)?
     private var onViewWillAppearBlock: ((_ viewController: BuilderViewController) -> Void)?
     private var onViewDidAppearBlock: ((_ viewController: BuilderViewController) -> Void)?
 
-    public init(@ViewFunctionBuilder _ builder: @escaping () -> UIViewConvertable) {
+    public init(@ViewFunctionBuilder _ builder: @escaping () -> ViewConvertable) {
         self.builder = builder
         super.init(nibName: nil, bundle: nil)
     }

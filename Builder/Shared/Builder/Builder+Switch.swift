@@ -30,7 +30,7 @@ class SwitchView: UISwitch {
 
     public func common() {
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.onTintColor = UIViewBuilderEnvironment.defaultButtonColor
+        self.onTintColor = ViewBuilderEnvironment.defaultButtonColor
     }
 
     @discardableResult

@@ -15,7 +15,7 @@ class DividerView: UIView {
         let subview = UIView(frame: .zero)
         addSubview(subview)
         subview.translatesAutoresizingMaskIntoConstraints = false
-        subview.backgroundColor = UIViewBuilderEnvironment.defaultSeparatorColor
+        subview.backgroundColor = ViewBuilderEnvironment.defaultSeparatorColor
         subview.topAnchor.constraint(equalTo: topAnchor, constant: 4.0).isActive = true
         subview.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         subview.rightAnchor.constraint(equalTo: rightAnchor).isActive = true

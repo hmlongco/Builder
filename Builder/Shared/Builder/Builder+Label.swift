@@ -42,8 +42,8 @@ class LabelView: UILabel {
 
     public func common() {
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.font = UIViewBuilderEnvironment.defaultLabelFont ?? UIFont.preferredFont(forTextStyle: .callout)
-        self.textColor = UIViewBuilderEnvironment.defaultLabelColor ?? textColor
+        self.font = ViewBuilderEnvironment.defaultLabelFont ?? UIFont.preferredFont(forTextStyle: .callout)
+        self.textColor = ViewBuilderEnvironment.defaultLabelColor ?? textColor
         self.textAlignment = .left
         self.adjustsFontForContentSizeCategory = true
         self.setContentCompressionResistancePriority(.required, for: .vertical)

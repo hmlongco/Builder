@@ -37,12 +37,17 @@ class DynamicViewBuilder<Item>: DynamicViewBuilderType {
     }
 
     let builder: (_ item: Item) -> View?
-
+    
     private var changed: (() -> Void)?
 
     public init(array: [Item], builder: @escaping (_ item: Item) -> View?) {
         self.items = array
         self.builder = builder
+    }
+
+    public init(array: [Item], builder: @escaping (_ item: Item) -> ViewBuilder?) {
+        self.items = array
+        self.builder = { item in builder(item)?.build() }
     }
 
     var count: Int {

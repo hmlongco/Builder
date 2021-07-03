@@ -15,6 +15,8 @@
 		4C249B1025C5CE5900EAA1E9 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C249B0F25C5CE5900EAA1E9 /* DetailViewModel.swift */; };
 		4C249B1825C5CEE500EAA1E9 /* _Details+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C249B1725C5CEE500EAA1E9 /* _Details+Injection.swift */; };
 		4C249B6825C656AF00EAA1E9 /* Builder+ZStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C249B6725C656AF00EAA1E9 /* Builder+ZStack.swift */; };
+		4C2A0D7A268F65C800BF86ED /* Builder+With.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2A0D79268F65C800BF86ED /* Builder+With.swift */; };
+		4C2A0D7C268F916D00BF86ED /* Builder+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2A0D7B268F916D00BF86ED /* Builder+TableView.swift */; };
 		4C2D811A25E4087B00E2EBD7 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D811925E4087B00E2EBD7 /* Resolver */; };
 		4C2D812025E408B300E2EBD7 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D811F25E408B300E2EBD7 /* RxSwift */; };
 		4C2D812425E408B300E2EBD7 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D812325E408B300E2EBD7 /* RxRelay */; };
@@ -100,6 +102,8 @@
 		4C249B6725C656AF00EAA1E9 /* Builder+ZStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+ZStack.swift"; sourceTree = "<group>"; };
 		4C288FB925B612DD004D54AC /* API.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = API.xcconfig; sourceTree = "<group>"; };
 		4C288FBA25B612F0004D54AC /* MOCK.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MOCK.xcconfig; sourceTree = "<group>"; };
+		4C2A0D79268F65C800BF86ED /* Builder+With.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+With.swift"; sourceTree = "<group>"; };
+		4C2A0D7B268F916D00BF86ED /* Builder+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+TableView.swift"; sourceTree = "<group>"; };
 		4C57859125CA2958005D42BB /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		4C57859625CAEA60005D42BB /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
 		4C5FF94125E4189100E929A4 /* XCTTest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTTest+Extensions.swift"; sourceTree = "<group>"; };
@@ -349,8 +353,10 @@
 				4C9CC3B925B4F2D4002BE06D /* Builder+Spacer.swift */,
 				4C9CC3C025B4F2D4002BE06D /* Builder+Stack.swift */,
 				4C9CC3B325B4F2D4002BE06D /* Builder+Switch.swift */,
+				4C2A0D7B268F916D00BF86ED /* Builder+TableView.swift */,
 				4C9CC3BC25B4F2D4002BE06D /* Builder+View.swift */,
 				4C9CC3BE25B4F2D4002BE06D /* Builder+ViewController.swift */,
+				4C2A0D79268F65C800BF86ED /* Builder+With.swift */,
 				4C249B6725C656AF00EAA1E9 /* Builder+ZStack.swift */,
 			);
 			path = Builder;
@@ -566,6 +572,7 @@
 				4C9CC3EC25B4F627002BE06D /* User.swift in Sources */,
 				4C249B6825C656AF00EAA1E9 /* Builder+ZStack.swift in Sources */,
 				4C9CC3CA25B4F2D4002BE06D /* Builder+View.swift in Sources */,
+				4C2A0D7C268F916D00BF86ED /* Builder+TableView.swift in Sources */,
 				4C147AAD25B5C779000DC2FC /* MainCardView.swift in Sources */,
 				4CD0524825B7AECC0099B277 /* DetailCardView.swift in Sources */,
 				4C9CC3FE25B5099D002BE06D /* UserService.swift in Sources */,
@@ -575,6 +582,7 @@
 				4C9CC3E625B4F499002BE06D /* UIImage+Extensions.swift in Sources */,
 				4C9CC36925B4F078002BE06D /* MainViewController.swift in Sources */,
 				4C9CC3C825B4F2D4002BE06D /* Builder+Image.swift in Sources */,
+				4C2A0D7A268F65C800BF86ED /* Builder+With.swift in Sources */,
 				4CD0522A25B544370099B277 /* _Services+Injection.swift in Sources */,
 				4CD0521A25B542B50099B277 /* MainViewModel.swift in Sources */,
 				4C9CC3C425B4F2D4002BE06D /* Builder.swift in Sources */,

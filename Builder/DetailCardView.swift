@@ -9,7 +9,7 @@ import UIKit
 import Resolver
 import RxSwift
 
-struct DetailCardView: UIViewBuilder {    
+struct DetailCardView: ViewBuilder {    
 
     @Injected var viewModel: DetailViewModel
 
@@ -57,7 +57,7 @@ struct DetailCardView: UIViewBuilder {
 
 }
 
-struct NameValueView: UIViewBuilder {
+struct NameValueView: ViewBuilder {
 
     let name: String?
     let value: String?
