@@ -18,7 +18,7 @@ class ContainerView: UIView {
         }
     }
 
-    convenience public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewFunctionBuilder _ builder: () -> ViewConvertable) {
+    convenience public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewResultBuilder _ builder: () -> ViewConvertable) {
         self.init(frame: .zero)
         builder().asViews().forEach { self.embed($0, padding: padding, safeArea: safeArea) }
     }

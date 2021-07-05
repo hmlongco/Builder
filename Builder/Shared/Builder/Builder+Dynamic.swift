@@ -35,7 +35,7 @@ struct StaticViewBuilder: AnyIndexableViewBuilder {
     
     private var views: [View]
     
-    public init(@ViewFunctionBuilder  _ views: () -> ViewConvertable) {
+    public init(@ViewResultBuilder  _ views: () -> ViewConvertable) {
         self.views = views().asViews()
     }
     

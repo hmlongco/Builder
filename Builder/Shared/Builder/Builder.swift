@@ -12,8 +12,8 @@ import UIKit
 public typealias View = UIView
 
 
-// ViewFunctionBuilder allows SwiftUI-like definitions of UIView trees
-@resultBuilder public struct ViewFunctionBuilder {
+// ViewResultBuilder allows SwiftUI-like definitions of UIView trees
+@resultBuilder public struct ViewResultBuilder {
     public static func buildBlock() -> [View] {
         []
     }
@@ -36,22 +36,22 @@ public typealias View = UIView
 
 
 
-// Arrays of views are the building blocks of ViewFunctionBuilder
+// Arrays of views are the building blocks of ViewResultBuilder
 public protocol ViewConvertable {
     func asViews() -> [View]
 }
 
-// Allows an array of views to be passed to ViewFunctionBuilder
+// Allows an array of views to be passed to ViewResultBuilder
 extension Array: ViewConvertable where Element == View {
     public func asViews() -> [View] { self }
 }
 
-// Allows an array of an array of views to be passed to ViewFunctionBuilder
+// Allows an array of an array of views to be passed to ViewResultBuilder
 extension Array where Element == ViewConvertable {
     public func asViews() -> [View] { self.flatMap { $0.asViews() } }
 }
 
-// Converts a single view to an array of views[s], again for ViewFunctionBuilder
+// Converts a single view to an array of views[s], again for ViewResultBuilder
 extension View: ViewConvertable {
     public func asViews() -> [View] { [self] }
 }

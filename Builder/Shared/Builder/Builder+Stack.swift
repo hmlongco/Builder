@@ -85,7 +85,7 @@ class VStackView: UIStackView {
 //        }
     }
 
-    convenience public init(@ViewFunctionBuilder _ builder: () -> ViewConvertable) {
+    convenience public init(@ViewResultBuilder _ builder: () -> ViewConvertable) {
         self.init(builder().asViews())
     }
 
@@ -133,7 +133,7 @@ class HStackView: UIStackView {
     //        }
         }
 
-    convenience public init(@ViewFunctionBuilder _ builder: () -> ViewConvertable) {
+    convenience public init(@ViewResultBuilder _ builder: () -> ViewConvertable) {
         self.init(builder().asViews())
     }
 

@@ -47,7 +47,7 @@ class BuilderViewController: UIViewController {
     private var onViewWillAppearBlock: ((_ viewController: BuilderViewController) -> Void)?
     private var onViewDidAppearBlock: ((_ viewController: BuilderViewController) -> Void)?
 
-    public init(@ViewFunctionBuilder _ builder: @escaping () -> ViewConvertable) {
+    public init(@ViewResultBuilder _ builder: @escaping () -> ViewConvertable) {
         self.builder = builder
         super.init(nibName: nil, bundle: nil)
     }
