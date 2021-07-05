@@ -7,6 +7,101 @@
 //
 
 import UIKit
+import RxSwift
+
+
+
+protocol AnyIndexableViewBuilder: ViewConvertable {
+    var count: Int { get }
+    func view(at index: Int) -> View?
+}
+
+extension AnyIndexableViewBuilder {
+    var isEmpty: Bool { count == 0 }
+}
+
+protocol AnyIndexableDataProvider {
+    var count: Int { get }
+    func data(at index: Int) -> Any?
+}
+
+protocol AnyUpdatableDataProvider {
+    var updated: Observable<Any?> { get }
+}
+
+
+
+struct StaticViewBuilder: AnyIndexableViewBuilder {
+    
+    private var views: [View]
+    
+    public init(@ViewFunctionBuilder  _ views: () -> ViewConvertable) {
+        self.views = views().asViews()
+    }
+    
+    var count: Int { views.count }
+    
+    func view(at index: Int) -> View? {
+        guard views.indices.contains(index) else { return nil }
+        return views[index]
+    }
+    
+    func asViews() -> [View] {
+        views
+    }
+    
+}
+
+
+
+class DynamicItemViewBuilder<Item>: AnyIndexableViewBuilder, AnyIndexableDataProvider, AnyUpdatableDataProvider {
+    
+    var items: [Item] {
+        didSet {
+            updatePublisher.onNext(self)
+        }
+    }
+    
+    private let builder: (_ item: Item) -> ViewBuilder?
+    private var updatePublisher = PublishSubject<Any?>()
+    
+    public init(items: [Item], builder: @escaping (_ item: Item) -> ViewBuilder?) {
+        self.items = items
+        self.builder = builder
+    }
+    
+    var count: Int { items.count }
+    
+    var updated: Observable<Any?> { updatePublisher }
+    
+    func item(at index: Int) -> Item? {
+        guard items.indices.contains(index) else { return nil }
+        return items[index]
+    }
+    
+    func data(at index: Int) -> Any? {
+        item(at: index)
+    }
+    
+    func view(at index: Int) -> View? {
+        guard let item = item(at: index) else { return nil }
+        return builder(item)?.build()
+    }
+
+    public func asViews() -> [View] {
+        return items.compactMap { self.builder($0)?.build() }
+    }
+
+}
+
+
+
+
+
+
+
+
+
 
 
 public protocol ViewListBuilder {
@@ -28,7 +123,7 @@ public protocol DynamicViewBuilderType: ViewListBuilder {
 }
 
 
-class DynamicViewBuilder<Item>: DynamicViewBuilderType {
+class xDynamicViewBuilder<Item>: DynamicViewBuilderType {
 
     var items: [Item] {
         didSet {

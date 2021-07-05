@@ -32,7 +32,7 @@ class MainViewController: UIViewController {
                 case .loading:
                     self.transtion(to: StandardLoadingPage())
                 case .loaded(let users):
-                    self.transtion(to: MainUsersView(users: users))
+                    self.transtion(to: MainUsersTableView(users: users))
                 case .empty(let message):
                     self.transtion(to: StandardEmptyPage(message: message))
                 case .error(let error):

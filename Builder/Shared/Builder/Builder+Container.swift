@@ -20,7 +20,7 @@ class ContainerView: UIView {
 
     convenience public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewFunctionBuilder _ builder: () -> ViewConvertable) {
         self.init(frame: .zero)
-        builder().asViewConvertable().forEach { self.embed($0, padding: padding, safeArea: safeArea) }
+        builder().asViews().forEach { self.embed($0, padding: padding, safeArea: safeArea) }
     }
 
     @discardableResult

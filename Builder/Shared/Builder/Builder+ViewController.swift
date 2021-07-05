@@ -58,7 +58,7 @@ class BuilderViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let view: View = builder?().asViewConvertable().first else {
+        guard let view: View = builder?().asViews().first else {
             fatalError()
         }
         self.view.embed(view)

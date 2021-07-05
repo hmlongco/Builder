@@ -16,18 +16,41 @@ import UIKit
 import Resolver
 import RxSwift
 
-struct MainUsersView: ViewBuilder {
+struct MainUsersTableView: ViewBuilder {
 
     let users: [User]
     
     func build() -> View {
-        TableView<User>(DynamicViewBuilder(array: users) { user in
+        TableView<User>(DynamicItemViewBuilder(items: users) { user in
             MainCardBuilder(user: user)
         })
         .onSelect { (context, user) in
             let vc = DetailViewController(user: user)
             context.currentNavigationController?.pushViewController(vc, animated: true)
             return false
+        }
+    }
+
+}
+
+struct MainUsersStackView: ViewBuilder {
+
+    let users: [User]
+
+    func build() -> View {
+        VerticalScrollView {
+            VStackView(DynamicItemViewBuilder(items: users) { user in
+                MainCardBuilder(user: user)
+                    .build()
+                    .backgroundColor(.secondarySystemBackground)
+                    .cornerRadius(10)
+                    .onTapGesture { context in
+                        let vc = DetailViewController(user: user)
+                        context.currentNavigationController?.pushViewController(vc, animated: true)
+                    }
+            })
+            .padding(.init(h: 16, v: 8))
+            .spacing(8)
         }
     }
 

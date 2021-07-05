@@ -75,19 +75,18 @@ class VStackView: UIStackView {
         self.addArrangedSubviews(convertableViews.asViews())
     }
 
-    private var builder: ViewListBuilder?
+//    private var builder: AnyIndexableViewBuilder?
 
-    convenience public init(_ builder: ViewListBuilder) {
-        self.init(builder.build().compactMap { $0 })
-        self.builder = builder
-        self.builder?.onChange { [weak self] in
-            self?.empty()
-            self?.addArrangedSubviews(builder.build())
-        }
+    convenience public init(_ builder: AnyIndexableViewBuilder) {
+        self.init(builder.asViews())
+//        self.builder = builder
+//        self.builder?.onChange { [weak self] in
+//            self?.reset(to: builder.build())
+//        }
     }
 
     convenience public init(@ViewFunctionBuilder _ builder: () -> ViewConvertable) {
-        self.init(builder().asViewConvertable())
+        self.init(builder().asViews())
     }
 
     required public init(coder: NSCoder) {
@@ -124,19 +123,18 @@ class HStackView: UIStackView {
         self.addArrangedSubviews(convertableViews.asViews())
     }
 
-    private var builder: ViewListBuilder?
+    //    private var builder: AnyIndexableViewBuilder?
 
-    convenience public init(_ builder: ViewListBuilder) {
-        self.init(builder.build().compactMap { $0 })
-        self.builder = builder
-        self.builder?.onChange { [weak self] in
-            self?.empty()
-            self?.addArrangedSubviews(builder.build().map { $0 })
+        convenience public init(_ builder: AnyIndexableViewBuilder) {
+            self.init(builder.asViews())
+    //        self.builder = builder
+    //        self.builder?.onChange { [weak self] in
+    //            self?.reset(to: builder.build())
+    //        }
         }
-    }
 
     convenience public init(@ViewFunctionBuilder _ builder: () -> ViewConvertable) {
-        self.init(builder().asViewConvertable())
+        self.init(builder().asViews())
     }
 
     required public init(coder: NSCoder) {

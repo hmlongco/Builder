@@ -18,7 +18,7 @@ final class ZStackView: UIView {
      }
 
      convenience public init(@ViewFunctionBuilder _ builder: () -> ViewConvertable) {
-        self.init(builder().asViewConvertable())
+        self.init(builder().asViews())
      }
 
     required public init?(coder: NSCoder) {

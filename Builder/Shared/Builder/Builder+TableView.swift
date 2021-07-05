@@ -9,14 +9,17 @@ import UIKit
 
 class TableView<Item>: UITableView, UITableViewDataSource, UITableViewDelegate {
  
-    var builder: DynamicViewBuilder<Item>
+    var builder: AnyIndexableViewBuilder
+    var provider: AnyIndexableDataProvider?
     
     var selectHandler: ((_ tableView: UITableView, _ item: Item) -> Bool)?
     
-    public init(_ builder: DynamicViewBuilder<Item>) {
+    public init(_ builder: AnyIndexableViewBuilder) {
         self.builder = builder
+        self.provider = builder as? AnyIndexableDataProvider
         super.init(frame: .zero, style: .plain)
         setupTableView()
+        setupSubscriptions()
     }
     
     required init?(coder: NSCoder) {
@@ -29,9 +32,15 @@ class TableView<Item>: UITableView, UITableViewDataSource, UITableViewDelegate {
         
         self.estimatedRowHeight = 44
         self.rowHeight = UITableView.automaticDimension
-        
-        builder.onChange { [weak self] in
-            self?.reloadData()
+    }
+    
+    func setupSubscriptions() {
+         if let provider = builder as? AnyUpdatableDataProvider {
+            provider.updated
+                .subscribe { [weak self] _ in
+                    self?.reloadData()
+                }
+                .disposed(by: rxDisposeBag)
         }
     }
     
@@ -63,14 +72,14 @@ class TableView<Item>: UITableView, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(frame: tableView.bounds)
-        if let view = builder.build(at: indexPath.row) {
+        if let view = builder.view(at: indexPath.row) {
             cell.contentView.embed(view)
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let item = builder.item(at: indexPath.row) else {
+        guard let item = provider?.data(at: indexPath.row) as? Item else {
             return
         }
         if let selected = selectHandler?(self, item), selected {
