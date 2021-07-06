@@ -21,14 +21,18 @@ struct MainUsersTableView: ViewBuilder {
     let users: [User]
     
     func build() -> View {
-        TableView<User>(DynamicItemViewBuilder(items: users) { user in
-            MainCardBuilder(user: user)
+        TableView(DynamicItemViewBuilder(items: users) { user in
+            TableViewCell {
+                MainCardBuilder(user: user)
+            }
+            .accessoryType(.disclosureIndicator)
+            .onSelect { (context) in
+                let vc = DetailViewController(user: user)
+                context.currentNavigationController?
+                    .pushViewController(vc, animated: true)
+                return false
+            }
         })
-        .onSelect { (context, user) in
-            let vc = DetailViewController(user: user)
-            context.currentNavigationController?.pushViewController(vc, animated: true)
-            return false
-        }
     }
 
 }

@@ -15,6 +15,10 @@ extension UIView {
         self.addSubviewWithConstraints(builder.build(), padding, safeArea)
     }
 
+    func embed(in view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+        view.addSubviewWithConstraints(self, padding, safeArea)
+    }
+
     func empty() {
         self.subviews.forEach { $0.removeFromSuperview() }
     }

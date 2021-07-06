@@ -13,20 +13,12 @@ import RxSwift
 
 protocol AnyIndexableViewBuilder: ViewConvertable {
     var count: Int { get }
+    var updated: Observable<Any?>? { get }
     func view(at index: Int) -> View?
 }
 
 extension AnyIndexableViewBuilder {
-    var isEmpty: Bool { count == 0 }
-}
-
-protocol AnyIndexableDataProvider {
-    var count: Int { get }
-    func data(at index: Int) -> Any?
-}
-
-protocol AnyUpdatableDataProvider {
-    var updated: Observable<Any?> { get }
+    var updated: Observable<Any?>? { nil }
 }
 
 
@@ -54,33 +46,28 @@ struct StaticViewBuilder: AnyIndexableViewBuilder {
 
 
 
-class DynamicItemViewBuilder<Item>: AnyIndexableViewBuilder, AnyIndexableDataProvider, AnyUpdatableDataProvider {
+class DynamicItemViewBuilder<Item>: AnyIndexableViewBuilder {
     
     var items: [Item] {
         didSet {
-            updatePublisher.onNext(self)
+            updated.onNext(self)
         }
     }
     
+    var count: Int { items.count }
+    
+    var updated = PublishSubject<Any?>()
+
     private let builder: (_ item: Item) -> ViewBuilder?
-    private var updatePublisher = PublishSubject<Any?>()
     
     public init(items: [Item], builder: @escaping (_ item: Item) -> ViewBuilder?) {
         self.items = items
         self.builder = builder
     }
     
-    var count: Int { items.count }
-    
-    var updated: Observable<Any?> { updatePublisher }
-    
     func item(at index: Int) -> Item? {
         guard items.indices.contains(index) else { return nil }
         return items[index]
-    }
-    
-    func data(at index: Int) -> Any? {
-        item(at: index)
     }
     
     func view(at index: Int) -> View? {
@@ -94,81 +81,3 @@ class DynamicItemViewBuilder<Item>: AnyIndexableViewBuilder, AnyIndexableDataPro
 
 }
 
-
-
-
-
-
-
-
-
-
-
-public protocol ViewListBuilder {
-    func build() -> [View]
-    func onChange(_ changed: @escaping () -> Void)
-}
-
-extension ViewListBuilder {
-    public func onChange(_ changed: @escaping () -> Void) {}
-}
-
-
-public protocol DynamicViewBuilderType: ViewListBuilder {
-    associatedtype Item
-    var count: Int { get }
-    func item(at index: Int) -> Item?
-    func build(at index: Int) -> View?
-    func build(_ item: Item?) -> View?
-}
-
-
-class xDynamicViewBuilder<Item>: DynamicViewBuilderType {
-
-    var items: [Item] {
-        didSet {
-            changed?()
-        }
-    }
-
-    let builder: (_ item: Item) -> View?
-    
-    private var changed: (() -> Void)?
-
-    public init(array: [Item], builder: @escaping (_ item: Item) -> View?) {
-        self.items = array
-        self.builder = builder
-    }
-
-    public init(array: [Item], builder: @escaping (_ item: Item) -> ViewBuilder?) {
-        self.items = array
-        self.builder = { item in builder(item)?.build() }
-    }
-
-    var count: Int {
-        return items.count
-    }
-
-    public func item(at index: Int) -> Item? {
-        guard items.indices.contains(index) else { return nil }
-        return items[index]
-    }
-
-    public func build(at index: Int) -> View? {
-        return build(item(at: index))
-    }
-
-    public func build(_ item: Item?) -> View? {
-        guard let item = item else { return nil }
-        return builder(item)
-    }
-
-    public func build() -> [View] {
-        return items.compactMap { self.build($0) }
-    }
-
-    public func onChange(_ changed: @escaping () -> Void) {
-        self.changed = changed
-    }
-
-}

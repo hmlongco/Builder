@@ -13,6 +13,7 @@ import RxCocoa
 protocol UserServiceType {
     func list() -> Single<[User]>
     func thumbnail(forUser user: User) -> Single<UIImage?>
+    func photo(forUser user: User) -> Single<UIImage?>
 }
 
 struct UserService: UserServiceType {
@@ -43,7 +44,17 @@ struct UserService: UserServiceType {
     }
 
     func thumbnail(forUser user: User) -> Single<UIImage?> {
-        guard let path = user.picture?.thumbnail else {
+        guard let path = user.picture?.medium else {
+            return .just(nil)
+        }
+        return session.builder(forURL: URL(string: path))
+            .get()
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .utility))
+            .map { (data: Data) -> UIImage? in UIImage(data: data) }
+    }
+
+    func photo(forUser user: User) -> Single<UIImage?> {
+        guard let path = user.picture?.large else {
             return .just(nil)
         }
         return session.builder(forURL: URL(string: path))

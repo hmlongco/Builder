@@ -7,16 +7,13 @@
 
 import UIKit
 
-class TableView<Item>: UITableView, UITableViewDataSource, UITableViewDelegate {
+
+class TableView: UITableView, UITableViewDataSource, UITableViewDelegate {
  
     var builder: AnyIndexableViewBuilder
-    var provider: AnyIndexableDataProvider?
-    
-    var selectHandler: ((_ tableView: UITableView, _ item: Item) -> Bool)?
     
     public init(_ builder: AnyIndexableViewBuilder) {
         self.builder = builder
-        self.provider = builder as? AnyIndexableDataProvider
         super.init(frame: .zero, style: .plain)
         setupTableView()
         setupSubscriptions()
@@ -35,23 +32,15 @@ class TableView<Item>: UITableView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func setupSubscriptions() {
-         if let provider = builder as? AnyUpdatableDataProvider {
-            provider.updated
-                .subscribe { [weak self] _ in
-                    self?.reloadData()
-                }
-                .disposed(by: rxDisposeBag)
-        }
+        builder.updated?
+            .subscribe { [weak self] _ in
+                self?.reloadData()
+            }
+            .disposed(by: rxDisposeBag)
     }
     
     // properties
     
-    @discardableResult
-    func onSelect(_ handler: @escaping (_ tableView: UITableView, _ item: Item) -> Bool) -> Self {
-        self.selectHandler = handler
-        return self
-    }
-
     @discardableResult
     public func reference(_ reference: inout TableView?) -> Self {
         reference = self
@@ -71,21 +60,86 @@ class TableView<Item>: UITableView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(frame: tableView.bounds)
-        if let view = builder.view(at: indexPath.row) {
-            cell.contentView.embed(view)
+        guard let view = builder.view(at: indexPath.row) else {
+            return UITableViewCell(frame: tableView.bounds)
         }
+        if let cell = view as? TableViewCell {
+            return cell
+        }
+        let cell = UITableViewCell(frame: tableView.bounds)
+        cell.contentView.embed(view)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let item = provider?.data(at: indexPath.row) as? Item else {
-            return
-        }
-        if let selected = selectHandler?(self, item), selected {
+        if let cell = tableView.cellForRow(at: indexPath) as? TableViewCell, let selected = cell.selectionHandler?(self), selected {
             return
         }
         deselectRow(at: indexPath, animated: true)
     }
     
+}
+
+
+class TableViewCell: UITableViewCell {
+    
+    var selectionHandler: ((_ tableView: UITableView) -> Bool)?
+
+    convenience public init(title: String) {
+        self.init(style: .default, reuseIdentifier: "bTitle")
+        self.textLabel?.text = title
+    }
+
+    convenience public init(title: String, subtitle: String) {
+        self.init(style: .subtitle, reuseIdentifier: "bSubtitle")
+        self.textLabel?.text = title
+        self.detailTextLabel?.text = subtitle
+    }
+
+    convenience public init(name: String, value: String) {
+        self.init(style: .value1, reuseIdentifier: "bValue1")
+        self.textLabel?.text = name
+        self.detailTextLabel?.text = value
+    }
+
+    convenience public init(field: String, value: String) {
+        self.init(style: .value2, reuseIdentifier: "bValue2")
+        self.textLabel?.text = field
+        self.detailTextLabel?.text = value
+    }
+
+    convenience public init(_ builder: ViewBuilder, padding: UIEdgeInsets? = UIEdgeInsets(h: 16, v: 8)) {
+        self.init(frame: .zero)
+        builder.build().embed(in: self.contentView, padding: padding, safeArea: false)
+    }
+
+    convenience public init(padding: UIEdgeInsets? = UIEdgeInsets(h: 16, v: 8), @ViewResultBuilder _ builder: () -> ViewConvertable) {
+        self.init(frame: .zero)
+        builder().asViews().forEach { self.contentView.embed($0, padding: padding) }
+    }
+    
+    @discardableResult
+    func accessoryType(_ type: AccessoryType) -> Self {
+        self.accessoryType = type
+        return self
+    }
+
+    @discardableResult
+    func onSelect(_ handler: @escaping (_ tableView: UITableView) -> Bool) -> Self {
+        self.selectionHandler = handler
+        return self
+    }
+
+    @discardableResult
+    public func reference(_ reference: inout TableViewCell?) -> Self {
+        reference = self
+        return self
+    }
+
+    @discardableResult
+    public func with(_ configuration: (_ view: TableViewCell) -> Void) -> Self {
+        configuration(self)
+        return self
+    }
+
 }

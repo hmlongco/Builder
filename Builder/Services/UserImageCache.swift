@@ -14,10 +14,10 @@ class UserImageCache {
     @Injected var userService: UserServiceType
 
     func thumbnail(forUser user: User) -> Observable<UIImage?> {
-        guard let path = user.picture?.thumbnail else {
+        guard let path = user.picture?.medium else {
             return .just(nil)
         }
-        if let image = thumbnailCache.object(forKey: NSString(string: path)) {
+        if let image = imageCache.object(forKey: NSString(string: path)) {
             return .just(image)
         }
         let image = userService.thumbnail(forUser: user)
@@ -25,7 +25,7 @@ class UserImageCache {
         return Observable<UIImage?>.merge(.just(nil), image)
             .do(onNext: { [weak self] (image) in
                 if let image = image {
-                    self?.thumbnailCache.setObject(image, forKey: NSString(string: path))
+                    self?.imageCache.setObject(image, forKey: NSString(string: path))
                }
             })
     }
@@ -36,6 +36,29 @@ class UserImageCache {
             .map { $0 ?? UIImage(named: "User-Unknown") }
     }
 
-    private var thumbnailCache = NSCache<NSString, UIImage>()
+    func photo(forUser user: User) -> Observable<UIImage?> {
+        guard let path = user.picture?.large else {
+            return .just(nil)
+        }
+        if let image = imageCache.object(forKey: NSString(string: path)) {
+            return .just(image)
+        }
+        let image = userService.photo(forUser: user)
+            .asObservable()
+        return Observable<UIImage?>.merge(.just(nil), image)
+            .do(onNext: { [weak self] (image) in
+                if let image = image {
+                    self?.imageCache.setObject(image, forKey: NSString(string: path))
+               }
+            })
+    }
+
+    func photoOrPlaceholder(forUser user: User) -> Observable<UIImage?> {
+        photo(forUser: user)
+            .catchAndReturn(UIImage(named: "User-Unknown"))
+            .map { $0 ?? UIImage(named: "User-Unknown") }
+    }
+
+    private var imageCache = NSCache<NSString, UIImage>()
 
 }

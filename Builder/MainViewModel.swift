@@ -12,6 +12,7 @@ import RxCocoa
 
 class MainViewModel {
     
+    @Injected var images: UserImageCache
     @Injected var service: UserServiceType
 
     enum State: Equatable {

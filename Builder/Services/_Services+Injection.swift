@@ -18,7 +18,7 @@ extension Resolver {
                 .wrap(SessionLoggingWrapper())
         }
 
-        register { UserImageCache() }.scope(.application)
+        register { UserImageCache() }.scope(.shared)
         register { UserService() as UserServiceType }
 
         #if MOCK

@@ -21,7 +21,7 @@ struct DetailCardView: ViewBuilder {
         ContainerView(
             VStackView {
                 VStackView {
-                    ImageView(viewModel.thumbnail().asObservable())
+                    ImageView(viewModel.photo().asObservable())
                         .cornerRadius(50)
                         .frame(height: 100, width: 100)
                     

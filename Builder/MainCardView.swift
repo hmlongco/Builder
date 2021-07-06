@@ -16,23 +16,20 @@ struct MainCardBuilder: ViewBuilder {
     let user: User
 
     func build() -> View {
-        ContainerView(
-            HStackView {
-                ImageView(thumbnail())
-                    .cornerRadius(25)
-                    .frame(height: 50, width: 50)
-                VStackView {
-                    LabelView(user.fullname)
-                        .font(.preferredFont(forTextStyle: .body))
-                    LabelView(user.email)
-                        .font(.preferredFont(forTextStyle: .footnote))
-                        .color(.secondaryLabel)
-                    SpacerView()
-                }
-                .spacing(4)
+        HStackView {
+            ImageView(thumbnail())
+                .cornerRadius(25)
+                .frame(height: 50, width: 50)
+            VStackView {
+                LabelView(user.fullname)
+                    .font(.preferredFont(forTextStyle: .body))
+                LabelView(user.email)
+                    .font(.preferredFont(forTextStyle: .footnote))
+                    .color(.secondaryLabel)
+                SpacerView()
             }
-            .padding(UIEdgeInsets(h: 16, v: 12))
-        )
+            .spacing(4)
+        }
     }
     
     func thumbnail() -> Observable<UIImage?> {
