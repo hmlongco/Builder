@@ -10,11 +10,11 @@ import Resolver
 import RxSwift
 
 struct MainCardBuilder: ViewBuilder {
-
+    
     @Injected var cache: UserImageCache
-
+    
     let user: User
-
+    
     func build() -> View {
         HStackView {
             ImageView(thumbnail())

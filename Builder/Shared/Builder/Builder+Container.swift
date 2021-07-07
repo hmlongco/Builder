@@ -11,11 +11,9 @@ import RxSwift
 
 class ContainerView: UIView {
 
-    convenience public init(_ view: View?, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+    convenience public init(_ view: ViewBuilder?, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         self.init(frame: .zero)
-        if let view = view {
-            self.embed(view, padding: padding, safeArea: safeArea)
-        }
+        view?.build().embed(in: self, padding: padding, safeArea: safeArea)
     }
 
     convenience public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewResultBuilder _ builder: () -> ViewConvertable) {
@@ -36,3 +34,4 @@ class ContainerView: UIView {
     }
 
 }
+

@@ -72,6 +72,7 @@
 		4CD0522425B5439E0099B277 /* _Main+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0522325B5439E0099B277 /* _Main+Injection.swift */; };
 		4CD0522A25B544370099B277 /* _Services+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0522925B544370099B277 /* _Services+Injection.swift */; };
 		4CD0524825B7AECC0099B277 /* DetailCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0524725B7AECC0099B277 /* DetailCardView.swift */; };
+		4CEE4D5A2695DD7E00312FD1 /* Builder+Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEE4D592695DD7E00312FD1 /* Builder+Group.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -161,6 +162,7 @@
 		4CD0522325B5439E0099B277 /* _Main+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "_Main+Injection.swift"; sourceTree = "<group>"; };
 		4CD0522925B544370099B277 /* _Services+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "_Services+Injection.swift"; sourceTree = "<group>"; };
 		4CD0524725B7AECC0099B277 /* DetailCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetailCardView.swift; path = Builder/DetailCardView.swift; sourceTree = SOURCE_ROOT; };
+		4CEE4D592695DD7E00312FD1 /* Builder+Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+Group.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -346,6 +348,7 @@
 				4C9CC3BF25B4F2D4002BE06D /* Builder+Container.swift */,
 				4C9CC3B525B4F2D4002BE06D /* Builder+Divider.swift */,
 				4C9CC3BB25B4F2D4002BE06D /* Builder+Dynamic.swift */,
+				4CEE4D592695DD7E00312FD1 /* Builder+Group.swift */,
 				4C9CC3BA25B4F2D4002BE06D /* Builder+Image.swift */,
 				4C9CC3BD25B4F2D4002BE06D /* Builder+Label.swift */,
 				4C9CC3B825B4F2D4002BE06D /* Builder+Navigation.swift */,
@@ -605,6 +608,7 @@
 				4C65866125ED23040073003C /* MainUsersView.swift in Sources */,
 				4C9CC36725B4F078002BE06D /* SceneDelegate.swift in Sources */,
 				4C65864725E9CB8D0073003C /* SSOAuthenticationWrapper.swift in Sources */,
+				4CEE4D5A2695DD7E00312FD1 /* Builder+Group.swift in Sources */,
 				4C65864925E9CB8D0073003C /* SessionLoggingWrapper.swift in Sources */,
 				4C65864825E9CB8D0073003C /* StandardHeadersWrapper.swift in Sources */,
 				4C147A9625B5C3C5000DC2FC /* RandomUserSessionManager.swift in Sources */,

@@ -17,7 +17,7 @@ import Resolver
 import RxSwift
 
 struct MainUsersTableView: ViewBuilder {
-
+    
     let users: [User]
     
     func build() -> View {
@@ -34,13 +34,11 @@ struct MainUsersTableView: ViewBuilder {
             }
         })
     }
-
+    
 }
 
 struct MainUsersStackView: ViewBuilder {
-
     let users: [User]
-
     func build() -> View {
         VerticalScrollView {
             VStackView(DynamicItemViewBuilder(items: users) { user in
@@ -57,5 +55,4 @@ struct MainUsersStackView: ViewBuilder {
             .spacing(8)
         }
     }
-
 }
