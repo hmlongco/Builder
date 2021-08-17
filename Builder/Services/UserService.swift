@@ -78,6 +78,13 @@ struct MockUserService: UserServiceType {
         }
         return .just(nil)
     }
+    
+    func photo(forUser user: User) -> Single<UIImage?> {
+        if let name = user.picture?.thumbnail, let image = UIImage(named: name) {
+            return .just(image)
+        }
+        return .just(nil)
+    }
 
 }
 
@@ -88,6 +95,9 @@ struct MockEmptyUserService: UserServiceType {
     func thumbnail(forUser user: User) -> Single<UIImage?> {
         return .just(nil)
     }
+    func photo(forUser user: User) -> Single<UIImage?> {
+        return .just(nil)
+    }
 }
 
 struct MockErrorUserService: UserServiceType {
@@ -95,6 +105,9 @@ struct MockErrorUserService: UserServiceType {
         return .error(APIError.unexpected)
     }
     func thumbnail(forUser user: User) -> Single<UIImage?> {
+        return .error(APIError.unexpected)
+    }
+    func photo(forUser user: User) -> Single<UIImage?> {
         return .error(APIError.unexpected)
     }
 }

@@ -21,6 +21,7 @@
 		4C2D812025E408B300E2EBD7 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D811F25E408B300E2EBD7 /* RxSwift */; };
 		4C2D812425E408B300E2EBD7 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D812325E408B300E2EBD7 /* RxRelay */; };
 		4C2D812625E408B300E2EBD7 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D812525E408B300E2EBD7 /* RxCocoa */; };
+		4C47033226CB17EE006B6DEC /* Builder+Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C47033126CB17EE006B6DEC /* Builder+Padding.swift */; };
 		4C57859225CA2958005D42BB /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C57859125CA2958005D42BB /* DetailViewController.swift */; };
 		4C57859725CAEA60005D42BB /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C57859625CAEA60005D42BB /* Rx+Extensions.swift */; };
 		4C5FF94225E4189100E929A4 /* XCTTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FF94125E4189100E929A4 /* XCTTest+Extensions.swift */; };
@@ -67,12 +68,14 @@
 		4C9CC3E625B4F499002BE06D /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3E525B4F499002BE06D /* UIImage+Extensions.swift */; };
 		4C9CC3EC25B4F627002BE06D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3EB25B4F627002BE06D /* User.swift */; };
 		4C9CC3FE25B5099D002BE06D /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3FD25B5099D002BE06D /* UserService.swift */; };
+		4CCB61D126C36F0C0011BD44 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCB61D026C36F0C0011BD44 /* UIViewController+Extensions.swift */; };
 		4CD0521A25B542B50099B277 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0521925B542B50099B277 /* MainViewModel.swift */; };
 		4CD0521F25B5433D0099B277 /* _Application+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0521E25B5433D0099B277 /* _Application+Injection.swift */; };
 		4CD0522425B5439E0099B277 /* _Main+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0522325B5439E0099B277 /* _Main+Injection.swift */; };
 		4CD0522A25B544370099B277 /* _Services+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0522925B544370099B277 /* _Services+Injection.swift */; };
 		4CD0524825B7AECC0099B277 /* DetailCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0524725B7AECC0099B277 /* DetailCardView.swift */; };
 		4CEE4D5A2695DD7E00312FD1 /* Builder+Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEE4D592695DD7E00312FD1 /* Builder+Group.swift */; };
+		4CF1A64326B399D800E26446 /* Functions+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF1A64226B399D800E26446 /* Functions+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +108,7 @@
 		4C288FBA25B612F0004D54AC /* MOCK.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MOCK.xcconfig; sourceTree = "<group>"; };
 		4C2A0D79268F65C800BF86ED /* Builder+With.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+With.swift"; sourceTree = "<group>"; };
 		4C2A0D7B268F916D00BF86ED /* Builder+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+TableView.swift"; sourceTree = "<group>"; };
+		4C47033126CB17EE006B6DEC /* Builder+Padding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+Padding.swift"; sourceTree = "<group>"; };
 		4C57859125CA2958005D42BB /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		4C57859625CAEA60005D42BB /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
 		4C5FF94125E4189100E929A4 /* XCTTest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTTest+Extensions.swift"; sourceTree = "<group>"; };
@@ -157,12 +161,14 @@
 		4C9CC3E525B4F499002BE06D /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		4C9CC3EB25B4F627002BE06D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4C9CC3FD25B5099D002BE06D /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		4CCB61D026C36F0C0011BD44 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		4CD0521925B542B50099B277 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		4CD0521E25B5433D0099B277 /* _Application+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "_Application+Injection.swift"; sourceTree = "<group>"; };
 		4CD0522325B5439E0099B277 /* _Main+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "_Main+Injection.swift"; sourceTree = "<group>"; };
 		4CD0522925B544370099B277 /* _Services+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "_Services+Injection.swift"; sourceTree = "<group>"; };
 		4CD0524725B7AECC0099B277 /* DetailCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetailCardView.swift; path = Builder/DetailCardView.swift; sourceTree = SOURCE_ROOT; };
 		4CEE4D592695DD7E00312FD1 /* Builder+Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+Group.swift"; sourceTree = "<group>"; };
+		4CF1A64226B399D800E26446 /* Functions+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Functions+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -352,6 +358,7 @@
 				4C9CC3BA25B4F2D4002BE06D /* Builder+Image.swift */,
 				4C9CC3BD25B4F2D4002BE06D /* Builder+Label.swift */,
 				4C9CC3B825B4F2D4002BE06D /* Builder+Navigation.swift */,
+				4C47033126CB17EE006B6DEC /* Builder+Padding.swift */,
 				4C9CC3B425B4F2D4002BE06D /* Builder+ScrollView.swift */,
 				4C9CC3B925B4F2D4002BE06D /* Builder+Spacer.swift */,
 				4C9CC3C025B4F2D4002BE06D /* Builder+Stack.swift */,
@@ -383,6 +390,8 @@
 			children = (
 				4C9CC3E525B4F499002BE06D /* UIImage+Extensions.swift */,
 				4C57859625CAEA60005D42BB /* Rx+Extensions.swift */,
+				4CF1A64226B399D800E26446 /* Functions+Extensions.swift */,
+				4CCB61D026C36F0C0011BD44 /* UIViewController+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -579,7 +588,9 @@
 				4C147AAD25B5C779000DC2FC /* MainCardView.swift in Sources */,
 				4CD0524825B7AECC0099B277 /* DetailCardView.swift in Sources */,
 				4C9CC3FE25B5099D002BE06D /* UserService.swift in Sources */,
+				4CF1A64326B399D800E26446 /* Functions+Extensions.swift in Sources */,
 				4C9CC3C225B4F2D4002BE06D /* Builder+ScrollView.swift in Sources */,
+				4C47033226CB17EE006B6DEC /* Builder+Padding.swift in Sources */,
 				4C57859725CAEA60005D42BB /* Rx+Extensions.swift in Sources */,
 				4C57859225CA2958005D42BB /* DetailViewController.swift in Sources */,
 				4C9CC3E625B4F499002BE06D /* UIImage+Extensions.swift in Sources */,
@@ -588,6 +599,7 @@
 				4C2A0D7A268F65C800BF86ED /* Builder+With.swift in Sources */,
 				4CD0522A25B544370099B277 /* _Services+Injection.swift in Sources */,
 				4CD0521A25B542B50099B277 /* MainViewModel.swift in Sources */,
+				4CCB61D126C36F0C0011BD44 /* UIViewController+Extensions.swift in Sources */,
 				4C9CC3C425B4F2D4002BE06D /* Builder.swift in Sources */,
 				4C9CC3C725B4F2D4002BE06D /* Builder+Spacer.swift in Sources */,
 				4C65866725ED30800073003C /* StandardLoadingPage.swift in Sources */,

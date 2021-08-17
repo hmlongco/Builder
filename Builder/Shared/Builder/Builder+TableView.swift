@@ -72,7 +72,8 @@ class TableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? TableViewCell, let selected = cell.selectionHandler?(self), selected {
+        let context = TableViewCellContext(tableView: self, indexPath: indexPath, viewController: currentViewController)
+        if let cell = tableView.cellForRow(at: indexPath) as? TableViewCell, let selected = cell.selectionHandler?(context), selected {
             return
         }
         deselectRow(at: indexPath, animated: true)
@@ -80,10 +81,24 @@ class TableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     
 }
 
+struct TableViewCellContext {
+    let tableView: TableView
+    let indexPath: IndexPath
+    let viewController: UIViewController?
+}
+
+extension TableViewCellContext {
+    func push<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
+        viewController?.push(vc, configure: configure)
+    }
+    func present<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
+        viewController?.present(vc, configure: configure)
+    }
+}
 
 class TableViewCell: UITableViewCell {
     
-    var selectionHandler: ((_ tableView: UITableView) -> Bool)?
+    var selectionHandler: ((_ tableView: TableViewCellContext) -> Bool)?
 
     convenience public init(title: String) {
         self.init(style: .default, reuseIdentifier: "bTitle")
@@ -125,7 +140,7 @@ class TableViewCell: UITableViewCell {
     }
 
     @discardableResult
-    func onSelect(_ handler: @escaping (_ tableView: UITableView) -> Bool) -> Self {
+    func onSelect(_ handler: @escaping (_ context: TableViewCellContext) -> Bool) -> Self {
         self.selectionHandler = handler
         return self
     }

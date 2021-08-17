@@ -21,15 +21,13 @@ struct MainUsersTableView: ViewBuilder {
     let users: [User]
     
     func build() -> View {
-        TableView(DynamicItemViewBuilder(items: users) { user in
+        TableView(DynamicItemViewBuilder(users) { user in
             TableViewCell {
                 MainCardBuilder(user: user)
             }
             .accessoryType(.disclosureIndicator)
             .onSelect { (context) in
-                let vc = DetailViewController(user: user)
-                context.currentNavigationController?
-                    .pushViewController(vc, animated: true)
+                context.push(DetailViewController(user: user))
                 return false
             }
         })
@@ -41,18 +39,18 @@ struct MainUsersStackView: ViewBuilder {
     let users: [User]
     func build() -> View {
         VerticalScrollView {
-            VStackView(DynamicItemViewBuilder(items: users) { user in
+            VStackView(DynamicItemViewBuilder(users) { user in
                 MainCardBuilder(user: user)
                     .build()
                     .backgroundColor(.secondarySystemBackground)
-                    .cornerRadius(10)
+                    .cornerRadius(25)
                     .onTapGesture { context in
                         let vc = DetailViewController(user: user)
-                        context.currentNavigationController?.pushViewController(vc, animated: true)
+                        context.currentViewController?.present(vc)
                     }
             })
-            .padding(.init(h: 16, v: 8))
-            .spacing(8)
+            .padding(h: 16, v: 8)
+            .spacing(16)
         }
     }
 }

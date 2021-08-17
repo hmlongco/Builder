@@ -12,6 +12,8 @@ import RxSwift
 class DetailViewController: UIViewController {
 
     @Injected var viewModel: DetailViewModel
+    
+    lazy var dismissible = Dismissible<Void>(self)
 
     convenience init(user: User) {
         self.init()
@@ -21,18 +23,42 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = viewModel.fullname
-        view.embed(mainContentView())
+        view.embed(contentView())
         view.backgroundColor = .systemBackground
     }
 
-    func mainContentView() -> View {
+    func contentView() -> View {
         return VerticalScrollView {
             VStackView {
                 DetailCardView(user: viewModel.user)
                 SpacerView()
+                ButtonView("Dismiss")
+                    .onTap { [weak self] _ in
+                        self?.dismissible.dismiss()
+                    }
+                    .with {
+                        $0.accessibilityLabel = "fred"
+                    }
             }
-            .padding(UIEdgeInsets(padding: 20))
+            .padding(20)
         }
     }
 
 }
+
+//class TestContainerViewController: UIViewController {
+//
+//    private var user: User!
+//
+//    convenience init(user: User) {
+//        self.init()
+//        self.user = user
+//    }
+//
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        view.embed(ContainerView(DetailViewController(user: user)))
+//    }
+//
+//}
+

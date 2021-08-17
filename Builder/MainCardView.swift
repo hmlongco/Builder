@@ -31,7 +31,7 @@ struct MainCardBuilder: ViewBuilder {
             .spacing(4)
         }
     }
-    
+
     func thumbnail() -> Observable<UIImage?> {
         return cache.thumbnailOrPlaceholder(forUser: user)
             .asObservable()

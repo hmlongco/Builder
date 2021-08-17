@@ -18,7 +18,7 @@ struct DetailCardView: ViewBuilder {
     }
 
     func build() -> View {
-        ContainerView(
+        ContainerView {
             VStackView {
                 VStackView {
                     ImageView(viewModel.photo().asObservable())
@@ -46,13 +46,26 @@ struct DetailCardView: ViewBuilder {
                     NameValueView(name: "Age", value: viewModel.age)
                 }
                 .spacing(2)
-
             }
             .spacing(15)
-            .padding(UIEdgeInsets(padding: 20))
-        )
+        }
         .backgroundColor(.quaternarySystemFill)
         .cornerRadius(16)
+        .padding(20)
+        .onAppear { _ in
+            print("Appeared!")
+        }
+        .onDisappear { _ in
+            print("Disappeared!")
+        }
+        .onTapGesture { (context) in
+            let view = VStackView {
+                LabelView("Just an onAppear test")
+            }
+            .alignment(.center)
+            context.currentNavigationController?.push(view: view, animated: true)
+        }
+
     }
 
 }

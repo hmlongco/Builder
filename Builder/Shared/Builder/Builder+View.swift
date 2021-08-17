@@ -37,6 +37,10 @@ extension UIView {
         return view
     }
     
+    public func addSubviewWithConstraints(_ view: ViewBuilder, _ padding: UIEdgeInsets?, _ safeArea: Bool) {
+        addSubviewWithConstraints(view.build(), padding, safeArea)
+    }
+    
     public func addSubviewWithConstraints(_ view: UIView, _ padding: UIEdgeInsets?, _ safeArea: Bool) {
         view.translatesAutoresizingMaskIntoConstraints = false
         addSubview(view)
@@ -60,15 +64,6 @@ extension UIView {
             view.leftAnchor.constraint(equalTo: self.leftAnchor, constant: padding.left),
             view.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -padding.right)
         ])
-    }
-}
-
-extension UIEdgeInsets {
-    public init(padding: CGFloat) {
-        self.init(top: padding, left: padding, bottom: padding, right: padding)
-    }
-    public init(h: CGFloat, v: CGFloat) {
-        self.init(top: v, left: h, bottom: v, right: h)
     }
 }
 
@@ -179,7 +174,27 @@ extension UIView {
 
 }
 
+
 extension UIView {
+
+    private static var AttributesKey: UInt8 = 0
+    
+    public func attributes<T>() -> T? {
+        if let attributes = objc_getAssociatedObject( self, &UIView.AttributesKey ) as? T {
+            return attributes
+        }
+        return nil
+    }
+    
+    public func attributes(_ attributes: AnyObject) -> Self {
+        objc_setAssociatedObject(self, &UIView.AttributesKey, attributes, .OBJC_ASSOCIATION_RETAIN)
+        return self
+    }
+        
+}
+
+
+extension NSObject {
 
     private static var RxDisposeBagAttributesKey: UInt8 = 0
 

@@ -38,9 +38,12 @@ class ScrollView: UIScrollView {
 
 class VerticalScrollView: ScrollView {
 
+    var initialized = false
+    
     override public func didMoveToWindow() {
-        guard let superview = superview, let subview = subviews.first else { return }
+        guard initialized == false, window != nil, let superview = superview, let subview = subviews.first else { return }
         superview.widthAnchor.constraint(equalTo: subview.widthAnchor).isActive = true
+        initialized = true
     }
 
 }

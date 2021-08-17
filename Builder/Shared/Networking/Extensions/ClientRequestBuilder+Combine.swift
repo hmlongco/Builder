@@ -7,10 +7,10 @@
 //
 
 import Foundation
-//import Combine
+import Combine
 
-extension ClientRequestBuilder {
-
+//extension ClientRequestBuilder {
+//
 //    struct CombineExtension {
 //
 //        let builder: ClientRequestBuilder
@@ -44,5 +44,5 @@ extension ClientRequestBuilder {
 //    var combine: CombineExtension {
 //        CombineExtension(builder: self)
 //    }
-
-}
+//
+//}

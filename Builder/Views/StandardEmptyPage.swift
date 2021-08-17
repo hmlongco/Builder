@@ -20,7 +20,7 @@ struct StandardEmptyPage: ViewBuilder {
                     .color(.systemGray)
                 SpacerView()
             }
-            .padding(UIEdgeInsets(padding: 16))
+            .padding(16)
         }
         .backgroundColor(.systemBackground)
     }

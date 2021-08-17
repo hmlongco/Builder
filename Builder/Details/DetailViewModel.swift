@@ -44,5 +44,35 @@ class DetailViewModel {
             .map { $0 ?? UIImage(named: "User-Unknown") }
             .observe(on: MainScheduler.instance)
     }
+    
+#if MOCK
+    func configuredViewModel() -> DetailViewModel {
+        with(User.mockJQ) {
+            print($0)
+        }
+        return with(DetailViewModel()) {
+            $0.configure(User.mockJQ)
+        }
 
+    }
+
+func makeButton(_ title: String?) -> UIButton {
+    with(UIButton()) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.titleLabel?.text = title
+        $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)
+        $0.setTitleColor(.red, for: .normal)
+    }
+}
+
+func makeButton2(_ title: String?) -> UIButton {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.titleLabel?.text = title
+    button.titleLabel?.font = .preferredFont(forTextStyle: .headline)
+    button.setTitleColor(.red, for: .normal)
+    return button
+}
+
+#endif
 }

@@ -52,10 +52,6 @@ class LabelView: UILabel {
         self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
 
-}
-
-extension LabelView {
-
     @discardableResult
     public func alignment(_ alignment: NSTextAlignment) -> Self {
         self.textAlignment = alignment
