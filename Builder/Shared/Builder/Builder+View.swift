@@ -29,6 +29,24 @@ extension UIView {
         existingSubviews.forEach { $0.removeFromSuperview() }
     }
 
+    public func transtion(to page: ViewBuilder, position: EmbedPosition = .fill, padding: UIEdgeInsets? = nil, safeArea: Bool = false, delay: Double = 0.2) {
+        let newView = page.build()
+        if subviews.isEmpty {
+            embed(newView, position: position, padding: padding, safeArea: safeArea)
+            return
+        }
+        let oldViews = subviews
+        newView.alpha = 0.0
+        embed(newView, position: position, padding: padding, safeArea: safeArea)
+        UIView.animate(withDuration: delay) {
+            newView.alpha = 1.0
+        } completion: { completed in
+            if completed {
+                oldViews.forEach { $0.removeFromSuperview() }
+            }
+        }
+    }
+
     // deprecated version
     @discardableResult
     func embedModified<V:UIView>(_ view: V, padding: UIEdgeInsets? = nil, safeArea: Bool = false, _ modifier: (_ view: V) -> Void) -> V {
@@ -36,38 +54,14 @@ extension UIView {
         modifier(view)
         return view
     }
-    
-    public func addSubviewWithConstraints(_ view: ViewBuilder, _ padding: UIEdgeInsets?, _ safeArea: Bool) {
-        addSubviewWithConstraints(view.build(), padding, safeArea)
-    }
-    
-    public func addSubviewWithConstraints(_ view: UIView, _ padding: UIEdgeInsets?, _ safeArea: Bool) {
-        view.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(view)
-        let padding = padding ?? .zero
-
-        if safeArea {
-            if #available(iOS 11, *) {
-                NSLayoutConstraint.activate([
-                    view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding.top),
-                    view.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding.bottom),
-                    view.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: padding.left),
-                    view.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -padding.right)
-                ])
-                return
-            }
-        }
-
-        NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: self.topAnchor, constant: padding.top),
-            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -padding.bottom),
-            view.leftAnchor.constraint(equalTo: self.leftAnchor, constant: padding.left),
-            view.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -padding.right)
-        ])
-    }
 }
 
 extension UIView {
+    
+    public struct TapGestureContext: ViewBuilderContextProvider {
+        var view: UIView
+        var gesture: UIGestureRecognizer
+    }
 
     @discardableResult
     public func alpha(_ alpha: CGFloat) -> Self {
@@ -88,6 +82,12 @@ extension UIView {
                 self?.isHidden = hidden
             }
             .disposed(by: rxDisposeBag)
+        return self
+    }
+
+    @discardableResult
+    public func clipsToBounds(_ clips: Bool) -> Self {
+        self.clipsToBounds = clips
         return self
     }
 
@@ -133,9 +133,9 @@ extension UIView {
 
     @discardableResult
     public func height(_ height: CGFloat) -> Self {
-        let c = self.heightAnchor.constraint(equalToConstant: height)
-        c.priority = UILayoutPriority(rawValue: 999)
-        c.isActive = true
+        heightAnchor.constraint(equalToConstant: height)
+            .priority(UILayoutPriority(rawValue: 999))
+            .activate()
         return self
     }
 
@@ -146,13 +146,14 @@ extension UIView {
     }
 
     @discardableResult
-    public func onTapGesture(_ handler: @escaping (_ view: View) -> Void) -> Self {
+    public func onTapGesture(_ handler: @escaping (_ context: TapGestureContext) -> Void) -> Self {
         let gesture = UITapGestureRecognizer()
         addGestureRecognizer(gesture)
+        let context = TapGestureContext(view: self, gesture: gesture)
         gesture.rx.event
             .asControlEvent()
             .subscribe { (e) in
-                handler(self)
+                handler(context)
             }
             .disposed(by: rxDisposeBag)
         return self
@@ -166,9 +167,9 @@ extension UIView {
 
     @discardableResult
     public func width(_ width: CGFloat) -> Self {
-        let c = self.widthAnchor.constraint(equalToConstant: width)
-        c.priority = UILayoutPriority(rawValue: 999)
-        c.isActive = true
+        widthAnchor.constraint(equalToConstant: width)
+            .priority(UILayoutPriority(rawValue: 999))
+            .activate()
         return self
     }
 

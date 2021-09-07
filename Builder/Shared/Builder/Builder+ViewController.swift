@@ -10,32 +10,29 @@ import UIKit
 
 extension UIViewController {
 
-    convenience public init(view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+//    convenience public init(view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+//        self.init()
+//        if #available(iOS 13, *) {
+//            self.view.backgroundColor = .systemBackground
+//        } else {
+//            self.view.backgroundColor = .white
+//        }
+//        self.view.embed(view, padding: padding, safeArea: safeArea)
+//    }
+    
+    convenience public init(_ builder: ViewBuilder, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         self.init()
         if #available(iOS 13, *) {
             self.view.backgroundColor = .systemBackground
         } else {
             self.view.backgroundColor = .white
         }
-        self.view.embed(view, padding: padding, safeArea: safeArea)
+        self.view.embed(builder.build(), padding: padding, safeArea: safeArea)
     }
     
-    public func transtion(to page: ViewBuilder, padding: UIEdgeInsets? = nil, safeArea: Bool = false, delay: Double = 0.2) {
-        let newView = page.build()
-        if view.subviews.isEmpty {
-            view.embed(newView, padding: padding, safeArea: safeArea)
-            return
-        }
-        let oldViews = view.subviews
-        newView.alpha = 0.0
-        view.embed(newView, padding: padding, safeArea: safeArea)
-        UIView.animate(withDuration: delay) {
-            newView.alpha = 1.0
-        } completion: { completed in
-            if completed {
-                oldViews.forEach { $0.removeFromSuperview() }
-            }
-        }
+    public func transtion(to page: ViewBuilder, position: UIView.EmbedPosition = .fill, padding: UIEdgeInsets? = nil,
+                          safeArea: Bool = false, delay: Double = 0.2) {
+        view.transtion(to: page, position: position, padding: padding, safeArea: safeArea, delay: delay)
     }
 
 }

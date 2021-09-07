@@ -9,6 +9,12 @@ import UIKit
 
 
 class TableView: UITableView, UITableViewDataSource, UITableViewDelegate {
+    
+    struct CellContext: ViewBuilderContextProvider {
+        var view: UITableViewCell
+        let tableView: TableView
+        let indexPath: IndexPath
+    }
  
     var builder: AnyIndexableViewBuilder
     
@@ -72,33 +78,20 @@ class TableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let context = TableViewCellContext(tableView: self, indexPath: indexPath, viewController: currentViewController)
-        if let cell = tableView.cellForRow(at: indexPath) as? TableViewCell, let selected = cell.selectionHandler?(context), selected {
-            return
+        if let cell = tableView.cellForRow(at: indexPath) as? TableViewCell {
+            let context = CellContext(view: cell, tableView: self, indexPath: indexPath)
+            if let selected = cell.selectionHandler?(context), selected {
+                return
+            }
         }
         deselectRow(at: indexPath, animated: true)
     }
     
 }
 
-struct TableViewCellContext {
-    let tableView: TableView
-    let indexPath: IndexPath
-    let viewController: UIViewController?
-}
-
-extension TableViewCellContext {
-    func push<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
-        viewController?.push(vc, configure: configure)
-    }
-    func present<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
-        viewController?.present(vc, configure: configure)
-    }
-}
-
 class TableViewCell: UITableViewCell {
     
-    var selectionHandler: ((_ tableView: TableViewCellContext) -> Bool)?
+    var selectionHandler: ((_ tableView: TableView.CellContext) -> Bool)?
 
     convenience public init(title: String) {
         self.init(style: .default, reuseIdentifier: "bTitle")
@@ -140,7 +133,7 @@ class TableViewCell: UITableViewCell {
     }
 
     @discardableResult
-    func onSelect(_ handler: @escaping (_ context: TableViewCellContext) -> Bool) -> Self {
+    func onSelect(_ handler: @escaping (_ context: TableView.CellContext) -> Bool) -> Self {
         self.selectionHandler = handler
         return self
     }

@@ -16,6 +16,7 @@ class ContainerView: UIView, ViewBuilderPaddable {
     
     private var views: ViewConvertable?
     private var padding: UIEdgeInsets?
+    private var position: EmbedPosition = .fill
     private var safeArea: Bool = false
 
     convenience public init(_ view: ViewBuilder?) {
@@ -30,12 +31,13 @@ class ContainerView: UIView, ViewBuilderPaddable {
         
     override func didMoveToWindow() {
         // Note didMoveToWindow may be called more than once
-        if subviews.isEmpty {
-            views?.asViews().forEach { self.embed($0, padding: padding, safeArea: safeArea) }
+        if let views = views {
+            views.asViews().forEach { self.embed($0, position: position, padding: padding, safeArea: safeArea) }
+            self.views = nil
         }
         if window == nil {
             onDisappearHandler?(self)
-        } else if let vc = currentViewController, let nc = vc.navigationController, nc.topViewController == vc {
+        } else if let vc = context.viewController, let nc = vc.navigationController, nc.topViewController == vc {
             onAppearHandler?(self)
         }
     }
@@ -55,6 +57,12 @@ class ContainerView: UIView, ViewBuilderPaddable {
     @discardableResult
     func padding(insets: UIEdgeInsets) -> Self {
         self.padding = insets
+        return self
+    }
+
+    @discardableResult
+    func position(_ position: EmbedPosition) -> Self {
+        self.position = position
         return self
     }
 

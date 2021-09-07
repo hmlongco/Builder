@@ -1,4 +1,11 @@
 //
+//  MainUsersView.swift
+//  Builder
+//
+//  Created by Michael Long on 3/1/21.
+//
+
+//
 //  MainCardView.swift
 //  Builder
 //
@@ -8,6 +15,27 @@
 import UIKit
 import Resolver
 import RxSwift
+
+
+struct MainUsersTableView: ViewBuilder {
+    
+    let users: [User]
+    
+    func build() -> View {
+        TableView(DynamicItemViewBuilder(users) { user in
+            TableViewCell {
+                MainCardBuilder(user: user)
+            }
+            .accessoryType(.disclosureIndicator)
+            .onSelect { (context) in
+                context.push(DetailViewController(user: user))
+                return false
+            }
+        })
+    }
+    
+}
+
 
 struct MainCardBuilder: ViewBuilder {
     

@@ -19,6 +19,14 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         title = viewModel.title
         setupSubscriptions()
+        
+//        testLayout()
+        
+//        let view = UIView()
+//            .backgroundColor(.red)
+//            .height(50)
+//            .width(50)
+//        self.view.embed(view, position: .centerRight, padding: UIEdgeInsets(padding: 20))
     }
 
     func setupSubscriptions() {
@@ -40,6 +48,16 @@ class MainViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    func testLayout() {
+        for p in UIView.EmbedPosition.allCases where p != .fill {
+            let view = UIView()
+                .backgroundColor(.red)
+                .height(50)
+                .width(50)
+            self.view.embed(view, position: p, padding: UIEdgeInsets(padding: 20))
+        }
     }
     
 }

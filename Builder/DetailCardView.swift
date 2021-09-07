@@ -20,38 +20,46 @@ struct DetailCardView: ViewBuilder {
     func build() -> View {
         ContainerView {
             VStackView {
-                VStackView {
+                ZStackView {
                     ImageView(viewModel.photo().asObservable())
-                        .cornerRadius(50)
-                        .frame(height: 100, width: 100)
+                        .contentMode(.scaleAspectFill)
+                        .clipsToBounds(true)
                     
                     LabelView(viewModel.fullname)
-                        .font(.title1)
+                        .alignment(.right)
+                        .font(.headline)
+                        .color(.white)
+                        .padding(h: 8, v: 8)
+                        .backgroundColor(.black)
+                        .alpha(0.7)
                 }
-                .alignment(.center)
+                .position(.bottom)
+                .height(250)
                 
                 VStackView {
-                    NameValueView(name: "Address", value: viewModel.street)
-                    NameValueView(name: "", value: viewModel.cityStateZip)
-                }
-                .spacing(2)
+                    VStackView {
+                        NameValueView(name: "Address", value: viewModel.street)
+                        NameValueView(name: "", value: viewModel.cityStateZip)
+                    }
+                    .spacing(2)
 
-                VStackView {
-                    NameValueView(name: "Email", value: viewModel.email)
-                    NameValueView(name: "Phone1", value: viewModel.phone)
-                }
-                .spacing(2)
+                    VStackView {
+                        NameValueView(name: "Email", value: viewModel.email)
+                        NameValueView(name: "Phone1", value: viewModel.phone)
+                    }
+                    .spacing(2)
 
-                VStackView {
-                    NameValueView(name: "Age", value: viewModel.age)
+                    VStackView {
+                        NameValueView(name: "Age", value: viewModel.age)
+                    }
+                    .spacing(2)
                 }
-                .spacing(2)
+                .spacing(15)
+                .padding(20)
             }
-            .spacing(15)
         }
         .backgroundColor(.quaternarySystemFill)
         .cornerRadius(16)
-        .padding(20)
         .onAppear { _ in
             print("Appeared!")
         }
@@ -59,11 +67,9 @@ struct DetailCardView: ViewBuilder {
             print("Disappeared!")
         }
         .onTapGesture { (context) in
-            let view = VStackView {
-                LabelView("Just an onAppear test")
-            }
-            .alignment(.center)
-            context.currentNavigationController?.push(view: view, animated: true)
+            let view = LabelView("Just an onAppear test")
+                .alignment(.center)
+            context.push(view, animated: true)
         }
 
     }
@@ -81,6 +87,7 @@ struct NameValueView: ViewBuilder {
                 .color(.secondaryLabel)
             SpacerView()
             LabelView(value)
+                .alignment(.right)
         }
         .spacing(4)
     }

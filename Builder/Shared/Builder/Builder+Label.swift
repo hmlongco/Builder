@@ -51,6 +51,29 @@ class LabelView: UILabel {
         self.setContentHuggingPriority(.defaultHigh, for: .vertical)
         self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
+    
+    var labelMargins: UIEdgeInsets = .zero
+
+    override var intrinsicContentSize: CGSize {
+        numberOfLines = 0       // don't forget!
+        var s = super.intrinsicContentSize
+        s.height = s.height + labelMargins.top + labelMargins.bottom
+        s.width = s.width + labelMargins.left + labelMargins.right
+        return s
+    }
+
+    override func drawText(in rect:CGRect) {
+        let r = rect.inset(by: labelMargins)
+        super.drawText(in: r)
+    }
+
+    override func textRect(forBounds bounds:CGRect, limitedToNumberOfLines n: Int) -> CGRect {
+        let b = bounds
+        let tr = b.inset(by: labelMargins)
+        let ctr = super.textRect(forBounds: tr, limitedToNumberOfLines: 0)
+        // that line of code MUST be LAST in this function, NOT first
+        return ctr
+    }
 
     @discardableResult
     public func alignment(_ alignment: NSTextAlignment) -> Self {
@@ -93,6 +116,7 @@ class LabelView: UILabel {
         self.textColor = color
         return self
     }
+    
     @discardableResult
     public func font(_ font: UIFont?) -> Self {
         self.font = font ?? self.font
@@ -121,6 +145,16 @@ class LabelView: UILabel {
     @discardableResult
     public func with(_ configuration: (_ view: LabelView) -> Void) -> Self {
         configuration(self)
+        return self
+    }
+
+}
+
+extension LabelView: ViewBuilderPaddable {
+
+    @discardableResult
+    public func padding(insets: UIEdgeInsets) -> Self {
+        self.labelMargins = insets
         return self
     }
 

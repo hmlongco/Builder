@@ -12,6 +12,10 @@ import RxCocoa
 
 
 class ButtonView: UIButton {
+    
+    struct ButtonContext: ViewBuilderContextProvider {
+        var view: ButtonView
+    }
 
     public init(_ title: String? = nil) {
         super.init(frame: .zero)
@@ -68,10 +72,10 @@ class ButtonView: UIButton {
     }
 
     @discardableResult
-    public func onTap(_ handler: @escaping (_ button: UIButton) -> Void) -> Self {
+    public func onTap(_ handler: @escaping (_ context: ButtonContext) -> Void) -> Self {
         self.rx.tap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .subscribe(onNext: { [unowned self] () in handler(self) })
+            .subscribe(onNext: { [unowned self] () in handler(ButtonContext(view: self)) })
             .disposed(by: rxDisposeBag)
         return self
     }
