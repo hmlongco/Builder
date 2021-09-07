@@ -3,9 +3,7 @@
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 ## Build generated
-.DS_Store
 build/
-output/
 DerivedData/
 
 ## Various settings
@@ -18,13 +16,11 @@ DerivedData/
 *.perspectivev3
 !default.perspectivev3
 xcuserdata/
-Pods/
 
 ## Other
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
-envVars.properties
 
 ## Obj-C/Swift specific
 *.hmap
@@ -36,10 +32,25 @@ envVars.properties
 timeline.xctimeline
 playground.xcworkspace
 
+# Swift Package Manager
+#
+# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
+# Packages/
+# Package.pins
+.build/
+
+# CocoaPods
+#
+# We recommend against adding the Pods directory to your .gitignore. However
+# you should judge for yourself, the pros and cons are mentioned at:
+# https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+#
+# Pods/
+
 # Carthage
 #
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
-Carthage/Checkouts
+# Carthage/Checkouts
 
 Carthage/Build
 
@@ -54,17 +65,5 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
-fastlane/Appfile
-fastlane/Deliverfile
-.idea/.name
-.idea/encodings.xml
-.idea/git.iml
-.idea/modules.xml
-.idea/vcs.xml
-.idea/xcode.xml
-.idea/runConfigurations/Arvest.xml
-.idea/runConfigurations/Arvest_CT.xml
-.idea/runConfigurations/Arvest_DEV.xml
-.idea/runConfigurations/Arvest_QA.xml
-Project.xml
-.idea
+IDEWorkspaceChecks.plist
+.DS_Store
