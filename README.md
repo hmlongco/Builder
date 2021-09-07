@@ -18,7 +18,7 @@ With the inclusion of #4, #5, and #6, this app does double duty as the often req
 The Builder user interface library allows declarative programming paradigms to be used when constructing UIKit-based applications. 
 
 ```swift
-struct MainCardBuilder: UIViewBuilder {
+struct MainCardBuilder: ViewBuilder {
 
     @Injected var viewModel: MainViewModel
 
@@ -55,7 +55,7 @@ struct MainCardBuilder: UIViewBuilder {
 ```
 Although small in size, it allows simple user interfaces to be constructed quickly and easily. 
 
-I've used this in several projects to get the benefits of declarative programming in legacy UIKit-based applications that can't yet support SwiftUI and its minimum base SDK of iOS 13.
+I've used this in several projects to get the benefits of declarative programming in legacy UIKit-based applications that can't yet support SwiftUI and its minimum base SDK of iOS 13, iOS 14, or iOS 15.
 
 ## Builder Networking Library
 
