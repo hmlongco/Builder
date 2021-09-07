@@ -19,6 +19,10 @@ The Builder user interface library allows declarative programming paradigms to b
 
 Here's the detail view for the app.
 
+![Image](https://github.com/hmlongco/Builder/blob/main/SampleDetail.png?raw=true)
+
+And the "card" view "builder" code that generates it.
+
 ```swift
 struct DetailCardView: ViewBuilder {    
 
