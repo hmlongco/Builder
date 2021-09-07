@@ -18,37 +18,57 @@ With the inclusion of #4, #5, and #6, this app does double duty as the often req
 The Builder user interface library allows declarative programming paradigms to be used when constructing UIKit-based applications. 
 
 ```swift
-struct MainCardBuilder: ViewBuilder {
+struct DetailCardView: ViewBuilder {    
 
-    @Injected var viewModel: MainViewModel
+    @Injected var viewModel: DetailViewModel
 
-    let user: User
+    init(user: User) {
+        viewModel.configure(user)
+    }
 
     func build() -> View {
-        ContainerView(
-            HStackView {
-                ImageView(thumbnail())
-                    .cornerRadius(25)
-                    .frame(height: 50, width: 50)
-                VStackView {
-                    LabelView(user.fullname)
-                    LabelView(user.email)
-                        .font(.footnote)
-                        .color(.secondaryLabel)
-                    SpacerView()
+        ContainerView {
+            VStackView {
+                ZStackView {
+                    ImageView(viewModel.photo().asObservable())
+                        .contentMode(.scaleAspectFill)
+                        .clipsToBounds(true)
+                    
+                    LabelView(viewModel.fullname)
+                        .alignment(.right)
+                        .font(.headline)
+                        .color(.white)
+                        .padding(h: 8, v: 8)
+                        .backgroundColor(.black)
+                        .alpha(0.7)
                 }
-                .spacing(4)
+                .position(.bottom)
+                .height(250)
+                
+                VStackView {
+                    VStackView {
+                        NameValueView(name: "Address", value: viewModel.street)
+                        NameValueView(name: "", value: viewModel.cityStateZip)
+                    }
+                    .spacing(2)
+
+                    VStackView {
+                        NameValueView(name: "Email", value: viewModel.email)
+                        NameValueView(name: "Phone1", value: viewModel.phone)
+                    }
+                    .spacing(2)
+
+                    VStackView {
+                        NameValueView(name: "Age", value: viewModel.age)
+                    }
+                    .spacing(2)
+                }
+                .spacing(15)
+                .padding(20)
             }
-            .padding(UIEdgeInsets(padding: 10))
-        )
+        }
         .backgroundColor(.quaternarySystemFill)
-        .cornerRadius(8)
-    }
-    
-    func thumbnail() -> Observable<UIImage?> {
-        return viewModel.thumbnail(forUser: user)
-            .asObservable()
-            .observe(on: MainScheduler.instance)
+        .cornerRadius(16)
     }
 
 }
