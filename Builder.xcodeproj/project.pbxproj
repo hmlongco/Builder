@@ -101,6 +101,7 @@
 		4C147A8D25B55C7E000DC2FC /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		4C147A9525B5C3C5000DC2FC /* RandomUserSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomUserSessionManager.swift; sourceTree = "<group>"; };
 		4C1F571D25CE344600B6086F /* Dismissible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissible.swift; sourceTree = "<group>"; };
+		4C1F921526E820670075A5F4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		4C1FB28B25E3F5CC0040053A /* MainViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelSpec.swift; sourceTree = "<group>"; };
 		4C249B0F25C5CE5900EAA1E9 /* DetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		4C249B1725C5CEE500EAA1E9 /* _Details+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "_Details+Injection.swift"; sourceTree = "<group>"; };
@@ -285,6 +286,7 @@
 		4C9CC36325B4F078002BE06D /* Builder */ = {
 			isa = PBXGroup;
 			children = (
+				4C1F921526E820670075A5F4 /* README.md */,
 				4C288FB825B6129D004D54AC /* Configuration */,
 				4C9CC3B025B4F26E002BE06D /* Application */,
 				4C9CC3EA25B4F618002BE06D /* Models */,

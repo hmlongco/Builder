@@ -20,60 +20,53 @@ struct DetailCardView: ViewBuilder {
     func build() -> View {
         ContainerView {
             VStackView {
-                ZStackView {
-                    ImageView(viewModel.photo().asObservable())
-                        .contentMode(.scaleAspectFill)
-                        .clipsToBounds(true)
-                    
-                    LabelView(viewModel.fullname)
-                        .alignment(.right)
-                        .font(.headline)
-                        .color(.white)
-                        .padding(h: 8, v: 8)
-                        .backgroundColor(.black)
-                        .alpha(0.7)
-                }
-                .position(.bottom)
-                .height(250)
+                DetailPhotoView(photo: viewModel.photo(), name: viewModel.fullname)
                 
                 VStackView {
-                    VStackView {
-                        NameValueView(name: "Address", value: viewModel.street)
-                        NameValueView(name: "", value: viewModel.cityStateZip)
-                    }
-                    .spacing(2)
-
-                    VStackView {
-                        NameValueView(name: "Email", value: viewModel.email)
-                        NameValueView(name: "Phone1", value: viewModel.phone)
-                    }
-                    .spacing(2)
-
-                    VStackView {
-                        NameValueView(name: "Age", value: viewModel.age)
-                    }
-                    .spacing(2)
+                    NameValueView(name: "Address", value: viewModel.street)
+                    NameValueView(name: "", value: viewModel.cityStateZip)
+                    
+                    SpacerView(16)
+                    
+                    NameValueView(name: "Email", value: viewModel.email)
+                    NameValueView(name: "Phone1", value: viewModel.phone)
+                    
+                    SpacerView(16)
+                    
+                    NameValueView(name: "Age", value: viewModel.age)
                 }
-                .spacing(15)
+                .spacing(2)
                 .padding(20)
             }
         }
         .backgroundColor(.quaternarySystemFill)
         .cornerRadius(16)
-        .onAppear { _ in
-            print("Appeared!")
-        }
-        .onDisappear { _ in
-            print("Disappeared!")
-        }
-        .onTapGesture { (context) in
-            let view = LabelView("Just an onAppear test")
-                .alignment(.center)
-            context.push(view, animated: true)
-        }
-
     }
 
+}
+
+struct DetailPhotoView: ViewBuilder {
+    
+    let photo: Observable<UIImage?>
+    let name: String
+
+    func build() -> View {
+        ZStackView {
+            ImageView(photo)
+                .contentMode(.scaleAspectFill)
+                .clipsToBounds(true)
+            
+            LabelView(name)
+                .alignment(.right)
+                .font(.headline)
+                .color(.white)
+                .padding(h: 8, v: 8)
+                .backgroundColor(.black)
+                .alpha(0.7)
+        }
+        .position(.bottom)
+        .height(250)
+    }
 }
 
 struct NameValueView: ViewBuilder {

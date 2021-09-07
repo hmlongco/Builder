@@ -32,13 +32,13 @@ class DetailViewController: UIViewController {
             VStackView {
                 DetailCardView(user: viewModel.user)
                 SpacerView()
-                ButtonView("Dismiss")
-                    .onTap { [weak self] _ in
-                        self?.dismissible.dismiss()
-                    }
-                    .with {
-                        $0.accessibilityLabel = "fred"
-                    }
+//                ButtonView("Dismiss")
+//                    .onTap { [weak self] _ in
+//                        self?.dismissible.dismiss()
+//                    }
+//                    .with {
+//                        $0.accessibilityLabel = "fred"
+//                    }
             }
             .padding(20)
         }
