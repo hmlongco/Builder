@@ -11,6 +11,14 @@ import RxSwift
 
 class LabelView: UILabel {
 
+    struct Style {
+        let style: (_ button: LabelView) -> ()
+    }
+
+    var labelMargins: UIEdgeInsets = .zero
+    
+    // lifecycle
+
     public init(_ text: String?) {
         super.init(frame: .zero)
         self.common()
@@ -52,8 +60,8 @@ class LabelView: UILabel {
         self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
     
-    var labelMargins: UIEdgeInsets = .zero
-
+    // support for label padding
+    
     override var intrinsicContentSize: CGSize {
         numberOfLines = 0       // don't forget!
         var s = super.intrinsicContentSize
@@ -75,6 +83,8 @@ class LabelView: UILabel {
         return ctr
     }
 
+    // attributes
+    
     @discardableResult
     public func alignment(_ alignment: NSTextAlignment) -> Self {
         self.textAlignment = alignment
@@ -139,6 +149,12 @@ class LabelView: UILabel {
     @discardableResult
     public func reference(_ reference: inout LabelView?) -> Self {
         reference = self
+        return self
+    }
+
+    @discardableResult
+    public func style(_ style: Style) -> Self {
+        style.style(self)
         return self
     }
 

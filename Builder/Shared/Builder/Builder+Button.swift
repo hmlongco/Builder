@@ -13,8 +13,12 @@ import RxCocoa
 
 class ButtonView: UIButton {
     
-    struct ButtonContext: ViewBuilderContextProvider {
+    struct Context: ViewBuilderContextProvider {
         var view: ButtonView
+    }
+    
+    struct Style {
+        let style: (_ button: ButtonView) -> ()
     }
 
     public init(_ title: String? = nil) {
@@ -72,10 +76,10 @@ class ButtonView: UIButton {
     }
 
     @discardableResult
-    public func onTap(_ handler: @escaping (_ context: ButtonContext) -> Void) -> Self {
+    public func onTap(_ handler: @escaping (_ context: Context) -> Void) -> Self {
         self.rx.tap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .subscribe(onNext: { [unowned self] () in handler(ButtonContext(view: self)) })
+            .subscribe(onNext: { [unowned self] () in handler(Context(view: self)) })
             .disposed(by: rxDisposeBag)
         return self
     }
@@ -87,8 +91,25 @@ class ButtonView: UIButton {
     }
 
     @discardableResult
+    public func style(_ style: Style) -> Self {
+        style.style(self)
+        return self
+    }
+
+    @discardableResult
     public func with(_ configuration: (_ view: ButtonView) -> Void) -> Self {
         configuration(self)
+        return self
+    }
+
+}
+
+
+extension ButtonView: ViewBuilderPaddable {
+
+    @discardableResult
+    public func padding(insets: UIEdgeInsets) -> Self {
+        self.contentEdgeInsets = insets
         return self
     }
 

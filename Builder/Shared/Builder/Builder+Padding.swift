@@ -16,10 +16,12 @@ protocol ViewBuilderPaddable {
 
 extension ViewBuilderPaddable {
     
+    @discardableResult
     func padding(_ value: CGFloat) -> Self {
         return padding(insets: UIEdgeInsets(top: value, left: value, bottom: value, right: value))
     }
     
+    @discardableResult
     func padding(h: CGFloat, v: CGFloat) -> Self {
         return padding(insets: UIEdgeInsets(top: v, left: h, bottom: v, right: h))
     }

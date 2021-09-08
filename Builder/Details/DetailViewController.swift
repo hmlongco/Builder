@@ -19,6 +19,10 @@ class DetailViewController: UIViewController {
         self.init()
         viewModel.configure(user)
     }
+    
+    deinit {
+        print("deinit \(#file)")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,37 +32,24 @@ class DetailViewController: UIViewController {
     }
 
     func contentView() -> View {
-        return VerticalScrollView {
+        VerticalScrollView {
             VStackView {
                 DetailCardView(user: viewModel.user)
+                
+                ButtonView("Dismiss")
+                    .style(.solid)
+                    .onTap { [dismissible] _ in
+                        dismissible.dismiss()
+                    }
+
+                LabelView("Inforamtion presented above is not repesentative of any person, living, dead, undead, or fictional.")
+                    .style(.footnote)
+                
                 SpacerView()
-//                ButtonView("Dismiss")
-//                    .onTap { [weak self] _ in
-//                        self?.dismissible.dismiss()
-//                    }
-//                    .with {
-//                        $0.accessibilityLabel = "fred"
-//                    }
             }
             .padding(20)
+            .spacing(20)
         }
     }
 
 }
-
-//class TestContainerViewController: UIViewController {
-//
-//    private var user: User!
-//
-//    convenience init(user: User) {
-//        self.init()
-//        self.user = user
-//    }
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        view.embed(ContainerView(DetailViewController(user: user)))
-//    }
-//
-//}
-

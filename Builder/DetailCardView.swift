@@ -25,14 +25,10 @@ struct DetailCardView: ViewBuilder {
                 VStackView {
                     NameValueView(name: "Address", value: viewModel.street)
                     NameValueView(name: "", value: viewModel.cityStateZip)
-                    
                     SpacerView(16)
-                    
                     NameValueView(name: "Email", value: viewModel.email)
                     NameValueView(name: "Phone1", value: viewModel.phone)
-                    
                     SpacerView(16)
-                    
                     NameValueView(name: "Age", value: viewModel.age)
                 }
                 .spacing(2)
@@ -58,9 +54,9 @@ struct DetailPhotoView: ViewBuilder {
             
             LabelView(name)
                 .alignment(.right)
-                .font(.headline)
+                .font(.title2)
                 .color(.white)
-                .padding(h: 8, v: 8)
+                .padding(h: 20, v: 8)
                 .backgroundColor(.black)
                 .alpha(0.7)
         }

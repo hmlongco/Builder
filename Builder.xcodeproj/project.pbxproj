@@ -10,6 +10,8 @@
 		4C147A8E25B55C7E000DC2FC /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C147A8D25B55C7E000DC2FC /* APIError.swift */; };
 		4C147A9625B5C3C5000DC2FC /* RandomUserSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C147A9525B5C3C5000DC2FC /* RandomUserSessionManager.swift */; };
 		4C1F571E25CE344600B6086F /* Dismissible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1F571D25CE344600B6086F /* Dismissible.swift */; };
+		4C1F921826E94BFE0075A5F4 /* ButtonView+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1F921726E94BFE0075A5F4 /* ButtonView+Styles.swift */; };
+		4C1F921A26E94C140075A5F4 /* LabelView+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1F921926E94C140075A5F4 /* LabelView+Styles.swift */; };
 		4C1FB28C25E3F5CC0040053A /* MainViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1FB28B25E3F5CC0040053A /* MainViewModelSpec.swift */; };
 		4C249B1025C5CE5900EAA1E9 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C249B0F25C5CE5900EAA1E9 /* DetailViewModel.swift */; };
 		4C249B1825C5CEE500EAA1E9 /* _Details+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C249B1725C5CEE500EAA1E9 /* _Details+Injection.swift */; };
@@ -102,6 +104,8 @@
 		4C147A9525B5C3C5000DC2FC /* RandomUserSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomUserSessionManager.swift; sourceTree = "<group>"; };
 		4C1F571D25CE344600B6086F /* Dismissible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissible.swift; sourceTree = "<group>"; };
 		4C1F921526E820670075A5F4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		4C1F921726E94BFE0075A5F4 /* ButtonView+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ButtonView+Styles.swift"; sourceTree = "<group>"; };
+		4C1F921926E94C140075A5F4 /* LabelView+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LabelView+Styles.swift"; sourceTree = "<group>"; };
 		4C1FB28B25E3F5CC0040053A /* MainViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelSpec.swift; sourceTree = "<group>"; };
 		4C249B0F25C5CE5900EAA1E9 /* DetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		4C249B1725C5CEE500EAA1E9 /* _Details+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "_Details+Injection.swift"; sourceTree = "<group>"; };
@@ -205,6 +209,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4C1F921626E94BE50075A5F4 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				4C1F921726E94BFE0075A5F4 /* ButtonView+Styles.swift */,
+				4C1F921926E94C140075A5F4 /* LabelView+Styles.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
 		4C1FB29C25E3FC520040053A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -348,6 +361,7 @@
 				4C9CC3B225B4F2D4002BE06D /* Builder */,
 				4C9CC3E425B4F47C002BE06D /* Extensions */,
 				4C9CC3D225B4F2DF002BE06D /* Networking */,
+				4C1F921626E94BE50075A5F4 /* Styles */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -608,6 +622,7 @@
 				4CD0521A25B542B50099B277 /* MainViewModel.swift in Sources */,
 				4CCB61D126C36F0C0011BD44 /* UIViewController+Extensions.swift in Sources */,
 				4C9CC3C425B4F2D4002BE06D /* Builder.swift in Sources */,
+				4C1F921826E94BFE0075A5F4 /* ButtonView+Styles.swift in Sources */,
 				4C9CC3C725B4F2D4002BE06D /* Builder+Spacer.swift in Sources */,
 				4C40B2B226E2E07100598D9E /* Builder+Constraints.swift in Sources */,
 				4C65866725ED30800073003C /* StandardLoadingPage.swift in Sources */,
@@ -615,6 +630,7 @@
 				4C9CC3CD25B4F2D4002BE06D /* Builder+Container.swift in Sources */,
 				4C147A8E25B55C7E000DC2FC /* APIError.swift in Sources */,
 				4C9CC36525B4F078002BE06D /* AppDelegate.swift in Sources */,
+				4C1F921A26E94C140075A5F4 /* LabelView+Styles.swift in Sources */,
 				4C9CC3DE25B4F2DF002BE06D /* ErrorMappingWrapper.swift in Sources */,
 				4CD0522425B5439E0099B277 /* _Main+Injection.swift in Sources */,
 				4C8221C626DC458A00BDD349 /* MainUsersTableView.swift in Sources */,

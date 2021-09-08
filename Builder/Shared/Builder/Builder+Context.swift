@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 protocol ViewBuilderContextProvider {
     associatedtype View: UIView
@@ -21,6 +22,10 @@ extension ViewBuilderContextProvider {
     
     var navigationController: UINavigationController? {
         viewController?.navigationController
+    }
+    
+    var disposeBag: DisposeBag {
+        view.rxDisposeBag
     }
     
     func present(_ builder: ViewBuilder, animated: Bool = true) {
