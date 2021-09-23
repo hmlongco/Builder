@@ -21,7 +21,7 @@ class DetailViewController: UIViewController {
     }
     
     deinit {
-        print("deinit \(#file)")
+        print("deinit DetailViewController")
     }
 
     override func viewDidLoad() {

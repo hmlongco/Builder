@@ -22,7 +22,7 @@ extension Resolver.Name {
 extension Resolver {
     public static func registerNetworking() {
         register(ClientSessionManager.self) {
-            let manager = RandomUserSessionManager()
+            let manager = URLSessionManager(base: "https://randomuser.me/api")
                 .wrap(ErrorMappingWrapper())
                 .wrap(StandardHeadersWrapper())
                 .wrap(SSOAuthenticationWrapper())

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4C147A8E25B55C7E000DC2FC /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C147A8D25B55C7E000DC2FC /* APIError.swift */; };
-		4C147A9625B5C3C5000DC2FC /* RandomUserSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C147A9525B5C3C5000DC2FC /* RandomUserSessionManager.swift */; };
 		4C1F571E25CE344600B6086F /* Dismissible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1F571D25CE344600B6086F /* Dismissible.swift */; };
 		4C1F921826E94BFE0075A5F4 /* ButtonView+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1F921726E94BFE0075A5F4 /* ButtonView+Styles.swift */; };
 		4C1F921A26E94C140075A5F4 /* LabelView+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1F921926E94C140075A5F4 /* LabelView+Styles.swift */; };
@@ -63,15 +62,14 @@
 		4C9CC3CD25B4F2D4002BE06D /* Builder+Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3BF25B4F2D4002BE06D /* Builder+Container.swift */; };
 		4C9CC3CE25B4F2D4002BE06D /* Builder+Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3C025B4F2D4002BE06D /* Builder+Stack.swift */; };
 		4C9CC3DA25B4F2DF002BE06D /* ClientRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3D325B4F2DF002BE06D /* ClientRequestBuilder.swift */; };
-		4C9CC3DB25B4F2DF002BE06D /* ClientRequestBuilder+Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3D425B4F2DF002BE06D /* ClientRequestBuilder+Result.swift */; };
 		4C9CC3DC25B4F2DF002BE06D /* ClientRequestBuilder+RxSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3D525B4F2DF002BE06D /* ClientRequestBuilder+RxSwift.swift */; };
-		4C9CC3DD25B4F2DF002BE06D /* ClientRequestBuilder+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3D625B4F2DF002BE06D /* ClientRequestBuilder+Combine.swift */; };
 		4C9CC3DE25B4F2DF002BE06D /* ErrorMappingWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3D725B4F2DF002BE06D /* ErrorMappingWrapper.swift */; };
 		4C9CC3DF25B4F2DF002BE06D /* ClientSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3D825B4F2DF002BE06D /* ClientSessionManager.swift */; };
 		4C9CC3E025B4F2DF002BE06D /* URLSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3D925B4F2DF002BE06D /* URLSessionManager.swift */; };
 		4C9CC3E625B4F499002BE06D /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3E525B4F499002BE06D /* UIImage+Extensions.swift */; };
 		4C9CC3EC25B4F627002BE06D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3EB25B4F627002BE06D /* User.swift */; };
 		4C9CC3FE25B5099D002BE06D /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC3FD25B5099D002BE06D /* UserService.swift */; };
+		4CBC04CF26FBFDC600BFD8E4 /* ClientSessionManagerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBC04CE26FBFDC600BFD8E4 /* ClientSessionManagerWrapper.swift */; };
 		4CCB61D126C36F0C0011BD44 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCB61D026C36F0C0011BD44 /* UIViewController+Extensions.swift */; };
 		4CD0521A25B542B50099B277 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0521925B542B50099B277 /* MainViewModel.swift */; };
 		4CD0521F25B5433D0099B277 /* _Application+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0521E25B5433D0099B277 /* _Application+Injection.swift */; };
@@ -101,7 +99,6 @@
 
 /* Begin PBXFileReference section */
 		4C147A8D25B55C7E000DC2FC /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
-		4C147A9525B5C3C5000DC2FC /* RandomUserSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomUserSessionManager.swift; sourceTree = "<group>"; };
 		4C1F571D25CE344600B6086F /* Dismissible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissible.swift; sourceTree = "<group>"; };
 		4C1F921526E820670075A5F4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		4C1F921726E94BFE0075A5F4 /* ButtonView+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ButtonView+Styles.swift"; sourceTree = "<group>"; };
@@ -161,15 +158,14 @@
 		4C9CC3BF25B4F2D4002BE06D /* Builder+Container.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Builder+Container.swift"; sourceTree = "<group>"; };
 		4C9CC3C025B4F2D4002BE06D /* Builder+Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Builder+Stack.swift"; sourceTree = "<group>"; };
 		4C9CC3D325B4F2DF002BE06D /* ClientRequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientRequestBuilder.swift; sourceTree = "<group>"; };
-		4C9CC3D425B4F2DF002BE06D /* ClientRequestBuilder+Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ClientRequestBuilder+Result.swift"; sourceTree = "<group>"; };
 		4C9CC3D525B4F2DF002BE06D /* ClientRequestBuilder+RxSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ClientRequestBuilder+RxSwift.swift"; sourceTree = "<group>"; };
-		4C9CC3D625B4F2DF002BE06D /* ClientRequestBuilder+Combine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ClientRequestBuilder+Combine.swift"; sourceTree = "<group>"; };
 		4C9CC3D725B4F2DF002BE06D /* ErrorMappingWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorMappingWrapper.swift; sourceTree = "<group>"; };
 		4C9CC3D825B4F2DF002BE06D /* ClientSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientSessionManager.swift; sourceTree = "<group>"; };
 		4C9CC3D925B4F2DF002BE06D /* URLSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionManager.swift; sourceTree = "<group>"; };
 		4C9CC3E525B4F499002BE06D /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		4C9CC3EB25B4F627002BE06D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4C9CC3FD25B5099D002BE06D /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		4CBC04CE26FBFDC600BFD8E4 /* ClientSessionManagerWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientSessionManagerWrapper.swift; sourceTree = "<group>"; };
 		4CCB61D026C36F0C0011BD44 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		4CD0521925B542B50099B277 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		4CD0521E25B5433D0099B277 /* _Application+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "_Application+Injection.swift"; sourceTree = "<group>"; };
@@ -239,6 +235,7 @@
 			children = (
 				4C9CC3D325B4F2DF002BE06D /* ClientRequestBuilder.swift */,
 				4C9CC3D825B4F2DF002BE06D /* ClientSessionManager.swift */,
+				4CBC04CE26FBFDC600BFD8E4 /* ClientSessionManagerWrapper.swift */,
 				4C9CC3D925B4F2DF002BE06D /* URLSessionManager.swift */,
 			);
 			path = Core;
@@ -247,9 +244,7 @@
 		4C65863925E98B840073003C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				4C9CC3D425B4F2DF002BE06D /* ClientRequestBuilder+Result.swift */,
 				4C9CC3D525B4F2DF002BE06D /* ClientRequestBuilder+RxSwift.swift */,
-				4C9CC3D625B4F2DF002BE06D /* ClientRequestBuilder+Combine.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -402,7 +397,6 @@
 				4C65863925E98B840073003C /* Extensions */,
 				4C65863D25E9CAEA0073003C /* SessionWrappers */,
 				4C147A8D25B55C7E000DC2FC /* APIError.swift */,
-				4C147A9525B5C3C5000DC2FC /* RandomUserSessionManager.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -630,6 +624,7 @@
 				4C9CC3CD25B4F2D4002BE06D /* Builder+Container.swift in Sources */,
 				4C147A8E25B55C7E000DC2FC /* APIError.swift in Sources */,
 				4C9CC36525B4F078002BE06D /* AppDelegate.swift in Sources */,
+				4CBC04CF26FBFDC600BFD8E4 /* ClientSessionManagerWrapper.swift in Sources */,
 				4C1F921A26E94C140075A5F4 /* LabelView+Styles.swift in Sources */,
 				4C9CC3DE25B4F2DF002BE06D /* ErrorMappingWrapper.swift in Sources */,
 				4CD0522425B5439E0099B277 /* _Main+Injection.swift in Sources */,
@@ -648,15 +643,12 @@
 				4CEE4D5A2695DD7E00312FD1 /* Builder+Group.swift in Sources */,
 				4C65864925E9CB8D0073003C /* SessionLoggingWrapper.swift in Sources */,
 				4C65864825E9CB8D0073003C /* StandardHeadersWrapper.swift in Sources */,
-				4C147A9625B5C3C5000DC2FC /* RandomUserSessionManager.swift in Sources */,
 				4C249B1825C5CEE500EAA1E9 /* _Details+Injection.swift in Sources */,
 				4C9CC3DF25B4F2DF002BE06D /* ClientSessionManager.swift in Sources */,
 				4C9CC3DC25B4F2DF002BE06D /* ClientRequestBuilder+RxSwift.swift in Sources */,
 				4C65867325ED32150073003C /* StandardErrorPage.swift in Sources */,
 				4C9CC3DA25B4F2DF002BE06D /* ClientRequestBuilder.swift in Sources */,
-				4C9CC3DB25B4F2DF002BE06D /* ClientRequestBuilder+Result.swift in Sources */,
 				4C9CC3CC25B4F2D4002BE06D /* Builder+ViewController.swift in Sources */,
-				4C9CC3DD25B4F2DF002BE06D /* ClientRequestBuilder+Combine.swift in Sources */,
 				4C9CC3C125B4F2D4002BE06D /* Builder+Switch.swift in Sources */,
 				4C9CC3CE25B4F2D4002BE06D /* Builder+Stack.swift in Sources */,
 				4C65866C25ED30A20073003C /* StandardEmptyPage.swift in Sources */,

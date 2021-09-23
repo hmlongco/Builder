@@ -12,35 +12,44 @@ import RxSwift
 extension ClientRequestBuilder {
     
     func get() -> Single<Data> {
-        send(.get)
+        execute(.get)
     }
 
     func post() -> Single<Data> {
-        send(.post)
+        execute(.post)
     }
 
     func put() -> Single<Data> {
-        send(.put)
+        execute(.put)
     }
 
     func create() -> Single<Data> {
-        send(.create)
+        execute(.create)
     }
 
     func delete() -> Single<Data> {
-        send(.delete)
+        execute(.delete)
+    }
+    
+    
+
+    func execute(_ method: HTTPMethod = .get) -> Single<Data> {
+        execute(method)
+            .map { (data, response, error) -> Data in
+                if let error = error {
+                    throw error as? APIError ?? .unexpected
+                } else {
+                    return data ?? Data()
+                }
+            }
     }
 
-    func send(_ method: HTTPMethod = .get) -> Single<Data> {
+    func execute(_ method: HTTPMethod = .get) -> Single<(Data?, URLResponse?, Error?)> {
         Single.create { (single) -> Disposable in
             let task = self
                 .method(method)
-                .send { (data, _, error) in
-                    if let data = data {
-                        single(.success(data))
-                    } else {
-                        single(.failure(error as? APIError ?? .unexpected))
-                    }
+                .execute { (data, response, error) in
+                    single(.success((data, response, error)))
                 }
             task.resume()
             return Disposables.create { task.cancel() }

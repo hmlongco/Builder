@@ -9,14 +9,14 @@
 import Foundation
 import RxSwift
 
-class ErrorMappingWrapper: ClientSessionManager {
+class ErrorMappingWrapper: ClientSessionManagerWrapper {
 
-    var wrappedSessionManager: ClientSessionManager?
+    var wrappedSessionManager: ClientSessionManager!
 
     init() {}
 
-    func send(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask  {
-        return wrappedSessionManager!.send(request: request, completionHandler: completionHandler)
+    func execute(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask  {
+        return wrappedSessionManager.execute(request: request, completionHandler: completionHandler)
     }
 
 }

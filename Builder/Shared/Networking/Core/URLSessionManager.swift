@@ -11,18 +11,20 @@ import Foundation
 class URLSessionManager: ClientSessionManager {
 
     var base: String
-    var wrappedSessionManager: ClientSessionManager?
+    var session: URLSession
     
-    init(base: String) {
+    init(base: String, session: URLSession = URLSession.shared) {
         self.base = base
+        self.session = session
     }
 
     func request(forURL url: URL?) -> URLRequest {
         URLRequest(url: url ?? URL(string: base)!)
     }
 
-    func send(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-        URLSession.shared.dataTask(with: request, completionHandler: completionHandler)
+    func execute(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+        session.dataTask(with: request, completionHandler: completionHandler)
     }
 
 }
+

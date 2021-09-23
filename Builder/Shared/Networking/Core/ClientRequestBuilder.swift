@@ -40,7 +40,7 @@ class ClientRequestBuilder {
     func add(headers: [String:String?]) -> Self {
         headers
             .filter({ $0.value != nil})
-            .forEach { request.addValue($0.key, forHTTPHeaderField: $0.value!) }
+            .forEach { request.addValue($0.value!, forHTTPHeaderField: $0.key) }
         return self
     }
 
@@ -106,8 +106,8 @@ class ClientRequestBuilder {
 
     // send function
 
-    func send(completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-        session.send(request: request, completionHandler: completionHandler)
+    func execute(completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+        session.execute(request: request, completionHandler: completionHandler)
     }
 
 }

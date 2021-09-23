@@ -15,7 +15,7 @@ import Combine
 //
 //        let builder: ClientRequestBuilder
 //
-//        func send<ResultType:Decodable>(_ method: HTTPMethod = .get) -> AnyPublisher<ResultType, APIError> {
+//        func execute<ResultType:Decodable>(_ method: HTTPMethod = .get) -> AnyPublisher<ResultType, APIError> {
 //            send(method)
 //                .decode(type: ResultType.self, decoder: JSONDecoder())
 //                .mapError { (error) -> APIError in
@@ -24,7 +24,7 @@ import Combine
 //                .eraseToAnyPublisher()
 //        }
 //
-//        func send(_ method: HTTPMethod = .get) -> AnyPublisher<Data, APIError> {
+//        func execute(_ method: HTTPMethod = .get) -> AnyPublisher<Data, APIError> {
 //            let publisher = PassthroughSubject<Data, APIError>()
 //            let task = builder
 //                .method(method)

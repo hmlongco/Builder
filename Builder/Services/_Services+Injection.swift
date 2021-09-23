@@ -10,13 +10,6 @@ import Resolver
 
 extension Resolver {
     public static func registerServices() {
-        register {
-            return RandomUserSessionManager()
-                .wrap(ErrorMappingWrapper())
-                .wrap(StandardHeadersWrapper())
-                .wrap(SSOAuthenticationWrapper())
-                .wrap(SessionLoggingWrapper())
-        }
 
         register { UserImageCache() }.scope(.shared)
         register { UserService() as UserServiceType }

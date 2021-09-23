@@ -9,14 +9,14 @@
 import Foundation
 import RxSwift
 
-class StandardHeadersWrapper: ClientSessionManager {
+class StandardHeadersWrapper: ClientSessionManagerWrapper {
 
-    var wrappedSessionManager: ClientSessionManager?
+    var wrappedSessionManager: ClientSessionManager!
     
     init() {}
 
     func request(forURL url: URL?) -> URLRequest {
-        var request = wrappedSessionManager!.request(forURL: url)
+        var request = wrappedSessionManager.request(forURL: url)
         request.setValue("something", forHTTPHeaderField: "header")
         print("Added standard headers")
         return request

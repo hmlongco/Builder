@@ -9,16 +9,16 @@
 import Foundation
 import RxSwift
 
-class SSOAuthenticationWrapper: ClientSessionManager {
+class SSOAuthenticationWrapper: ClientSessionManagerWrapper {
 
-    var wrappedSessionManager: ClientSessionManager?
+    var wrappedSessionManager: ClientSessionManager!
 
     var token: String?
 
     init() {}
 
     func request(forURL url: URL?) -> URLRequest {
-        var request = wrappedSessionManager!.request(forURL: url)
+        var request = wrappedSessionManager.request(forURL: url)
         if let token = token {
             request.setValue(token, forHTTPHeaderField: "Authorization")
             print("Added authentication headers")

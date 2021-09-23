@@ -15,10 +15,10 @@ extension ClientRequestBuilder {
 //
 //        let builder: ClientRequestBuilder
 //
-//        func send<ResultType:Decodable>(_ method: HTTPMethod, completionHandler: @escaping (_ result: Result<ResultType, APIError>) -> Void) -> Void {
+//        func execute<ResultType:Decodable>(_ method: HTTPMethod, completionHandler: @escaping (_ result: Result<ResultType, APIError>) -> Void) -> Void {
 //            builder
 //                .method(method)
-//                .send { (data, _, error) in
+//                .execute { (data, _, error) in
 //                    if let data = data, let result = try? JSONDecoder().decode(ResultType.self, from: data) {
 //                        completionHandler(.success(result))
 //                    } else {
@@ -28,7 +28,7 @@ extension ClientRequestBuilder {
 //                .resume()
 //        }
 //
-//        func send(_ method: HTTPMethod, completionHandler: @escaping (_ result: Result<Data, APIError>) -> Void) -> Void {
+//        func execute(_ method: HTTPMethod, completionHandler: @escaping (_ result: Result<Data, APIError>) -> Void) -> Void {
 //            builder
 //                .method(method)
 //                .send { (data, _, error) in
