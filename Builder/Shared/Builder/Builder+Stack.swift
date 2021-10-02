@@ -73,11 +73,7 @@ extension UIStackView {
         self.axis = axis
         self.alignment = .fill
         self.distribution = .fill
-        if #available(iOS 11, *) {
-            self.spacing = UIStackView.spacingUseSystem
-        } else {
-            self.spacing = 8
-        }
+        self.spacing = UIStackView.spacingUseSystem
     }
             
     public func addArrangedSubviews(_ views: View?...) {

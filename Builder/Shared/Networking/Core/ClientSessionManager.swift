@@ -15,7 +15,7 @@ protocol ClientSessionManager: AnyObject {
     func builder(forURL url: URL?) -> ClientRequestBuilder
     
     func request(forURL url: URL?) -> URLRequest
-    func execute(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
+    func execute(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask?
 
     func wrap(_ wrapper: ClientSessionManagerWrapper) -> ClientSessionManager
     func wrapper<W:ClientSessionManager>(_ handler: (_ wrapper: W) -> Void)

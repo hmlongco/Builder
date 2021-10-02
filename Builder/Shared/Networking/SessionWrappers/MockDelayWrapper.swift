@@ -1,5 +1,5 @@
 //
-//  Wrappers.swift
+//  MockDelayWrapper.swift
 //  ViewBuilder
 //
 //  Created by Michael Long on 10/13/20.
@@ -7,21 +7,26 @@
 //
 
 import Foundation
-import RxSwift
 
-
-class SessionLoggingWrapper: ClientSessionManagerWrapper {
+class MockDelayWrapper: ClientSessionManagerWrapper {
 
     var wrappedSessionManager: ClientSessionManager!
+    
+    static var delay: Double = 0.2
 
-    init() {}
+    init(delay: Double = 0.2) {
+        MockDelayWrapper.delay = delay
+    }
 
     func execute(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask?  {
-        print("REQ: \(request)")
         let interceptor: (Data?, URLResponse?, Error?) -> Void = { (data, response, error) in
-            let status: Int = (response as? HTTPURLResponse)?.statusCode ?? 999
-            print("\(status): \(request)")
-            completionHandler(data, response, error)
+            if MockDelayWrapper.delay > 0 {
+                DispatchQueue.main.asyncAfter(deadline: .now() + MockDelayWrapper.delay) {
+                    completionHandler(data, response, error)
+                }
+            } else {
+                completionHandler(data, response, error)
+            }
         }
         return wrappedSessionManager.execute(request: request, completionHandler: interceptor)
     }

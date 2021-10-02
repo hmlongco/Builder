@@ -134,7 +134,7 @@ extension User {
             dob: nil,
             phone: "303-555-8888",
             cell: nil,
-            picture: Picture(large: nil, medium: "User-JQ", thumbnail: "User-JQ"),
+            picture: Picture(large: "User-JQ", medium: "User-JQ", thumbnail: "User-JQ"),
             nat: "US"
         )
     }

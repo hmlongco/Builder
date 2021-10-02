@@ -31,7 +31,7 @@ extension ClientRequestBuilder {
         execute(.delete)
     }
     
-    
+
 
     func execute(_ method: HTTPMethod = .get) -> Single<Data> {
         execute(method)
@@ -51,8 +51,8 @@ extension ClientRequestBuilder {
                 .execute { (data, response, error) in
                     single(.success((data, response, error)))
                 }
-            task.resume()
-            return Disposables.create { task.cancel() }
+            task?.resume()
+            return Disposables.create { task?.cancel() }
         }
     }
 

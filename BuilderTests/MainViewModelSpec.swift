@@ -100,7 +100,7 @@ class MainViewModelSpec: XCTestCase {
                     case .loading:
                         XCTAssert(previousState == .initial)
                     case .error(let message):
-                        XCTAssert(message.contains("Builder.APIError"))
+                        XCTAssert(message.contains("unexpected error"))
                         done()
                     default:
                         XCTFail("No other state is valid")

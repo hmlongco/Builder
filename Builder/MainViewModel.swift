@@ -31,7 +31,6 @@ class MainViewModel {
     func load() {
         state.accept(.loading)
         service.list()
-            .delay(.seconds(1), scheduler: MainScheduler.instance)
             .map { $0.sorted(by: { ($0.name.last + $0.name.first) < ($1.name.last + $1.name.first) }) }
             .subscribe { [weak self] (users) in
                 if users.isEmpty {

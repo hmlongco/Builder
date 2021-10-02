@@ -3,12 +3,12 @@
 //  ViewBuilder
 //
 //  Created by Michael Long on 10/19/20.
-//  Copyright © 2020 Michael Long. All rights reserved.
+//  mutableright © 2020 Michael Long. All rights reserved.
 //
 
 import Foundation
 
-class ClientRequestBuilder {
+struct ClientRequestBuilder {
 
     enum HTTPMethod: String {
         case create
@@ -29,85 +29,101 @@ class ClientRequestBuilder {
     }
 
     // build functions
-
+    
     @discardableResult
     func add(path: String) -> Self {
-        request.url?.appendPathComponent(path)
-        return self
+        map { $0.request.url?.appendPathComponent(path) }
     }
 
     @discardableResult
-    func add(headers: [String:String?]) -> Self {
-        headers
-            .filter({ $0.value != nil})
-            .forEach { request.addValue($0.value!, forHTTPHeaderField: $0.key) }
-        return self
+    func add(headers: [String:String]) -> Self {
+        map {
+            let allHTTPHeaderFields = $0.request.allHTTPHeaderFields ?? [:]
+            $0.request.allHTTPHeaderFields = headers.merging(allHTTPHeaderFields, uniquingKeysWith: { $1 })
+        }
     }
 
     @discardableResult
     func add(parameters: [String:Any?]) -> Self {
-        if let url = request.url, var components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
-            components.queryItems = parameters.map { URLQueryItem(name: $0, value: $1 == nil ? "" : "\($1!)" ) }
-            request.url = components.url
+        map {
+            if let url = request.url, var components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+                components.queryItems = parameters.map { URLQueryItem(name: $0, value: $1 == nil ? "" : "\($1!)" ) }
+                $0.request.url = components.url
+            }
         }
-        return self
     }
 
     @discardableResult
     func add(queryItems: [URLQueryItem]) -> Self {
-        if let url = request.url, var components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
-            components.queryItems = (components.queryItems ?? []) + queryItems
-            request.url = components.url
+        map {
+            if let url = request.url, var components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+                components.queryItems = (components.queryItems ?? []) + queryItems
+                $0.request.url = components.url
+            }
         }
-        return self
+    }
+    
+    @discardableResult
+    func add(queryItems: [String:String?]) -> Self {
+        add(queryItems: queryItems.map { URLQueryItem(name: $0, value: $1) })
     }
 
     @discardableResult
     func add(value: String, forHeader field: String) -> Self {
-        request.addValue(value, forHTTPHeaderField: field)
-        return self
+        map { $0.request.addValue(value, forHTTPHeaderField: field) }
     }
 
     @discardableResult
     func method(_ method: HTTPMethod) -> Self {
-        request.httpMethod = method.rawValue
-        return self
+        map { $0.request.httpMethod = method.rawValue }
     }
 
     @discardableResult
     func body(data: Data?) -> Self {
-        request.httpBody = data
-        request.httpMethod = HTTPMethod.post.rawValue
-        return self
+        map {
+            $0.request.httpBody = data
+            $0.request.httpMethod = HTTPMethod.post.rawValue
+        }
     }
 
     @discardableResult
     func body<DataType:Encodable>(encode data: DataType) -> Self {
-        self.add(value:"application/json", forHeader: "Content-Type")
-        request.httpBody = try? JSONEncoder().encode(data)
-        return self
+        map {
+            $0.add(value:"application/json", forHeader: "Content-Type")
+            $0.request.httpBody = try? JSONEncoder().encode(data)
+        }
     }
 
     @discardableResult
     func body(fields: [String:String?]) -> Self {
-        self.add(value:"application/x-www-form-urlencoded", forHeader: "Content-Type")
-        var components = URLComponents()
-        components.queryItems = fields.map { URLQueryItem(name: $0, value: $1 == nil ? "" : $1! ) }
-        let escapedString = components.percentEncodedQuery?.replacingOccurrences(of: "%20", with: "+")
-        request.httpBody = escapedString?.data(using: .utf8)
-        return self
+        map {
+            var components = URLComponents()
+            components.queryItems = fields.map { URLQueryItem(name: $0, value: $1 == nil ? "" : $1! ) }
+            let escapedString = components.percentEncodedQuery?.replacingOccurrences(of: "%20", with: "+")
+            $0.add(value:"application/x-www-form-urlencoded", forHeader: "Content-Type")
+            $0.request.httpBody = escapedString?.data(using: .utf8)
+        }
     }
     
     @discardableResult
     func with(handler: (_ request: inout URLRequest) -> Void) -> Self {
-        handler(&request)
-        return self
+        var mutable = self
+        handler(&mutable.request)
+        return mutable
     }
 
     // send function
 
-    func execute(completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+    func execute(completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask? {
         session.execute(request: request, completionHandler: completionHandler)
+    }
+    
+    // helpers
+    
+    private func map(_ transform: (inout Self) -> ()) -> Self {
+        var request = self
+        transform(&request)
+        return request
     }
 
 }

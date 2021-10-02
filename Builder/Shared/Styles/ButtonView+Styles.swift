@@ -9,7 +9,7 @@ import UIKit
 
 extension ButtonView.Style {
     
-    static let solid = ButtonView.Style { button in
+    static let filled = ButtonView.Style { button in
         button
             .cornerRadius(8)
             .color(.white)

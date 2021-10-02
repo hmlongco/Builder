@@ -37,7 +37,7 @@ class DetailViewController: UIViewController {
                 DetailCardView(user: viewModel.user)
                 
                 ButtonView("Dismiss")
-                    .style(.solid)
+                    .style(.filled)
                     .onTap { [dismissible] _ in
                         dismissible.dismiss()
                     }

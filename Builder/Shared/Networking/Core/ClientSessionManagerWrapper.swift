@@ -28,7 +28,7 @@ extension ClientSessionManagerWrapper {
         return wrappedSessionManager.request(forURL: url)
     }
 
-    func execute(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask  {
+    func execute(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask?  {
         return wrappedSessionManager.execute(request: request, completionHandler: completionHandler)
     }
     

@@ -26,6 +26,11 @@ extension ViewBuilderPaddable {
         return padding(insets: UIEdgeInsets(top: v, left: h, bottom: v, right: h))
     }
     
+    @discardableResult
+    func padding(top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) -> Self {
+        return padding(insets: UIEdgeInsets(top: top, left: left, bottom: bottom, right: right))
+    }
+
 }
 
 

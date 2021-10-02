@@ -15,8 +15,19 @@ class ErrorMappingWrapper: ClientSessionManagerWrapper {
 
     init() {}
 
-    func execute(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask  {
-        return wrappedSessionManager.execute(request: request, completionHandler: completionHandler)
+    func execute(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask?  {
+        let interceptor: (Data?, URLResponse?, Error?) -> Void = { (data, response, error) in
+            let status: Int = (response as? HTTPURLResponse)?.statusCode ?? 999
+            switch status {
+            case 404:
+                completionHandler(data, response, APIError.unknown)
+            case 500:
+                completionHandler(data, response, APIError.unknown)
+            default:
+                completionHandler(data, response, error)
+            }
+        }
+        return wrappedSessionManager.execute(request: request, completionHandler: interceptor)
     }
 
 }

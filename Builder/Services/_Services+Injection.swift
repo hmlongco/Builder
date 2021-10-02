@@ -14,8 +14,5 @@ extension Resolver {
         register { UserImageCache() }.scope(.shared)
         register { UserService() as UserServiceType }
 
-        #if MOCK
-        mock.register { MockUserService() as UserServiceType }
-        #endif
     }
 }

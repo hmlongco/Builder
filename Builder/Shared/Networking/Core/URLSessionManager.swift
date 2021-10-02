@@ -22,7 +22,7 @@ class URLSessionManager: ClientSessionManager {
         URLRequest(url: url ?? URL(string: base)!)
     }
 
-    func execute(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+    func execute(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask? {
         session.dataTask(with: request, completionHandler: completionHandler)
     }
 

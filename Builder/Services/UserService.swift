@@ -28,7 +28,6 @@ struct UserService: UserServiceType {
 
     func list() -> Single<[User]> {
         session.builder()
-            .add(path: "/")
             .add(queryItems: [
                 URLQueryItem(name: "results", value: "20"),
                 URLQueryItem(name: "seed", value: "999"),
@@ -114,6 +113,6 @@ struct MockErrorUserService: UserServiceType {
 #endif
 
 
-private struct UserResultType: Codable {
+struct UserResultType: Codable {
     let results: [User]
 }
