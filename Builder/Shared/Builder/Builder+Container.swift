@@ -41,6 +41,8 @@ class ContainerView: UIView, ViewBuilderPaddable {
             onAppearHandler?(self)
         }
     }
+    
+    // attributes
 
     @discardableResult
     public func onAppear(_ handler: @escaping (_ container: ContainerView) -> Void) -> Self {
@@ -85,4 +87,3 @@ class ContainerView: UIView, ViewBuilderPaddable {
     }
 
 }
-

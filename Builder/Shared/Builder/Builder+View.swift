@@ -58,11 +58,14 @@ extension UIView {
 
 extension UIView {
     
-    public struct TapGestureContext: ViewBuilderContextProvider {
-        var view: UIView
-        var gesture: UIGestureRecognizer
-    }
+    // custom attributes
 
+    @discardableResult
+    public func accessibilityIdentifier(_ accessibilityIdentifier: String) -> Self {
+        self.accessibilityIdentifier = accessibilityIdentifier
+        return self
+    }
+    
     @discardableResult
     public func alpha(_ alpha: CGFloat) -> Self {
         self.alpha = alpha
@@ -72,16 +75,6 @@ extension UIView {
     @discardableResult
     public func backgroundColor(_ color: UIColor) -> Self {
         self.backgroundColor = color
-        return self
-    }
-
-    @discardableResult
-    public func bind(hidden: Observable<Bool>) -> Self {
-        hidden
-            .subscribe { [weak self] (hidden) in
-                self?.isHidden = hidden
-            }
-            .disposed(by: rxDisposeBag)
         return self
     }
 
@@ -145,6 +138,11 @@ extension UIView {
         return self
     }
 
+    public struct TapGestureContext: ViewBuilderContextProvider {
+        var view: UIView
+        var gesture: UIGestureRecognizer
+    }
+
     @discardableResult
     public func onTapGesture(_ handler: @escaping (_ context: TapGestureContext) -> Void) -> Self {
         let gesture = UITapGestureRecognizer()
@@ -158,6 +156,14 @@ extension UIView {
             .disposed(by: rxDisposeBag)
         return self
     }
+
+    @discardableResult
+    public func tintColor(_ color: UIColor) -> Self {
+        self.tintColor = color
+        return self
+    }
+
+    // standard attributes
 
     @discardableResult
     public func translatesAutoresizingMaskIntoConstraints(_ translate: Bool) -> Self {
@@ -177,21 +183,30 @@ extension UIView {
 
 
 extension UIView {
-
-    private static var AttributesKey: UInt8 = 0
     
-    public func attributes<T>() -> T? {
-        if let attributes = objc_getAssociatedObject( self, &UIView.AttributesKey ) as? T {
-            return attributes
-        }
-        return nil
-    }
-    
-    public func attributes(_ attributes: AnyObject) -> Self {
-        objc_setAssociatedObject(self, &UIView.AttributesKey, attributes, .OBJC_ASSOCIATION_RETAIN)
+    @discardableResult
+    public func bind<Binding:RxBinding>(alpha binding: Binding) -> Self where Binding.T == CGFloat {
+        rxBinding(binding, view: self) { $0.alpha = $1 }
         return self
     }
-        
+    
+    @discardableResult
+    public func bind<Binding:RxBinding>(hidden binding: Binding) -> Self where Binding.T == Bool {
+        rxBinding(binding, view: self) { $0.isHidden = $1 }
+        return self
+    }
+
+    public func rxBinding<B:RxBinding, V:View, T>(_ binding: B, view: V, handler: @escaping (_ view: V, _ value: T) -> Void) where B.T == T {
+        binding.asObservable()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak view] value in
+                if let view = view {
+                    handler(view, value)
+                }
+            })
+            .disposed(by: rxDisposeBag)
+    }
+
 }
 
 

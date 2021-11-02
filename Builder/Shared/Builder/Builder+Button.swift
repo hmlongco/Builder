@@ -45,6 +45,8 @@ class ButtonView: UIButton {
         self.setContentHuggingPriority(.required, for: .horizontal)
     }
 
+    // attributes
+
     @discardableResult
     public func alignment(_ alignment: UIControl.ContentHorizontalAlignment) -> Self {
         self.contentHorizontalAlignment = alignment
@@ -60,6 +62,12 @@ class ButtonView: UIButton {
     @discardableResult
     public func color(_ color: UIColor) -> Self {
         self.setTitleColor(color, for: .normal)
+        return self
+    }
+
+    @discardableResult
+    public func enabled(_ enabled: Bool) -> Self {
+        self.isEnabled = enabled
         return self
     }
 
@@ -104,6 +112,21 @@ class ButtonView: UIButton {
 
 }
 
+extension ButtonView {
+    
+    @discardableResult
+    public func bind<Binding:RxBinding>(enabled binding: Binding) -> Self where Binding.T == Bool {
+        rxBinding(binding, view: self) { $0.isEnabled = $1 }
+        return self
+    }
+
+    @discardableResult
+    public func bind<Binding:RxBinding>(selected binding: Binding) -> Self where Binding.T == Bool {
+        rxBinding(binding, view: self) { $0.isSelected = $1 }
+        return self
+    }
+
+}
 
 extension ButtonView: ViewBuilderPaddable {
 

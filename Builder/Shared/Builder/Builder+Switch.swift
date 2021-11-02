@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 class SwitchView: UISwitch {
 
@@ -17,11 +18,17 @@ class SwitchView: UISwitch {
         common()
         configuration(self)
     }
-
-    public init(_ isOn: Observable<Bool>) {
+    
+    public init<Binding:RxBinding>(isOn binding: Binding) where Binding.T == Bool {
         super.init(frame: .zero)
         common()
-        self.bind(isOn: isOn)
+        self.bind(isOn: binding)
+    }
+    
+    public init<Binding:RxBidirectionalBinding>(_ binding: Binding) where Binding.T == Bool {
+        super.init(frame: .zero)
+        common()
+        self.bidirectionalBind(isOn: binding)
     }
 
     required public init(coder: NSCoder) {
@@ -32,13 +39,19 @@ class SwitchView: UISwitch {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.onTintColor = ViewBuilderEnvironment.defaultButtonColor
     }
+    
+    @discardableResult
+    public func bind<Binding:RxBinding>(isOn binding: Binding) -> Self where Binding.T == Bool {
+        rxBinding(binding, view: self) { $0.isOn = $1 }
+        return self
+    }
 
     @discardableResult
-    public func bind(isOn: Observable<Bool>) -> Self {
-        isOn
-            .subscribe { [weak self] (isOn) in
-                self?.isOn = isOn
-            }
+    public func bidirectionalBind<Binding:RxBidirectionalBinding>(isOn binding: Binding) -> Self where Binding.T == Bool {
+        rxBinding(binding, view: self) { $0.isOn = $1 }
+        rx.isOn
+            .changed
+            .bind(to: binding.relay)
             .disposed(by: rxDisposeBag)
         return self
     }

@@ -9,18 +9,11 @@
 import UIKit
 import RxSwift
 
-
 protocol AnyIndexableViewBuilder: ViewConvertable {
     var count: Int { get }
-    var updated: Observable<Any?>? { get }
+    var updated: PublishSubject<Any?>? { get }
     func view(at index: Int) -> View?
 }
-
-extension AnyIndexableViewBuilder {
-    var updated: Observable<Any?>? { nil }
-}
-
-
 
 struct StaticViewBuilder: AnyIndexableViewBuilder {
 
@@ -31,6 +24,7 @@ struct StaticViewBuilder: AnyIndexableViewBuilder {
     }
 
     var count: Int { views.count }
+    var updated: PublishSubject<Any?>?
 
     func view(at index: Int) -> View? {
         guard views.indices.contains(index) else { return nil }
@@ -43,19 +37,16 @@ struct StaticViewBuilder: AnyIndexableViewBuilder {
 
 }
 
-
-
 class DynamicItemViewBuilder<Item>: AnyIndexableViewBuilder {
 
     var items: [Item] {
         didSet {
-            updated.onNext(self)
+            updated?.onNext(self)
         }
     }
 
     var count: Int { items.count }
-
-    var updated = PublishSubject<Any?>()
+    var updated: PublishSubject<Any?>? = PublishSubject<Any?>()
 
     private let builder: (_ item: Item) -> ViewBuilder?
 

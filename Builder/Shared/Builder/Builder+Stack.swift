@@ -97,7 +97,9 @@ extension UIStackView {
         empty()
         addArrangedSubviews(views)
     }
-    
+        
+    // custom attributes
+
     @discardableResult
     public func alignment(_ alignment: Alignment) -> Self {
         self.alignment = alignment
@@ -126,6 +128,8 @@ extension UIStackView {
             .disposed(by: rxDisposeBag)
         return self
     }
+    
+    // standard attributes
     
     @discardableResult
     public func reference(_ reference: inout UIStackView?) -> Self {

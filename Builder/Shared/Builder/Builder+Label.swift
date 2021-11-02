@@ -32,13 +32,25 @@ class LabelView: UILabel {
         configuration(self)
     }
 
-    public init(_ text: Observable<String>) {
+    public init<Binding:RxBinding>(_ binding: Binding) where Binding.T == String {
+        super.init(frame: .zero)
+        self.common()
+        self.bind(text: binding)
+    }
+
+    public init<Binding:RxBinding>(_ binding: Binding) where Binding.T == String? {
+        super.init(frame: .zero)
+        self.common()
+        self.bind(text: binding)
+    }
+
+    public init(_ text: Variable<String>) {
         super.init(frame: .zero)
         self.common()
         self.bind(text: text)
     }
 
-    public init(_ text: Observable<String?>) {
+    public init(_ text: Variable<String?>) {
         super.init(frame: .zero)
         self.common()
         self.bind(text: text)
@@ -83,41 +95,11 @@ class LabelView: UILabel {
         return ctr
     }
 
-    // attributes
+    // custom attributes
     
     @discardableResult
     public func alignment(_ alignment: NSTextAlignment) -> Self {
         self.textAlignment = alignment
-        return self
-    }
-
-    @discardableResult
-    public func bind(color: Observable<UIColor>) -> Self {
-        color
-            .subscribe(onNext: { [weak self] (color) in
-                self?.textColor = color
-            })
-            .disposed(by: self.rxDisposeBag)
-        return self
-    }
-
-    @discardableResult
-    public func bind(text: Observable<String>) -> Self {
-        text
-            .subscribe { [weak self] (text) in
-                self?.text = text
-            }
-        .disposed(by: rxDisposeBag)
-        return self
-    }
-
-    @discardableResult
-    public func bind(text: Observable<String?>) -> Self {
-        text
-            .subscribe { [weak self] (text) in
-                self?.text = text
-            }
-            .disposed(by: rxDisposeBag)
         return self
     }
 
@@ -146,6 +128,8 @@ class LabelView: UILabel {
         return self
     }
 
+    // standard attributes
+
     @discardableResult
     public func reference(_ reference: inout LabelView?) -> Self {
         reference = self
@@ -161,6 +145,28 @@ class LabelView: UILabel {
     @discardableResult
     public func with(_ configuration: (_ view: LabelView) -> Void) -> Self {
         configuration(self)
+        return self
+    }
+
+}
+
+extension LabelView {
+    
+    @discardableResult
+    public func bind<Binding:RxBinding>(color binding: Binding) -> Self where Binding.T == UIColor {
+        rxBinding(binding, view: self) { $0.textColor = $1 }
+        return self
+    }
+    
+    @discardableResult
+    public func bind<Binding:RxBinding>(text binding: Binding) -> Self where Binding.T == String {
+        rxBinding(binding, view: self) { $0.text = $1 }
+        return self
+    }
+
+    @discardableResult
+    public func bind<Binding:RxBinding>(text binding: Binding) -> Self where Binding.T == String? {
+        rxBinding(binding, view: self) { $0.text = $1 }
         return self
     }
 
