@@ -10,6 +10,6 @@ import Resolver
 
 extension Resolver {
     static func registerDetails() {
-        register { DetailViewModel() }
+        register { DetailViewModel() }.scope(.shared)
     }
 }

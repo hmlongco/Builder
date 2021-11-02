@@ -12,6 +12,8 @@ import RxSwift
 class DetailViewModel {
 
     @Injected var cache: UserImageCache
+    
+    @Variable var accepted = false
 
     var user: User!
 
@@ -33,6 +35,21 @@ class DetailViewModel {
     var age: String {
         guard let age = user.dob?.age else { return "n/a" }
         return "\(age)"
+    }
+    
+    var disposeBag = DisposeBag()
+    
+    init() {
+        $accepted.asObservable()
+            .debug()
+            .subscribe { event in
+                print(event)
+            }
+            .disposed(by: disposeBag)
+    }
+
+    deinit {
+        print("deinit DetailViewModel")
     }
 
     func configure(_ user: User) {

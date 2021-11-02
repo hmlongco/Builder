@@ -35,7 +35,7 @@ class MainViewModel {
             .subscribe { [weak self] (users) in
                 if users.isEmpty {
                     self?.state.accept(.empty("No current users found..."))
-               } else {
+                } else {
                     self?.state.accept(.loaded(users))
                 }
             } onFailure: { [weak self] (e) in

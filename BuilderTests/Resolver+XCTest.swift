@@ -22,6 +22,6 @@ extension Resolver {
         Resolver.test.register { MockUserService() as UserServiceType }
         Resolver.test.register { UserImageCache() } // use our own and not global
         
-        MockDelayWrapper.delay = 0.0
+        MockDelayInterceptot.delay = 0.0
     }
 }

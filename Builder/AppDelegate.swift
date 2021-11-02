@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Resolver
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,6 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     override init() {
         super.init()
         
+//        _ = TestVariable().test()
+                
         ViewBuilderEnvironment.defaultLabelFont = UIFont.preferredFont(forTextStyle: .callout)
     }
     

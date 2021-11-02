@@ -21,8 +21,8 @@ struct UserService: UserServiceType {
     @Injected var session: ClientSessionManager
     
     init() {
-        session.wrapper { (wrapper: SSOAuthenticationWrapper) in
-            wrapper.token = "F129038AF30912830E8120938"
+        session.configure { (interceptor: SSOAuthenticationInterceptor) in
+            interceptor.token = "F129038AF30912830E8120938"
         }
     }
 

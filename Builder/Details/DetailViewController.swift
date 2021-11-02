@@ -8,12 +8,19 @@
 import UIKit
 import Resolver
 import RxSwift
+import RxCocoa
 
 class DetailViewController: UIViewController {
 
     @Injected var viewModel: DetailViewModel
     
     lazy var dismissible = Dismissible<Void>(self)
+    
+    // testing for RxBidirectionalBinding
+    let relay = BehaviorRelay<Bool>(value: true)
+    var observable: Observable<Bool> {
+        relay.asObservable()
+    }
 
     convenience init(user: User) {
         self.init()
@@ -36,12 +43,21 @@ class DetailViewController: UIViewController {
             VStackView {
                 DetailCardView(user: viewModel.user)
                 
+                HStackView {
+                    LabelView("Accept Terms")
+                    SpacerView()
+                    SwitchView(viewModel.$accepted)
+//                    SwitchView(observable)
+//                    SwitchView(relay)
+                }
+                
                 ButtonView("Dismiss")
+                    .bind(enabled: viewModel.$accepted.asObservable())
                     .style(.filled)
                     .onTap { [dismissible] _ in
                         dismissible.dismiss()
                     }
-
+                
                 LabelView("Inforamtion presented above is not repesentative of any person, living, dead, undead, or fictional.")
                     .style(.footnote)
                 

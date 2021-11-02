@@ -9,16 +9,21 @@ import UIKit
 import Resolver
 import RxSwift
 
+extension Resolver {
+    static var context: Resolver!
+}
+
 class MainViewController: UIViewController {
     
     @Injected var viewModel: MainViewModel
 
     let disposeBag = DisposeBag()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = viewModel.title
         setupSubscriptions()
+        
         
 //        testLayout()
         
