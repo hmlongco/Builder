@@ -20,6 +20,8 @@ extension APIError: CustomStringConvertible {
         switch self {
         case .connection:
             return "Unable to connect to server at this time."
+        case .unknown:
+            return "An unknown error occurred."
         default:
             return "An unexpected error occurred."
         }

@@ -1,5 +1,5 @@
 //
-//  MockDelayWrapper.swift
+//  MockDelayInterceptor.swift
 //  ViewBuilder
 //
 //  Created by Michael Long on 10/13/20.
@@ -8,27 +8,26 @@
 
 import Foundation
 
-class MockDelayWrapper: ClientSessionManagerWrapper {
+class MockDelayInterceptor: ClientSessionManagerInterceptor {
 
-    var wrappedSessionManager: ClientSessionManager!
+    var parentSessionManager: ClientSessionManager!
     
     static var delay: Double = 0.2
 
     init(delay: Double = 0.2) {
-        MockDelayWrapper.delay = delay
+        MockDelayInterceptor.delay = delay
     }
 
     func execute(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask?  {
         let interceptor: (Data?, URLResponse?, Error?) -> Void = { (data, response, error) in
-            if MockDelayWrapper.delay > 0 {
-                DispatchQueue.main.asyncAfter(deadline: .now() + MockDelayWrapper.delay) {
+            if MockDelayInterceptor.delay > 0 {
+                DispatchQueue.main.asyncAfter(deadline: .now() + MockDelayInterceptor.delay) {
                     completionHandler(data, response, error)
                 }
             } else {
                 completionHandler(data, response, error)
             }
         }
-        return wrappedSessionManager.execute(request: request, completionHandler: interceptor)
+        return parentSessionManager.execute(request: request, completionHandler: interceptor)
     }
-
 }

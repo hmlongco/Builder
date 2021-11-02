@@ -1,5 +1,5 @@
 //
-//  Wrappers.swift
+//  Interceptors.swift
 //  ViewBuilder
 //
 //  Created by Michael Long on 10/13/20.
@@ -10,9 +10,9 @@ import Foundation
 import RxSwift
 
 
-class SessionLoggingWrapper: ClientSessionManagerWrapper {
+class SessionLoggingInterceptor: ClientSessionManagerInterceptor {
 
-    var wrappedSessionManager: ClientSessionManager!
+    var parentSessionManager: ClientSessionManager!
 
     init() {}
 
@@ -23,7 +23,7 @@ class SessionLoggingWrapper: ClientSessionManagerWrapper {
             print("\(status): \(request)")
             completionHandler(data, response, error)
         }
-        return wrappedSessionManager.execute(request: request, completionHandler: interceptor)
+        return parentSessionManager.execute(request: request, completionHandler: interceptor)
     }
 
 }

@@ -17,21 +17,21 @@ protocol ClientSessionManager: AnyObject {
     func request(forURL url: URL?) -> URLRequest
     func execute(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask?
 
-    func wrap(_ wrapper: ClientSessionManagerWrapper) -> ClientSessionManager
-    func wrapper<W:ClientSessionManager>(_ handler: (_ wrapper: W) -> Void)
+    func interceptor(_ interceptor: ClientSessionManagerInterceptor) -> ClientSessionManager
+    func configure<T:ClientSessionManager>(_ handler: (_ interceptor: T) -> Void)
     
 }
 
 extension ClientSessionManager {
     
-    func wrap(_ parent: ClientSessionManagerWrapper) -> ClientSessionManager {
-        parent.wrappedSessionManager = self
+    func interceptor(_ parent: ClientSessionManagerInterceptor) -> ClientSessionManager {
+        parent.parentSessionManager = self
         return parent
     }
 
-    func wrapper<W:ClientSessionManager>(_ handler: (_ wrapper: W) -> Void) {
-        if let wrapper = self as? W {
-            handler(wrapper)
+    func configure<T:ClientSessionManager>(_ handler: (_ manager: T) -> Void) {
+        if let manager = self as? T {
+            handler(manager)
         }
     }
 

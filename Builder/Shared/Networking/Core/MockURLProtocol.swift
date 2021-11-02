@@ -7,11 +7,89 @@
 
 import Foundation
 
-struct MockResponses {
+
+class MockURLProtocol: URLProtocol {
     
-    static var responses: [String:(_ request: URLRequest) -> (Int,Data?)] = [:]
+    enum MockProtocolMode {
+        case off
+        case allowMatchOnly
+        case allowWildcardOnly
+        case allowAny
+    }
     
-    static func set(forPath path: String, response: @escaping (_ request: URLRequest) -> (Int,Data?)) {
+    enum MockProtocolError: Error {
+        case failed
+    }
+
+    static var responses: [String:(_ request: URLRequest) throws -> (Int,Data?)] = [:]
+    static var mode: MockProtocolMode = .allowAny
+    static var delay: Double?
+    static let lock = NSLock()
+
+    override class func canInit(with request: URLRequest) -> Bool {
+        return handler(for: request.url) != nil
+    }
+
+    override class func canonicalRequest(for request: URLRequest) -> URLRequest {
+        return request
+    }
+    
+    class func handler(for url: URL?) -> ((_ request: URLRequest) throws -> (Int,Data?))? {
+        guard let path = url?.path else {
+            return nil
+        }
+        switch mode {
+        case .off:
+            return nil
+        case .allowMatchOnly:
+            return Self.responses[path.isEmpty ? "/" : path]
+        case .allowWildcardOnly:
+            return Self.responses["*"]
+        case .allowAny:
+            return Self.responses[path.isEmpty ? "/" : path] ?? Self.responses["*"]
+        }
+    }
+    
+    override func startLoading() {
+        if let delay = Self.delay {
+            DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + delay) {
+                self.loadFromMockURLProtocol()
+            }
+        } else {
+            self.loadFromMockURLProtocol()
+        }
+    }
+    
+    func loadFromMockURLProtocol() {
+        defer { Self.lock.unlock() }
+        Self.lock.lock()
+        do {
+            guard let url = request.url,
+                  let response = try Self.handler(for: url)?(request),
+                  let urlResponse = HTTPURLResponse(url: url, statusCode: response.0, httpVersion: "1.0", headerFields: nil) else {
+                client?.urlProtocol(self, didFailWithError: MockProtocolError.failed)
+                return
+            }
+            client?.urlProtocol(self, didReceive: urlResponse, cacheStoragePolicy: .notAllowed)
+            if let data = response.1 {
+                client?.urlProtocol(self, didLoad: data)
+            }
+            client?.urlProtocolDidFinishLoading(self)
+        }
+        catch {
+            client?.urlProtocol(self, didFailWithError: error)
+            return
+        }
+    }
+    
+    override func stopLoading() {
+        // nothing
+    }
+}
+
+extension MockURLProtocol {
+    
+    static func set(forPath path: String, response: @escaping (_ request: URLRequest) throws -> (Int,Data?)) {
         defer { lock.unlock() }
         lock.lock()
         responses[path] = response
@@ -20,6 +98,12 @@ struct MockResponses {
     static func set(forPath path: String, status: Int, data: Data? = nil) {
         set(forPath: path) { _ in
             (status, data)
+        }
+    }
+    
+    static func set(forPath path: String, error: APIError) {
+        set(forPath: path) { _ in
+            throw error
         }
     }
     
@@ -46,50 +130,33 @@ struct MockResponses {
             (status, json.data(using: .utf8))
         }
     }
-    
-    static let lock = NSLock()
-    
+
 }
 
-fileprivate class MockURLProtocol: URLProtocol {
+extension MockURLProtocol {
     
-    enum MockProtocolError: Error {
-        case failed
-    }
+    static var username: String?
+    static var bundle: Bundle = Bundle.main
 
-    override class func canInit(with request: URLRequest) -> Bool {
-        return true
-    }
-
-    override class func canonicalRequest(for request: URLRequest) -> URLRequest {
-        return request
-    }
-    
-    override func startLoading() {
-        defer { MockResponses.lock.unlock() }
-        MockResponses.lock.lock()
-        guard let url = request.url else {
-            client?.urlProtocol(self, didFailWithError: MockProtocolError.failed)
-            return
+    // maps request like GET /user/8922/ to get_user_8922.json and looks for a JSON file of that name in the bundle
+    // if username is set will first check for get_user_8922_username.json. allows different logins to influence mocks
+    static func setupDefaultJSONBundleHandler() {
+        Self.set(forPath: "*") { req in
+            guard let tempPath = req.url?.path.replacingOccurrences(of: "/", with: "_"), let method = req.httpMethod else {
+                return (500, nil)
+            }
+            let path = "\(method)\(tempPath)".trimmingCharacters(in: CharacterSet(["_"]))
+            if let user = Self.username,
+               let url = Self.bundle.url(forResource: "\(path)_\(user)".lowercased(), withExtension: "json"),
+               let data = try? Data(contentsOf: url) {
+                return (200, data)
+            }
+            if let url = Self.bundle.url(forResource: path.lowercased(), withExtension: "json"),
+               let data = try? Data(contentsOf: url) {
+                return (200, data)
+            }
+            return (404, nil)
         }
-        let path = url.path.isEmpty ? "/" : url.path
-        guard let response = MockResponses.responses[path]?(request) ?? MockResponses.responses["*"]?(request) else {
-            client?.urlProtocol(self, didFailWithError: MockProtocolError.failed)
-            return
-        }
-        guard let urlResponse = HTTPURLResponse(url: url, statusCode: response.0, httpVersion: "1.0", headerFields: nil) else {
-            client?.urlProtocol(self, didFailWithError: MockProtocolError.failed)
-            return
-        }
-        client?.urlProtocol(self, didReceive: urlResponse, cacheStoragePolicy: .notAllowed)
-        if let data = response.1 {
-            client?.urlProtocol(self, didLoad: data)
-        }
-        client?.urlProtocolDidFinishLoading(self)
-    }
-    
-    override func stopLoading() {
-        // nothing
     }
 }
 
@@ -101,31 +168,4 @@ extension URLSession {
         return URLSession(configuration: configuration)
     }()
     
-}
-
-extension MockResponses {
-    
-    static var username: String? = "michael"
-    static var bundle: Bundle = Bundle.main
-
-    // maps request like GET /user/8922/ to get_user_8922.json and looks for a JSON file of that name in the bundle
-    // if username is set will first check for get_user_8922_username.json. allows different logins to influence mocks
-    static func setupDefaultJSONBundleHandler() {
-        MockResponses.set(forPath: "*") { req in
-            guard let tempPath = req.url?.path.replacingOccurrences(of: "/", with: "_"), let method = req.httpMethod else {
-                return (500, nil)
-            }
-            let path = "\(method)\(tempPath)".trimmingCharacters(in: CharacterSet(["_"]))
-            if let user = MockResponses.username,
-               let url = MockResponses.bundle.url(forResource: "\(path)_\(user)".lowercased(), withExtension: "json"),
-               let data = try? Data(contentsOf: url) {
-                return (200, data)
-            }
-            if let url = MockResponses.bundle.url(forResource: path.lowercased(), withExtension: "json"),
-               let data = try? Data(contentsOf: url) {
-                return (200, data)
-            }
-            return (404, nil)
-        }
-    }
 }

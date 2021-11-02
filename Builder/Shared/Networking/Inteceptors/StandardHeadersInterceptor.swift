@@ -1,5 +1,5 @@
 //
-//  Wrappers.swift
+//  Interceptors.swift
 //  ViewBuilder
 //
 //  Created by Michael Long on 10/13/20.
@@ -9,14 +9,14 @@
 import Foundation
 import RxSwift
 
-class StandardHeadersWrapper: ClientSessionManagerWrapper {
+class StandardHeadersInterceptor: ClientSessionManagerInterceptor {
 
-    var wrappedSessionManager: ClientSessionManager!
+    var parentSessionManager: ClientSessionManager!
     
     init() {}
 
     func request(forURL url: URL?) -> URLRequest {
-        var request = wrappedSessionManager.request(forURL: url)
+        var request = parentSessionManager.request(forURL: url)
         request.setValue("something", forHTTPHeaderField: "header")
         print("Added standard headers")
         return request

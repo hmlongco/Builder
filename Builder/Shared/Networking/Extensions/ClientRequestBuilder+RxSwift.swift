@@ -37,7 +37,7 @@ extension ClientRequestBuilder {
         execute(method)
             .map { (data, response, error) -> Data in
                 if let error = error {
-                    throw error as? APIError ?? .unexpected
+                    throw error //as? APIError ?? .unexpected
                 } else {
                     return data ?? Data()
                 }
