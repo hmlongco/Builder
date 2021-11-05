@@ -60,8 +60,8 @@ class ButtonView: UIButton {
     }
 
     @discardableResult
-    public func color(_ color: UIColor) -> Self {
-        self.setTitleColor(color, for: .normal)
+    public func color(_ color: UIColor, for state: UIControl.State = .normal) -> Self {
+        self.setTitleColor(color, for: state)
         return self
     }
 
@@ -115,13 +115,13 @@ class ButtonView: UIButton {
 extension ButtonView {
     
     @discardableResult
-    public func bind<Binding:RxBinding>(enabled binding: Binding) -> Self where Binding.T == Bool {
+    public func enabled<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == Bool {
         rxBinding(binding, view: self) { $0.isEnabled = $1 }
         return self
     }
 
     @discardableResult
-    public func bind<Binding:RxBinding>(selected binding: Binding) -> Self where Binding.T == Bool {
+    public func selected<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == Bool {
         rxBinding(binding, view: self) { $0.isSelected = $1 }
         return self
     }

@@ -185,13 +185,13 @@ extension UIView {
 extension UIView {
     
     @discardableResult
-    public func bind<Binding:RxBinding>(alpha binding: Binding) -> Self where Binding.T == CGFloat {
+    public func alpha<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == CGFloat {
         rxBinding(binding, view: self) { $0.alpha = $1 }
         return self
     }
     
     @discardableResult
-    public func bind<Binding:RxBinding>(hidden binding: Binding) -> Self where Binding.T == Bool {
+    public func hidden<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == Bool {
         rxBinding(binding, view: self) { $0.isHidden = $1 }
         return self
     }

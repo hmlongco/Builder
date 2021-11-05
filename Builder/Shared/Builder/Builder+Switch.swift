@@ -19,16 +19,16 @@ class SwitchView: UISwitch {
         configuration(self)
     }
     
-    public init<Binding:RxBinding>(isOn binding: Binding) where Binding.T == Bool {
+    public init<Binding:RxBinding>(_ binding: Binding) where Binding.T == Bool {
         super.init(frame: .zero)
         common()
-        self.bind(isOn: binding)
+        self.value(bind: binding)
     }
     
     public init<Binding:RxBidirectionalBinding>(_ binding: Binding) where Binding.T == Bool {
         super.init(frame: .zero)
         common()
-        self.bidirectionalBind(isOn: binding)
+        self.value(bidirectionalBind: binding)
     }
 
     required public init(coder: NSCoder) {
@@ -41,13 +41,13 @@ class SwitchView: UISwitch {
     }
     
     @discardableResult
-    public func bind<Binding:RxBinding>(isOn binding: Binding) -> Self where Binding.T == Bool {
+    public func value<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == Bool {
         rxBinding(binding, view: self) { $0.isOn = $1 }
         return self
     }
 
     @discardableResult
-    public func bidirectionalBind<Binding:RxBidirectionalBinding>(isOn binding: Binding) -> Self where Binding.T == Bool {
+    public func value<Binding:RxBidirectionalBinding>(bidirectionalBind binding: Binding) -> Self where Binding.T == Bool {
         rxBinding(binding, view: self) { $0.isOn = $1 }
         rx.isOn
             .changed
@@ -64,6 +64,12 @@ class SwitchView: UISwitch {
                 handler(isOn)
             })
             .disposed(by: rxDisposeBag)
+        return self
+    }
+
+    @discardableResult
+    public func onTintColor(_ color: UIColor) -> Self {
+        self.onTintColor = color
         return self
     }
 

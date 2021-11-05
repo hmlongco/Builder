@@ -23,16 +23,16 @@ class ImageView: UIImageView {
         self.image = image
     }
 
-    public init(_ image: Observable<UIImage>) {
+    public init<Binding:RxBinding>(_ image: Binding) where Binding.T == UIImage {
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.bind(image: image)
+        self.image(bind: image)
     }
 
-    public init(_ image: Observable<UIImage?>) {
+    public init<Binding:RxBinding>(_ image: Binding) where Binding.T == UIImage? {
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.bind(image: image)
+        self.image(bind: image)
     }
 
     required public init(coder: NSCoder) {
@@ -59,13 +59,13 @@ class ImageView: UIImageView {
 extension ImageView {
         
     @discardableResult
-    public func bind<Binding:RxBinding>(image binding: Binding) -> Self where Binding.T == UIImage {
+    public func image<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == UIImage {
         rxBinding(binding, view: self) { $0.image = $1 }
         return self
     }
 
     @discardableResult
-    public func bind<Binding:RxBinding>(image binding: Binding) -> Self where Binding.T == UIImage? {
+    public func image<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == UIImage? {
         rxBinding(binding, view: self) { $0.image = $1 }
         return self
     }

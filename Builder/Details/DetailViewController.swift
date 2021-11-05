@@ -15,12 +15,8 @@ class DetailViewController: UIViewController {
     @Injected var viewModel: DetailViewModel
     
     lazy var dismissible = Dismissible<Void>(self)
-    
-    // testing for RxBidirectionalBinding
-    let relay = BehaviorRelay<Bool>(value: true)
-    var observable: Observable<Bool> {
-        relay.asObservable()
-    }
+        
+    @Variable var testSwtichValue = false
 
     convenience init(user: User) {
         self.init()
@@ -39,33 +35,38 @@ class DetailViewController: UIViewController {
     }
 
     func contentView() -> View {
-        VerticalScrollView {
-            VStackView {
-                DetailCardView(user: viewModel.user)
-                
-                HStackView {
-                    LabelView("Accept Terms")
-                    SpacerView()
-                    SwitchView(viewModel.$accepted)
-//                    SwitchView(observable)
-//                    SwitchView(relay)
-                }
-                
-                ButtonView("Dismiss")
-                    .bind(enabled: viewModel.$accepted.asObservable())
-                    .style(.filled)
-                    .onTap { [dismissible] _ in
-                        dismissible.dismiss()
+        ContainerView {
+            VerticalScrollView {
+                VStackView {
+                    DetailCardView(user: viewModel.user)
+                    
+                    HStackView {
+                        LabelView("Accept Terms")
+                        SpacerView()
+                        SwitchView(viewModel.$accepted)
+                            .onTintColor(.blue)
+    //                        .onChange { [weak self] value in
+    //                            self?.testSwtichValue = value
+    //                        }
                     }
-                
-                LabelView("Inforamtion presented above is not repesentative of any person, living, dead, undead, or fictional.")
-                    .style(.footnote)
-                
-                SpacerView()
+                    
+                    ButtonView("Dismiss")
+                        .enabled(bind: viewModel.$accepted)
+                        .style(.filled)
+                        .onTap { [dismissible] _ in
+                            dismissible.dismiss()
+                        }
+                    
+                    LabelView("Inforamtion presented above is not repesentative of any person, living, dead, undead, or fictional.")
+                        .style(.footnote)
+                    
+                    SpacerView()
+                }
+                .padding(20)
+                .spacing(20)
             }
-            .padding(20)
-            .spacing(20)
         }
+        .backgroundColor(.quaternarySystemFill)
     }
 
 }

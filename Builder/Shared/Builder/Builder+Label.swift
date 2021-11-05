@@ -35,25 +35,25 @@ class LabelView: UILabel {
     public init<Binding:RxBinding>(_ binding: Binding) where Binding.T == String {
         super.init(frame: .zero)
         self.common()
-        self.bind(text: binding)
+        self.text(bind: binding)
     }
 
     public init<Binding:RxBinding>(_ binding: Binding) where Binding.T == String? {
         super.init(frame: .zero)
         self.common()
-        self.bind(text: binding)
+        self.text(bind: binding)
     }
 
     public init(_ text: Variable<String>) {
         super.init(frame: .zero)
         self.common()
-        self.bind(text: text)
+        self.text(bind: text)
     }
 
     public init(_ text: Variable<String?>) {
         super.init(frame: .zero)
         self.common()
-        self.bind(text: text)
+        self.text(bind: text)
     }
 
     required public init(coder: NSCoder) {
@@ -153,19 +153,19 @@ class LabelView: UILabel {
 extension LabelView {
     
     @discardableResult
-    public func bind<Binding:RxBinding>(color binding: Binding) -> Self where Binding.T == UIColor {
+    public func color<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == UIColor {
         rxBinding(binding, view: self) { $0.textColor = $1 }
         return self
     }
     
     @discardableResult
-    public func bind<Binding:RxBinding>(text binding: Binding) -> Self where Binding.T == String {
+    public func text<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == String {
         rxBinding(binding, view: self) { $0.text = $1 }
         return self
     }
 
     @discardableResult
-    public func bind<Binding:RxBinding>(text binding: Binding) -> Self where Binding.T == String? {
+    public func text<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == String? {
         rxBinding(binding, view: self) { $0.text = $1 }
         return self
     }
