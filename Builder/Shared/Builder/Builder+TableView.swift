@@ -78,9 +78,9 @@ class TableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? TableViewCell {
+        if let cell = tableView.cellForRow(at: indexPath) as? TableViewCell, let selectionHandler = cell.selectionHandler {
             let context = CellContext(view: cell, tableView: self, indexPath: indexPath)
-            if let selected = cell.selectionHandler?(context), selected {
+            if selectionHandler(context) {
                 return
             }
         }

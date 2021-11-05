@@ -77,6 +77,13 @@ extension UIView {
         self.backgroundColor = color
         return self
     }
+    
+    @discardableResult
+    public func border(color: UIColor, lineWidth: CGFloat = 0.5) -> Self {
+        self.layer.borderColor = color.cgColor
+        self.layer.borderWidth = lineWidth
+        return self
+    }
 
     @discardableResult
     public func clipsToBounds(_ clips: Bool) -> Self {
@@ -154,6 +161,16 @@ extension UIView {
                 handler(context)
             }
             .disposed(by: rxDisposeBag)
+        return self
+    }
+    
+    @discardableResult
+    public func shadow(color: UIColor, radius: CGFloat, opacity: Float = 0.5, offset: CGSize = .zero) -> Self {
+        self.layer.shadowColor = color.cgColor
+        self.layer.shadowOffset = offset
+        self.layer.shadowRadius = radius
+        self.layer.shadowOpacity = opacity
+        self.clipsToBounds = false
         return self
     }
 

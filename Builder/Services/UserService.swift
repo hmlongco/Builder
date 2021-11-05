@@ -37,9 +37,9 @@ struct UserService: UserServiceType {
                 print(r)
             }
             .get()
-            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .userInitiated))
             .decode(type: UserResultType.self, decoder: JSONDecoder())
             .map { $0.results }
+            .observe(on: MainScheduler.instance)
     }
 
     func thumbnail(forUser user: User) -> Single<UIImage?> {
@@ -48,8 +48,8 @@ struct UserService: UserServiceType {
         }
         return session.builder(forURL: URL(string: path))
             .get()
-            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .utility))
             .map { (data: Data) -> UIImage? in UIImage(data: data) }
+            .observe(on: MainScheduler.instance)
     }
 
     func photo(forUser user: User) -> Single<UIImage?> {
@@ -58,8 +58,8 @@ struct UserService: UserServiceType {
         }
         return session.builder(forURL: URL(string: path))
             .get()
-            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .utility))
             .map { (data: Data) -> UIImage? in UIImage(data: data) }
+            .observe(on: MainScheduler.instance)
     }
 
 }

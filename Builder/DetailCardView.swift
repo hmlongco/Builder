@@ -18,7 +18,7 @@ struct DetailCardView: ViewBuilder {
     }
 
     func build() -> View {
-        ContainerView {
+        DLSCard {
             VStackView {
                 DetailPhotoView(photo: viewModel.photo(), name: viewModel.fullname)
                 
@@ -35,10 +35,32 @@ struct DetailCardView: ViewBuilder {
                 .padding(20)
             }
         }
-        .backgroundColor(.quaternarySystemFill)
-        .cornerRadius(16)
+        .build()
     }
 
+}
+
+struct DLSCard: ViewBuilder {
+    
+    let content: () -> ViewConvertable
+    
+    init(@ViewResultBuilder _ content: @escaping () -> ViewConvertable) {
+        self.content = content
+    }
+    
+    func build() -> View {
+        ContainerView {
+            ContainerView {
+                content()
+            }
+            .backgroundColor(.systemBackground)
+            .cornerRadius(16)
+            .border(color: .lightGray)
+        }
+        .backgroundColor(.systemBackground)
+        .cornerRadius(16)
+        .shadow(color: .black, radius: 4, opacity: 0.2, offset: CGSize(width: 3, height: 3))
+    }
 }
 
 struct DetailPhotoView: ViewBuilder {
