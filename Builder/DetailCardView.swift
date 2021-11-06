@@ -20,22 +20,22 @@ struct DetailCardView: ViewBuilder {
     func build() -> View {
         DLSCard {
             VStackView {
-                DetailPhotoView(photo: viewModel.photo(), name: viewModel.fullname)
+                DetailPhotoBuilder(photo: viewModel.photo(), name: viewModel.fullname)
                 
                 VStackView {
-                    NameValueView(name: "Address", value: viewModel.street)
-                    NameValueView(name: "", value: viewModel.cityStateZip)
+                    NameValueBuilder(name: "Address", value: viewModel.street)
+                    NameValueBuilder(name: "", value: viewModel.cityStateZip)
                     SpacerView(16)
-                    NameValueView(name: "Email", value: viewModel.email)
-                    NameValueView(name: "Phone1", value: viewModel.phone)
+                    NameValueBuilder(name: "Email", value: viewModel.email)
+                    NameValueBuilder(name: "Phone1", value: viewModel.phone)
                     SpacerView(16)
-                    NameValueView(name: "Age", value: viewModel.age)
+                    NameValueBuilder(name: "Age", value: viewModel.age)
                 }
                 .spacing(2)
                 .padding(20)
             }
         }
-        .build()
+        .build() // required on an outermost ViewBuilder to return it as view
     }
 
 }
@@ -63,7 +63,7 @@ struct DLSCard: ViewBuilder {
     }
 }
 
-struct DetailPhotoView: ViewBuilder {
+struct DetailPhotoBuilder: ViewBuilder {
     
     let photo: Observable<UIImage?>
     let name: String
@@ -87,7 +87,7 @@ struct DetailPhotoView: ViewBuilder {
     }
 }
 
-struct NameValueView: ViewBuilder {
+struct NameValueBuilder: ViewBuilder {
 
     let name: String?
     let value: String?
