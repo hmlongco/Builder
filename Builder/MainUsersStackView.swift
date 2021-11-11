@@ -17,7 +17,7 @@ import Resolver
 import RxSwift
 
 
-struct MainUsersStackView: ViewBuilder {
+struct MainUsersStackBuilder: ViewBuilder {
     
     let users: [User]
     

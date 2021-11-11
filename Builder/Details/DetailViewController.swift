@@ -38,7 +38,7 @@ class DetailViewController: UIViewController {
         ContainerView {
             VerticalScrollView {
                 VStackView {
-                    DetailCardView(user: viewModel.user)
+                    DetailCardBuilder(user: viewModel.user)
                     
                     HStackView {
                         LabelView("Accept Terms")

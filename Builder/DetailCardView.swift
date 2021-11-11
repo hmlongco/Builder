@@ -9,7 +9,7 @@ import UIKit
 import Resolver
 import RxSwift
 
-struct DetailCardView: ViewBuilder {    
+struct DetailCardBuilder: ViewBuilder {    
 
     @Injected var viewModel: DetailViewModel
 
@@ -18,7 +18,7 @@ struct DetailCardView: ViewBuilder {
     }
 
     func build() -> View {
-        DLSCard {
+        DLSCardBuilder {
             VStackView {
                 DetailPhotoBuilder(photo: viewModel.photo(), name: viewModel.fullname)
                 
@@ -40,7 +40,7 @@ struct DetailCardView: ViewBuilder {
 
 }
 
-struct DLSCard: ViewBuilder {
+struct DLSCardBuilder: ViewBuilder {
     
     let content: () -> ViewConvertable
     

@@ -180,8 +180,6 @@ extension UIView {
         return self
     }
 
-    // standard attributes
-
     @discardableResult
     public func translatesAutoresizingMaskIntoConstraints(_ translate: Bool) -> Self {
         self.translatesAutoresizingMaskIntoConstraints = translate
