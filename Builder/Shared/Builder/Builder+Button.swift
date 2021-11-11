@@ -1,6 +1,6 @@
 //
 //  Builder+Button
-//  ViewHelpers
+//  ViewBuilder
 //
 //  Created by Michael Long on 10/29/19.
 //  Copyright © 2019 Michael Long. All rights reserved.
@@ -11,129 +11,105 @@ import RxSwift
 import RxCocoa
 
 
-class ButtonView: UIButton {
+public struct ButtonView: ModifiableView {
     
-    struct Context: ViewBuilderContextProvider {
-        var view: ButtonView
+    public struct Context: ViewBuilderContextProvider {
+        var view: UIButton
     }
     
-    struct Style {
-        let style: (_ button: ButtonView) -> ()
+    public struct Style {
+        let style: (_ button: ViewModifier<UIButton>) -> ()
     }
 
+    public let modifiableView = Modified(UIButton()) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setTitleColor(ViewBuilderEnvironment.defaultButtonColor ?? $0.tintColor, for: .normal)
+        $0.titleLabel?.font = ViewBuilderEnvironment.defaultButtonFont ?? .preferredFont(forTextStyle: .headline)
+        $0.setContentHuggingPriority(.required, for: .horizontal)
+    }
+    
+    // lifecycle
     public init(_ title: String? = nil) {
-        super.init(frame: .zero)
-        self.setTitle(title, for: .normal)
-        common()
+        modifiableView.setTitle(title, for: .normal)
     }
-
-    public init(_ title: String? = nil, configuration: (_ view: ButtonView) -> Void) {
-        super.init(frame: .zero)
-        self.setTitle(title, for: .normal)
-        common()
-        configuration(self)
-    }
-
-    required public init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    public func common() {
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.setTitleColor(ViewBuilderEnvironment.defaultButtonColor ?? tintColor, for: .normal)
-        self.titleLabel?.font = ViewBuilderEnvironment.defaultButtonFont ?? .preferredFont(forTextStyle: .headline)
-        self.setContentHuggingPriority(.required, for: .horizontal)
-    }
-
-    // attributes
-
-    @discardableResult
-    public func alignment(_ alignment: UIControl.ContentHorizontalAlignment) -> Self {
-        self.contentHorizontalAlignment = alignment
-        return self
-    }
-
-    @discardableResult
-    public func buttonBackgroundColor(_ color: UIColor) -> Self {
-        self.setBackgroundImage(UIImage(color: color), for: .normal)
-        return self
-    }
-
-    @discardableResult
-    public func color(_ color: UIColor, for state: UIControl.State = .normal) -> Self {
-        self.setTitleColor(color, for: state)
-        return self
-    }
-
-    @discardableResult
-    public func enabled(_ enabled: Bool) -> Self {
-        self.isEnabled = enabled
-        return self
-    }
-
-    @discardableResult
-    public func font(_ font: UIFont?) -> Self {
-        self.titleLabel?.font = font
-        return self
-    }
-
-    @discardableResult
-    public func font(_ style: UIFont.TextStyle) -> Self {
-        self.titleLabel?.font = .preferredFont(forTextStyle: style)
-        return self
-    }
-
-    @discardableResult
-    public func onTap(_ handler: @escaping (_ context: Context) -> Void) -> Self {
-        self.rx.tap
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .subscribe(onNext: { [unowned self] () in handler(Context(view: self)) })
-            .disposed(by: rxDisposeBag)
-        return self
-    }
-
-    @discardableResult
-    public func reference(_ reference: inout ButtonView?) -> Self {
-        reference = self
-        return self
-    }
-
-    @discardableResult
-    public func style(_ style: Style) -> Self {
-        style.style(self)
-        return self
-    }
-
-    @discardableResult
-    public func with(_ configuration: (_ view: ButtonView) -> Void) -> Self {
-        configuration(self)
-        return self
-    }
-
-}
-
-extension ButtonView {
     
-    @discardableResult
-    public func enabled<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == Bool {
-        rxBinding(binding, view: self) { $0.isEnabled = $1 }
-        return self
-    }
-
-    @discardableResult
-    public func selected<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == Bool {
-        rxBinding(binding, view: self) { $0.isSelected = $1 }
-        return self
+    // deprecated
+    public init(_ title: String? = nil, configuration: (_ view: Base) -> Void) {
+        modifiableView.setTitle(title, for: .normal)
+        configuration(modifiableView)
     }
 
 }
 
-extension ButtonView: ViewBuilderPaddable {
+
+// Custom UIImageView modifiers
+extension ModifiableView where Base: UIButton {
 
     @discardableResult
-    public func padding(insets: UIEdgeInsets) -> Self {
-        self.contentEdgeInsets = insets
-        return self
+    public func alignment(_ alignment: UIControl.ContentHorizontalAlignment) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.contentHorizontalAlignment, value: alignment)
+    }
+
+    @discardableResult
+    public func buttonBackgroundColor(_ color: UIColor) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { $0.setBackgroundImage(UIImage(color: color), for: .normal) }
+    }
+
+    @discardableResult
+    public func color(_ color: UIColor, for state: UIControl.State = .normal) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { $0.setTitleColor(color, for: state) }
+    }
+
+    @discardableResult
+    public func enabled(_ enabled: Bool) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.isEnabled, value: enabled)
+    }
+
+    @discardableResult
+    public func font(_ font: UIFont?) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { $0.titleLabel?.font = font }
+    }
+
+    @discardableResult
+    public func font(_ style: UIFont.TextStyle) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { $0.titleLabel?.font = .preferredFont(forTextStyle: style) }
+    }
+
+    @discardableResult
+    public func onTap(_ handler: @escaping (_ context: ButtonView.Context) -> Void) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { [unowned modifiableView] view in
+            view.rx.tap
+                .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+                .subscribe(onNext: { () in handler(ButtonView.Context(view: modifiableView)) })
+                .disposed(by: view.rxDisposeBag)
+        }
+    }
+
+    @discardableResult
+    public func style(_ style: ButtonView.Style) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { style.style(ViewModifier($0)) }
+    }
+
+}
+
+extension ModifiableView where Base: UIButton {
+
+    @discardableResult
+    public func enabled<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == Bool {
+        ViewModifier(modifiableView, binding: binding) { $0.isEnabled = $1 }
+    }
+
+    @discardableResult
+    public func selected<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == Bool {
+        ViewModifier(modifiableView, binding: binding) { $0.isSelected = $1 }
+    }
+
+}
+
+extension UIButton: ViewBuilderPaddable {
+    
+    public func setPadding(_ padding: UIEdgeInsets) {
+        self.contentEdgeInsets = padding
     }
 
 }

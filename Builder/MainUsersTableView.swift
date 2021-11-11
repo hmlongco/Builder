@@ -38,7 +38,7 @@ struct MainUsersTableView: ViewBuilder {
 
 
 struct MainCardBuilder: ViewBuilder {
-    
+        
     @Injected var cache: UserImageCache
     
     let user: User

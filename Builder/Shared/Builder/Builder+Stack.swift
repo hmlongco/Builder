@@ -1,81 +1,114 @@
 //
-//  StackBuilder.swift
-//  ViewHelpers
+//  Builder+StackView.swift
+//  ViewBuilder
 //
-//  Created by Michael Long on 10/29/19.
-//  Copyright © 2019 Michael Long. All rights reserved.
+//  Created by Michael Long on 11/8/21.
 //
 
 import UIKit
 import RxSwift
 
-class VStackView: UIStackView {
 
+public struct HStackView: ModifiableView {
+    
+    public let modifiableView = Modified(ViewBuilderInternalUIStackView()) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.axis = .horizontal
+        $0.distribution = .fill
+        $0.alignment = .fill
+        $0.spacing = UIStackView.spacingUseSystem
+    }
+    
+    // lifecycle
+    public init(@ViewResultBuilder _ builder: () -> ViewConvertable) {
+        builder().asViews().forEach { modifiableView.addArrangedSubview($0) }
+    }
+    
     public init(_ convertableViews: [ViewConvertable]) {
-        super.init(frame: .zero)
-        self.commonSetup(axis: .vertical)
-        self.addArrangedSubviews(convertableViews.asViews())
-    }
+        convertableViews.asViews().forEach { modifiableView.addArrangedSubview($0) }
+     }
 
-    convenience public init(_ builder: AnyIndexableViewBuilder) {
-        self.init(builder.asViews())
+    public init(_ builder: AnyIndexableViewBuilder) {
         subscribe(to: builder)
     }
+    
+}
 
-    convenience public init(@ViewResultBuilder _ builder: () -> ViewConvertable) {
-        self.init(builder().asViews())
+public struct VStackView: ModifiableView {
+    
+    public let modifiableView = Modified(ViewBuilderInternalUIStackView()) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.axis = .vertical
+        $0.distribution = .fill
+        $0.alignment = .fill
+        $0.spacing = UIStackView.spacingUseSystem
     }
+    
+    // lifecycle
+    public init(@ViewResultBuilder _ builder: () -> ViewConvertable) {
+        builder().asViews().forEach { modifiableView.addArrangedSubview($0) }
+    }
+    
+    public init(_ convertableViews: [ViewConvertable]) {
+        convertableViews.asViews().forEach { modifiableView.addArrangedSubview($0) }
+     }
 
-    required public init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    public init(_ builder: AnyIndexableViewBuilder) {
+        subscribe(to: builder)
     }
 
 }
 
-class HStackView: UIStackView {
-
-   public init(_ convertableViews: [ViewConvertable]) {
-        super.init(frame: .zero)
-        self.commonSetup(axis: .horizontal)
-        self.addArrangedSubviews(convertableViews.asViews())
-    }
-
-    convenience public init(_ builder: AnyIndexableViewBuilder) {
-        self.init(builder.asViews())
-        subscribe(to: builder)
-    }
-
-    convenience public init(@ViewResultBuilder _ builder: () -> ViewConvertable) {
-        self.init(builder().asViews())
-    }
-
-    required public init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-}
-
-extension UIStackView: ViewBuilderPaddable {
-
+extension ModifiableView where Base: UIStackView {
+    
     @discardableResult
-    public func padding(insets: UIEdgeInsets) -> Self {
-        self.layoutMargins = insets
-        self.isLayoutMarginsRelativeArrangement = true
-        return self
+    public func alignment(_ alignment: UIStackView.Alignment) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.alignment, value: alignment)
+    }
+        
+    @discardableResult
+    public func distribution(_ distribution: UIStackView.Distribution) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.distribution, value: distribution)
+    }
+    
+    @discardableResult
+    public func spacing(_ spacing: CGFloat) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.spacing, value: spacing)
+    }
+    
+    @discardableResult
+    func subscribe(to builder: AnyIndexableViewBuilder) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            // set initial views and...
+            modifiableView.reset(to: builder.asViews())
+            // subscribe for updates
+            builder.updated?
+                .observe(on: MainScheduler.instance)
+                .subscribe(onNext: { [weak modifiableView] views in
+                    modifiableView?.reset(to: builder.asViews())
+                })
+                .disposed(by: $0.rxDisposeBag)
+        }
     }
 
+}
+
+// Custom UIStackView modifiers
+extension UIStackView: ViewBuilderPaddable {
+    
+    public func setPadding(_ padding: UIEdgeInsets) {
+        isLayoutMarginsRelativeArrangement = true
+        layoutMargins = padding
+    }
+    
 }
 
 extension UIStackView {
     
-    fileprivate func commonSetup(axis: NSLayoutConstraint.Axis) {
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.axis = axis
-        self.alignment = .fill
-        self.distribution = .fill
-        self.spacing = UIStackView.spacingUseSystem
+    public func addArrangedSubview(_ view: View) {
+        addArrangedSubview(view.asUIView())
     }
-            
+    
     public func addArrangedSubviews(_ views: View?...) {
         self.addArrangedSubviews(views)
     }
@@ -97,50 +130,11 @@ extension UIStackView {
         empty()
         addArrangedSubviews(views)
     }
-        
-    // custom attributes
+}
 
-    @discardableResult
-    public func alignment(_ alignment: Alignment) -> Self {
-        self.alignment = alignment
-        return self
-    }
 
-    @discardableResult
-    public func distribution(_ distribution: Distribution) -> Self {
-        self.distribution = distribution
-        return self
-    }
-
-    @discardableResult
-    public func spacing(_ spacing: CGFloat) -> Self {
-        self.spacing = spacing
-        return self
-    }
-
-    @discardableResult
-    func subscribe(to builder: AnyIndexableViewBuilder) -> Self {
-        builder.updated?
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] views in
-                self?.reset(to: builder.asViews())
-            })
-            .disposed(by: rxDisposeBag)
-        return self
-    }
-    
-    // standard attributes
-    
-    @discardableResult
-    public func reference(_ reference: inout UIStackView?) -> Self {
-        reference = self
-        return self
-    }
-
-    @discardableResult
-    public func with(_ configuration: (_ view: UIStackView) -> Void) -> Self {
-        configuration(self)
-        return self
-    }
-
+public class ViewBuilderInternalUIStackView: UIStackView {
+//    deinit {
+//        print("deinit ViewBuilderInternalUIStackView")
+//    }
 }

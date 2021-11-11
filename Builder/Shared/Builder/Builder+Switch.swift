@@ -1,88 +1,71 @@
 //
-//  Builder+Switch
-//  ViewHelpers
+//  Builder+Switch.swift
+//  ViewBuilder
 //
-//  Created by Michael Long on 10/29/19.
-//  Copyright © 2019 Michael Long. All rights reserved.
+//  Created by Michael Long on 11/9/21.
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
 
-class SwitchView: UISwitch {
 
-    public init(_ isOn: Bool = true, configuration: (_ view: SwitchView) -> Void) {
-        super.init(frame: .zero)
-        self.isOn = isOn
-        common()
-        configuration(self)
+// Custom builder fot UILabel
+public struct SwitchView: ModifiableView {
+    
+    public let modifiableView: UISwitch = Modified(UISwitch()) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.onTintColor = ViewBuilderEnvironment.defaultButtonColor
+    }
+    
+    // lifecycle
+    public init(_ isOn: Bool = true) {
+        modifiableView.isOn = isOn
     }
     
     public init<Binding:RxBinding>(_ binding: Binding) where Binding.T == Bool {
-        super.init(frame: .zero)
-        common()
-        self.value(bind: binding)
+        isOn(bind: binding)
     }
     
     public init<Binding:RxBidirectionalBinding>(_ binding: Binding) where Binding.T == Bool {
-        super.init(frame: .zero)
-        common()
-        self.value(bidirectionalBind: binding)
+        isOn(bidirectionalBind: binding)
     }
+    
+}
 
-    required public init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
-    public func common() {
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.onTintColor = ViewBuilderEnvironment.defaultButtonColor
+// Custom UILabel modifiers
+extension ModifiableView where Base: UISwitch {
+    
+    @discardableResult
+    public func isOn<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == Bool {
+        ViewModifier(modifiableView, binding: binding, keyPath: \.isOn)
     }
     
     @discardableResult
-    public func value<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == Bool {
-        rxBinding(binding, view: self) { $0.isOn = $1 }
-        return self
-    }
-
-    @discardableResult
-    public func value<Binding:RxBidirectionalBinding>(bidirectionalBind binding: Binding) -> Self where Binding.T == Bool {
-        rxBinding(binding, view: self) { $0.isOn = $1 }
-        rx.isOn
+    public func isOn<Binding:RxBidirectionalBinding>(bidirectionalBind binding: Binding) -> ViewModifier<Base> where Binding.T == Bool {
+        let modifier = ViewModifier(modifiableView, binding: binding, keyPath: \.isOn)
+        modifiableView.rx.isOn
             .changed
             .bind(to: binding.relay)
-            .disposed(by: rxDisposeBag)
-        return self
+            .disposed(by: modifiableView.rxDisposeBag)
+        return modifier
     }
-
+    
     @discardableResult
-    public func onChange(_ handler: @escaping (_ isOn: Bool) -> Void) -> Self {
-        rx.isOn
-            .changed
-            .subscribe(onNext: { isOn in
-                handler(isOn)
-            })
-            .disposed(by: rxDisposeBag)
-        return self
+    public func onTintColor(_ color: UIColor?) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.onTintColor, value: color)
     }
-
+        
     @discardableResult
-    public func onTintColor(_ color: UIColor) -> Self {
-        self.onTintColor = color
-        return self
+    public func onChange(_ handler: @escaping (_ isOn: Bool) -> Void) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.rx.isOn
+                .changed
+                .subscribe(onNext: { isOn in
+                    handler(isOn)
+                })
+                .disposed(by: $0.rxDisposeBag)
+        }
     }
 
-    @discardableResult
-    public func reference(_ reference: inout SwitchView?) -> Self {
-        reference = self
-        return self
-    }
-
-    @discardableResult
-    public func with(_ configuration: (_ view: SwitchView) -> Void) -> Self {
-        configuration(self)
-        return self
-    }
-
+    
 }

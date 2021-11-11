@@ -9,13 +9,13 @@
 import UIKit
 import RxSwift
 
-protocol AnyIndexableViewBuilder: ViewConvertable {
+public protocol AnyIndexableViewBuilder: ViewConvertable {
     var count: Int { get }
-    var updated: PublishSubject<Any?>? { get }
+    var updated: PublishSubject<Void>? { get }
     func view(at index: Int) -> View?
 }
 
-struct StaticViewBuilder: AnyIndexableViewBuilder {
+public struct StaticViewBuilder: AnyIndexableViewBuilder {
 
     private var views: [View]
 
@@ -23,50 +23,50 @@ struct StaticViewBuilder: AnyIndexableViewBuilder {
         self.views = views().asViews()
     }
 
-    var count: Int { views.count }
-    var updated: PublishSubject<Any?>?
+    public var count: Int { views.count }
+    public var updated: PublishSubject<Void>?
 
-    func view(at index: Int) -> View? {
+    public func view(at index: Int) -> View? {
         guard views.indices.contains(index) else { return nil }
         return views[index]
     }
 
-    func asViews() -> [View] {
+    public func asViews() -> [View] {
         views
     }
 
 }
 
-class DynamicItemViewBuilder<Item>: AnyIndexableViewBuilder {
+public class DynamicItemViewBuilder<Item>: AnyIndexableViewBuilder {
 
-    var items: [Item] {
+    public var items: [Item] {
         didSet {
-            updated?.onNext(self)
+            updated?.onNext(())
         }
     }
 
-    var count: Int { items.count }
-    var updated: PublishSubject<Any?>? = PublishSubject<Any?>()
+    public var count: Int { items.count }
+    public var updated: PublishSubject<Void>? = PublishSubject()
 
-    private let builder: (_ item: Item) -> ViewBuilder?
+    private let builder: (_ item: Item) -> View?
 
-    public init(_ items: [Item]?, builder: @escaping (_ item: Item) -> ViewBuilder?) {
+    public init(_ items: [Item]?, builder: @escaping (_ item: Item) -> View?) {
         self.items = items ?? []
         self.builder = builder
     }
 
-    func item(at index: Int) -> Item? {
+    public func item(at index: Int) -> Item? {
         guard items.indices.contains(index) else { return nil }
         return items[index]
     }
 
-    func view(at index: Int) -> View? {
+    public func view(at index: Int) -> View? {
         guard let item = item(at: index) else { return nil }
-        return builder(item)?.build()
+        return builder(item)
     }
 
     public func asViews() -> [View] {
-        return items.compactMap { self.builder($0)?.build() }
+        return items.compactMap { self.builder($0) }
     }
 
 }

@@ -20,19 +20,19 @@ extension UIViewController {
 //        self.view.embed(view, padding: padding, safeArea: safeArea)
 //    }
     
-    convenience public init(_ builder: ViewBuilder, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+    convenience public init(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         self.init()
         if #available(iOS 13, *) {
             self.view.backgroundColor = .systemBackground
         } else {
             self.view.backgroundColor = .white
         }
-        self.view.embed(builder.build(), padding: padding, safeArea: safeArea)
+        self.view.embed(view.asUIView(), padding: padding, safeArea: safeArea)
     }
     
-    public func transtion(to page: ViewBuilder, position: UIView.EmbedPosition = .fill, padding: UIEdgeInsets? = nil,
+    public func transtion(to page: View, position: UIView.EmbedPosition = .fill, padding: UIEdgeInsets? = nil,
                           safeArea: Bool = false, delay: Double = 0.2) {
-        view.transtion(to: page, position: position, padding: padding, safeArea: safeArea, delay: delay)
+        view.transtion(to: page, padding: padding, safeArea: safeArea, delay: delay)
     }
 
 }

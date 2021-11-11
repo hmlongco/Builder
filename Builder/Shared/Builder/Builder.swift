@@ -2,14 +2,11 @@
 //  Builder.swift
 //  ViewBuilder
 //
-//  Created by Michael Long on 9/26/20.
-//  Copyright © 2020 Michael Long. All rights reserved.
+//  Created by Michael Long on 11/8/21.
 //
 
 import UIKit
 
-
-public typealias View = UIView
 
 
 // ViewResultBuilder allows SwiftUI-like definitions of UIView trees
@@ -41,39 +38,86 @@ public protocol ViewConvertable {
     func asViews() -> [View]
 }
 
-// Allows an array of views to be passed to ViewResultBuilder
+// Allows an array of views to be used with ViewResultBuilder
 extension Array: ViewConvertable where Element == View {
     public func asViews() -> [View] { self }
 }
 
-// Allows an array of an array of views to be passed to ViewResultBuilder
+// Allows an array of an array of views to be used with ViewResultBuilder
 extension Array where Element == ViewConvertable {
     public func asViews() -> [View] { self.flatMap { $0.asViews() } }
 }
 
-// Converts a single view to an array of views[s], again for ViewResultBuilder
-extension View: ViewConvertable {
-    public func asViews() -> [View] { [self] }
-}
-
-
-
-// Allows users to constructs their own view components
-public protocol ViewBuilder: ViewConvertable {
-    func build() -> View
-}
-
-// Allows view builders to coexist with views when passed to view function builders
-extension ViewBuilder {
+// Allow views to be automatically be ViewConvertable
+extension View {
     public func asViews() -> [View] {
-        return [build()]
+        [asUIView()]
     }
 }
 
-// Allows any view to be passed to a function expecting a builder
-extension View: ViewBuilder {
-    public func build() -> View {
-        return self
+
+
+// Fundamental view object that knows how to convert a "view" to a UIView
+public protocol View: ViewConvertable {
+    func asUIView() -> UIView
+}
+
+// Allows modifications to be made to a given view type
+public protocol ModifiableView: View {
+    associatedtype Base: UIView
+    var modifiableView: Base { get }
+}
+
+// Standard "builder" modifiers for all view types
+extension ModifiableView {
+    public func asUIView() -> UIView {
+        modifiableView
+    }
+    public func reference(_ view: inout Base) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { view = $0 }
+    }
+    public func with(_ modifier: (_ view: Base) -> Void) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, modifier: modifier)
+    }
+}
+
+// Generic return type for building/chaining view modifiers
+public struct ViewModifier<Base:UIView>: ModifiableView {
+    public let modifiableView: Base
+    public init(_ view: Base) {
+        self.modifiableView = view
+    }
+    public init(_ view: Base, modifier: (_ view: Base) -> Void) {
+        self.modifiableView = view
+        modifier(view)
+    }
+    public init<Value>(_ view: Base, keyPath: ReferenceWritableKeyPath<Base, Value>, value: Value) {
+        self.modifiableView = view
+        self.modifiableView[keyPath: keyPath] = value
+    }
+}
+
+// Helper function to simplify custom view builder initialization
+public func Modified<T:AnyObject>( _ instance: T, modify: (_ instance: T) -> Void) -> T {
+    modify(instance)
+    return instance
+}
+
+
+
+// ViewBuilder allows for user-defined custom view configurations
+public protocol ViewBuilder: ModifiableView {
+    func build() -> View
+}
+
+extension ViewBuilder {
+    // adapt viewbuilder to enable basic modifications
+    public var modifiableView: UIView {
+        build().asUIView()
+    }
+    // allow basic conversion to UIView
+    public func asUIView() -> UIView {
+        build().asUIView()
     }
 }
 

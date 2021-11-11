@@ -9,11 +9,20 @@ import UIKit
 
 extension UIView {
     
-    func embed(_ builder: ViewBuilder, position: EmbedPosition, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
-        addSubview(builder.build(), position: position, padding: padding ?? .zero, safeArea: safeArea)
+    
+    func embed(_ view: UIView, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+        self.addConstrainedSubview(view, position: .fill, padding: padding ?? .zero, safeArea: safeArea)
     }
 
-    public func addSubview(_ view: UIView, position: EmbedPosition, padding: UIEdgeInsets, safeArea: Bool = false) {
+    func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+        self.addConstrainedSubview(view.asUIView(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
+    }
+
+    func embed(in view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+        view.asUIView().addConstrainedSubview(self, position: .fill, padding: padding ?? .zero, safeArea: safeArea)
+    }
+
+    public func addConstrainedSubview(_ view: UIView, position: EmbedPosition, padding: UIEdgeInsets, safeArea: Bool = false) {
         view.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(view)
@@ -73,8 +82,8 @@ extension UIView {
     }
 
     // deprecated
-    public func addSubviewWithConstraints(_ view: ViewBuilder, _ padding: UIEdgeInsets?, _ safeArea: Bool) {
-        addSubview(view.build(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
+    public func addSubviewWithConstraints(_ view: View, _ padding: UIEdgeInsets?, _ safeArea: Bool) {
+        addConstrainedSubview(view.asUIView(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
     }
     
 }

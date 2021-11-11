@@ -23,15 +23,6 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         title = viewModel.title
         setupSubscriptions()
-        
-        
-//        testLayout()
-        
-//        let view = UIView()
-//            .backgroundColor(.red)
-//            .height(50)
-//            .width(50)
-//        self.view.embed(view, position: .centerRight, padding: UIEdgeInsets(padding: 20))
     }
 
     func setupSubscriptions() {
@@ -45,6 +36,7 @@ class MainViewController: UIViewController {
                 case .loading:
                     self.transtion(to: StandardLoadingPage())
                 case .loaded(let users):
+//                    self.transtion(to: MainUsersStackBuilder(users: users))
                     self.transtion(to: MainUsersTableView(users: users))
                 case .empty(let message):
                     self.transtion(to: StandardEmptyPage(message: message))
@@ -56,13 +48,13 @@ class MainViewController: UIViewController {
     }
     
     func testLayout() {
-        for p in UIView.EmbedPosition.allCases where p != .fill {
-            let view = UIView()
-                .backgroundColor(.red)
-                .height(50)
-                .width(50)
-            self.view.embed(view, position: p, padding: UIEdgeInsets(padding: 20))
-        }
+//        for p in UIView.EmbedPosition.allCases where p != .fill {
+//            let view = UIView()
+//                .backgroundColor(.red)
+//                .height(50)
+//                .width(50)
+//            self.view.embed(view, position: p, padding: UIEdgeInsets(padding: 20))
+//        }
     }
     
 }

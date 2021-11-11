@@ -9,8 +9,8 @@ import UIKit
 import RxSwift
 
 protocol ViewBuilderContextProvider {
-    associatedtype View: UIView
-    var view: View { get }
+    associatedtype Base: UIView
+    var view: Base { get }
 }
 
 extension ViewBuilderContextProvider {
@@ -28,16 +28,16 @@ extension ViewBuilderContextProvider {
         view.rxDisposeBag
     }
     
-    func present(_ builder: ViewBuilder, animated: Bool = true) {
-        navigationController?.present(UIViewController(builder), animated: animated)
+    func present(_ view: View, animated: Bool = true) {
+        navigationController?.present(UIViewController(view.asUIView()), animated: animated)
     }
     
     func present<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
         viewController?.present(vc, configure: configure)
     }
 
-    func push(_ builder: ViewBuilder, animated: Bool = true) {
-        navigationController?.pushViewController(UIViewController(builder), animated: animated)
+    func push(_ view: View, animated: Bool = true) {
+        navigationController?.pushViewController(UIViewController(view.asUIView()), animated: animated)
     }
 
     func push<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
@@ -46,8 +46,8 @@ extension ViewBuilderContextProvider {
     
 }
 
-struct ViewBuilderContext<View:UIView>: ViewBuilderContextProvider {
-    var view: View
+struct ViewBuilderContext<Base:UIView>: ViewBuilderContextProvider {
+    var view: Base
 }
 
 extension UIView {

@@ -8,35 +8,42 @@
 
 import UIKit
 
-class ScrollView: UIScrollView {
 
-    convenience public init(_ view: View?, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
-        self.init(frame: .zero)
-        if let view = view {
-            self.embed(view, padding: padding, safeArea: safeArea)
-        }
+public struct ScrollView: ModifiableView {
+    
+    public var modifiableView = Modified(UIScrollView(frame: UIScreen.main.bounds)) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    convenience public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewResultBuilder _ builder: () -> ViewConvertable) {
-        self.init(frame: .zero)
-        builder().asViews().forEach { self.embed($0, padding: padding, safeArea: safeArea) }
+    public init(_ view: View?, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+        guard let view = view else { return }
+        modifiableView.embed(view, padding: padding, safeArea: safeArea)
     }
 
-    @discardableResult
-    public func reference(_ reference: inout UIScrollView?) -> Self {
-        reference = self
-        return self
-    }
-
-    @discardableResult
-    public func with(_ configuration: (_ view: UIScrollView) -> Void) -> Self {
-        configuration(self)
-        return self
+    public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewResultBuilder _ builder: () -> ViewConvertable) {
+        builder().asViews().forEach { modifiableView.embed($0, padding: padding, safeArea: safeArea) }
     }
 
 }
 
-class VerticalScrollView: ScrollView {
+public struct VerticalScrollView: ModifiableView {
+    
+    public var modifiableView: UIScrollView = Modified(ViewBuilderVerticalScrollView(frame: UIScreen.main.bounds)) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    public init(_ view: View?, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+        guard let view = view else { return }
+        modifiableView.embed(view, padding: padding, safeArea: safeArea)
+    }
+
+    public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewResultBuilder _ builder: () -> ViewConvertable) {
+        builder().asViews().forEach { modifiableView.embed($0, padding: padding, safeArea: safeArea) }
+    }
+
+}
+
+fileprivate class ViewBuilderVerticalScrollView: UIScrollView {
 
     var initialized = false
     

@@ -1,6 +1,6 @@
 //
 //  Builder+Variable.swift
-//  Builder
+//  ViewBuilder
 //
 //  Created by Michael Long on 10/23/21.
 //
@@ -14,51 +14,60 @@ import RxCocoa
     
     public var relay: BehaviorRelay<T>
     
-    public init(wrappedValue: T) {
-        self.relay = BehaviorRelay<T>(value: wrappedValue)
+    public init(_ relay: BehaviorRelay<T>) {
+        self.relay = relay
     }
     
     public var wrappedValue: T {
         get { return relay.value }
-        set { relay.accept(newValue) }
+        nonmutating set { relay.accept(newValue) }
     }
     
     public var projectedValue: Variable<T> {
         get { return self }
-        mutating set { self = newValue }
     }
+    
+    public mutating func reset() {
+        relay = BehaviorRelay(value: relay.value)
+    }
+    
+}
+
+extension Variable {
+    
+    init(wrappedValue: T) {
+        self.relay = BehaviorRelay<T>(value: wrappedValue)
+    }
+    
+}
+
+extension Variable where T:Equatable {
+    
+    public func onChange(_ observer: @escaping (_ value: T) -> ()) -> Disposable {
+        relay
+//            .debug()
+            .skip(1)
+            .distinctUntilChanged()
+            .subscribe { observer($0) }
+    }
+
+//    public func onChange(_ bag: DisposeBag, _ observer: @escaping (_ value: T) -> ()) {
+//        onChange(observer)
+//            .disposed(by: bag)
+//    }
+
+}
+
+extension Variable: RxBinding {
     
     public func asObservable() -> Observable<T> {
         return relay.asObservable()
     }
-
+    
     public func bind(_ observable: Observable<T>) -> Disposable {
         return observable.bind(to: relay)
     }
-
-}
-
-public protocol RxBinding {
-    associatedtype T
-    func asObservable() -> Observable<T>
-}
-
-extension Observable: RxBinding {
-    // previously defined
-}
-
-extension Variable: RxBinding {
-    // previously defined
-}
-
-
-public protocol RxBidirectionalBinding: RxBinding {
-    associatedtype T
-    var relay: BehaviorRelay<T> { get }
-}
-
-extension BehaviorRelay: RxBidirectionalBinding {
-    public var relay: BehaviorRelay<Element> { self }
+        
 }
 
 extension Variable: RxBidirectionalBinding {
@@ -66,3 +75,16 @@ extension Variable: RxBidirectionalBinding {
 }
 
 
+//struct A: ViewBuilder {
+//    @Variable var name = "Michael"
+//    func build() -> View {
+//        B(name: $name)
+//    }
+//}
+//
+//struct B: ViewBuilder  {
+//    @Variable var name: String
+//    func build() -> View {
+//         LabelView(name)
+//    }
+//}

@@ -1,47 +1,38 @@
 //
 //  Builder+Padding.swift
-//  Builder
+//  ViewBuilder
 //
-//  Created by Michael Long on 8/16/21.
+//  Created by Michael Long on 11/9/21.
 //
 
 import UIKit
 
 
-protocol ViewBuilderPaddable {
-    
-    func padding(insets: UIEdgeInsets) -> Self
-    
-}
-
-extension ViewBuilderPaddable {
-    
-    @discardableResult
-    func padding(_ value: CGFloat) -> Self {
-        return padding(insets: UIEdgeInsets(top: value, left: value, bottom: value, right: value))
-    }
-    
-    @discardableResult
-    func padding(h: CGFloat, v: CGFloat) -> Self {
-        return padding(insets: UIEdgeInsets(top: v, left: h, bottom: v, right: h))
-    }
-    
-    @discardableResult
-    func padding(top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) -> Self {
-        return padding(insets: UIEdgeInsets(top: top, left: left, bottom: bottom, right: right))
-    }
-
+public protocol ViewBuilderPaddable {
+    func setPadding(_ padding: UIEdgeInsets)
 }
 
 
-extension UIEdgeInsets {
+extension ModifiableView where Base: ViewBuilderPaddable {
     
-    public init(padding: CGFloat) {
-        self.init(top: padding, left: padding, bottom: padding, right: padding)
+    @discardableResult
+    public func padding(_ value: CGFloat) -> ViewModifier<Base> {
+        padding(insets: UIEdgeInsets(top: value, left: value, bottom: value, right: value))
     }
     
-    public init(h: CGFloat, v: CGFloat) {
-        self.init(top: v, left: h, bottom: v, right: h)
+    @discardableResult
+    public func padding(h: CGFloat, v: CGFloat) -> ViewModifier<Base> {
+        padding(insets: UIEdgeInsets(top: v, left: h, bottom: v, right: h))
+    }
+    
+    @discardableResult
+    public func padding(top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) -> ViewModifier<Base> {
+        padding(insets: UIEdgeInsets(top: top, left: left, bottom: bottom, right: right))
+    }
+    
+    @discardableResult
+    public func padding(insets: UIEdgeInsets) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { $0.setPadding(insets) }
     }
     
 }

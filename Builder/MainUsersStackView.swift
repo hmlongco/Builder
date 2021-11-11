@@ -25,7 +25,6 @@ struct MainUsersStackBuilder: ViewBuilder {
         VerticalScrollView {
             VStackView(DynamicItemViewBuilder(users) { user in
                 StackCardBuilder(user: user)
-                    .build()
                     .backgroundColor(.secondarySystemBackground)
                     .cornerRadius(8)
                     .onTapGesture { context in

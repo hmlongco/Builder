@@ -9,17 +9,57 @@
 import UIKit
 import RxSwift
 
-class ContainerView: UIView, ViewBuilderPaddable {
-
-    private var onAppearHandler: ((_ container: ContainerView) -> Void)?
-    private var onDisappearHandler: ((_ container: ContainerView) -> Void)?
+public struct ContainerView: ModifiableView {
     
-    private var views: ViewConvertable?
-    private var padding: UIEdgeInsets?
-    private var position: EmbedPosition = .fill
-    private var safeArea: Bool = false
+    public var modifiableView = Modified(ViewBuilderInternalContainerView(frame: .zero)) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+    }
 
-    convenience public init(_ view: ViewBuilder?) {
+    public init(_ view: View?) {
+        modifiableView.views = view
+    }
+
+    public init(@ViewResultBuilder _ builder: () -> ViewConvertable) {
+        modifiableView.views = builder()
+    }
+
+}
+
+extension ModifiableView where Base: ViewBuilderInternalContainerView {
+    
+    @discardableResult
+    public func onAppear(_ handler: @escaping (_ container: UIView) -> Void) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.onAppearHandler, value: handler)
+    }
+
+    @discardableResult
+    public func onDisappear(_ handler: @escaping (_ container: UIView) -> Void) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.onDisappearHandler, value: handler)
+    }
+
+    @discardableResult
+    func position(_ position: UIView.EmbedPosition) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.position, value: position)
+    }
+
+    @discardableResult
+    func safeArea(_ safeArea: Bool) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.safeArea, value: safeArea)
+    }
+
+}
+
+public class ViewBuilderInternalContainerView: UIView {
+
+    fileprivate var onAppearHandler: ((_ container: UIView) -> Void)?
+    fileprivate var onDisappearHandler: ((_ container: UIView) -> Void)?
+    
+    fileprivate var views: ViewConvertable?
+    fileprivate var padding: UIEdgeInsets = .zero
+    fileprivate var position: EmbedPosition = .fill
+    fileprivate var safeArea: Bool = false
+
+    convenience public init(_ view: View?) {
         self.init(frame: .zero)
         self.views = view
     }
@@ -29,10 +69,10 @@ class ContainerView: UIView, ViewBuilderPaddable {
         self.views = builder()
     }
         
-    override func didMoveToWindow() {
+    override public func didMoveToWindow() {
         // Note didMoveToWindow may be called more than once
         if let views = views {
-            views.asViews().forEach { self.embed($0, position: position, padding: padding, safeArea: safeArea) }
+            views.asViews().forEach { self.addConstrainedSubview($0.asUIView(), position: position, padding: padding, safeArea: safeArea) }
             self.views = nil
         }
         if window == nil {
@@ -41,49 +81,13 @@ class ContainerView: UIView, ViewBuilderPaddable {
             onAppearHandler?(self)
         }
     }
+
+}
+
+extension ViewBuilderInternalContainerView: ViewBuilderPaddable {
     
-    // attributes
-
-    @discardableResult
-    public func onAppear(_ handler: @escaping (_ container: ContainerView) -> Void) -> Self {
-        onAppearHandler = handler
-        return self
-    }
-
-    @discardableResult
-    public func onDisappear(_ handler: @escaping (_ container: ContainerView) -> Void) -> Self {
-        onDisappearHandler = handler
-        return self
+    public func setPadding(_ padding: UIEdgeInsets) {
+        self.padding = padding
     }
     
-    @discardableResult
-    func padding(insets: UIEdgeInsets) -> Self {
-        self.padding = insets
-        return self
-    }
-
-    @discardableResult
-    func position(_ position: EmbedPosition) -> Self {
-        self.position = position
-        return self
-    }
-
-    @discardableResult
-    func safeArea(_ safeArea: Bool) -> Self {
-        self.safeArea = safeArea
-        return self
-    }
-
-    @discardableResult
-    public func reference(_ reference: inout ContainerView?) -> Self {
-        reference = self
-        return self
-    }
-
-    @discardableResult
-    public func with(_ configuration: (_ view: ContainerView) -> Void) -> Self {
-        configuration(self)
-        return self
-    }
-
 }

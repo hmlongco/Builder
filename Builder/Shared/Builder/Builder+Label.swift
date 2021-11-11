@@ -1,80 +1,131 @@
 //
-//  LabelBuilder.swift
-//  ViewHelpers
+//  Builder+Label.swift
+//  ViewBuilder
 //
-//  Created by Michael Long on 10/29/19.
-//  Copyright © 2019 Michael Long. All rights reserved.
+//  Created by Michael Long on 11/8/21.
 //
 
 import UIKit
-import RxSwift
 
-class LabelView: UILabel {
-
-    struct Style {
-        let style: (_ button: LabelView) -> ()
+// Custom builder fot UILabel
+public struct LabelView: ModifiableView {
+    
+    public struct Style {
+        public let style: (_ label: ViewModifier<UILabel>) -> ()
     }
 
-    var labelMargins: UIEdgeInsets = .zero
+    public let modifiableView = Modified(ViewBuilderInternalUILabel()) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.font = ViewBuilderEnvironment.defaultLabelFont ?? UIFont.preferredFont(forTextStyle: .callout)
+        $0.textColor = ViewBuilderEnvironment.defaultLabelColor ?? $0.textColor
+        $0.textAlignment = .left
+        $0.adjustsFontForContentSizeCategory = true
+        $0.setContentCompressionResistancePriority(.required, for: .vertical)
+        $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+        $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    }
     
     // lifecycle
-
     public init(_ text: String?) {
-        super.init(frame: .zero)
-        self.common()
-        self.text = text
+        modifiableView.text = text
     }
-
-    public init(_ text: String?, configuration: (_ view: UILabel) -> Void) {
-        super.init(frame: .zero)
-        self.common()
-        self.text = text
-        configuration(self)
-    }
-
+    
     public init<Binding:RxBinding>(_ binding: Binding) where Binding.T == String {
-        super.init(frame: .zero)
-        self.common()
         self.text(bind: binding)
     }
 
     public init<Binding:RxBinding>(_ binding: Binding) where Binding.T == String? {
-        super.init(frame: .zero)
-        self.common()
         self.text(bind: binding)
     }
 
     public init(_ text: Variable<String>) {
-        super.init(frame: .zero)
-        self.common()
         self.text(bind: text)
     }
 
     public init(_ text: Variable<String?>) {
-        super.init(frame: .zero)
-        self.common()
         self.text(bind: text)
     }
 
-    required public init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    // deprecated
+    public init(_ text: String?, configuration: (_ view: Base) -> Void) {
+        modifiableView.text = text
+        configuration(modifiableView)
+    }
+    
+}
+
+
+// Custom UILabel modifiers
+extension ModifiableView where Base: UILabel {
+    
+    @discardableResult
+    public func alignment(_ alignment: NSTextAlignment) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.textAlignment, value: alignment)
     }
 
-    public func common() {
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.font = ViewBuilderEnvironment.defaultLabelFont ?? UIFont.preferredFont(forTextStyle: .callout)
-        self.textColor = ViewBuilderEnvironment.defaultLabelColor ?? textColor
-        self.textAlignment = .left
-        self.adjustsFontForContentSizeCategory = true
-        self.setContentCompressionResistancePriority(.required, for: .vertical)
-        self.setContentCompressionResistancePriority(.required, for: .horizontal)
-        self.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    @discardableResult
+    public func color(_ color: UIColor?) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.textColor, value: color)
     }
+    
+    @discardableResult
+    public func font(_ font: UIFont?) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.font, value: font)
+    }
+    
+    @discardableResult
+    public func font(_ style: UIFont.TextStyle) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.font, value: .preferredFont(forTextStyle: style))
+    }
+
+    @discardableResult
+    public func numberOfLines(_ numberOfLines: Int) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.numberOfLines = numberOfLines
+            $0.lineBreakMode = .byWordWrapping
+        }
+    }
+
+    @discardableResult
+    public func style(_ style: LabelView.Style) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { style.style(ViewModifier($0)) }
+    }
+
+}
+
+
+extension LabelView {
+    
+    @discardableResult
+    public func color<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == UIColor {
+        ViewModifier(modifiableView, binding: binding, keyPath: \.textColor)
+    }
+    
+    @discardableResult
+    public func text<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == String {
+        ViewModifier(modifiableView, binding: binding) { $0.text = $1 } // binding non-optional to optional
+    }
+
+    @discardableResult
+    public func text<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == String? {
+        ViewModifier(modifiableView, binding: binding, keyPath: \.text)
+    }
+
+}
+
+
+public class ViewBuilderInternalUILabel: UILabel {
+
+    var labelMargins: UIEdgeInsets = .zero
+    
+//    deinit {
+//        print("deinit ViewBuilderInternalUILabel")
+//    }
     
     // support for label padding
     
-    override var intrinsicContentSize: CGSize {
+    override public var intrinsicContentSize: CGSize {
         numberOfLines = 0       // don't forget!
         var s = super.intrinsicContentSize
         s.height = s.height + labelMargins.top + labelMargins.bottom
@@ -82,12 +133,12 @@ class LabelView: UILabel {
         return s
     }
 
-    override func drawText(in rect:CGRect) {
+    override public func drawText(in rect:CGRect) {
         let r = rect.inset(by: labelMargins)
         super.drawText(in: r)
     }
 
-    override func textRect(forBounds bounds:CGRect, limitedToNumberOfLines n: Int) -> CGRect {
+    override public func textRect(forBounds bounds:CGRect, limitedToNumberOfLines n: Int) -> CGRect {
         let b = bounds
         let tr = b.inset(by: labelMargins)
         let ctr = super.textRect(forBounds: tr, limitedToNumberOfLines: 0)
@@ -95,89 +146,13 @@ class LabelView: UILabel {
         return ctr
     }
 
-    // custom attributes
-    
-    @discardableResult
-    public func alignment(_ alignment: NSTextAlignment) -> Self {
-        self.textAlignment = alignment
-        return self
-    }
-
-    @discardableResult
-    public func color(_ color: UIColor) -> Self {
-        self.textColor = color
-        return self
-    }
-    
-    @discardableResult
-    public func font(_ font: UIFont?) -> Self {
-        self.font = font ?? self.font
-        return self
-    }
-
-    @discardableResult
-    public func font(_ style: UIFont.TextStyle) -> Self {
-        self.font = .preferredFont(forTextStyle: style)
-        return self
-    }
-
-    @discardableResult
-    public func numberOfLines(_ numberOfLines: Int) -> Self {
-        self.numberOfLines = numberOfLines
-        self.lineBreakMode = .byWordWrapping
-        return self
-    }
-
-    // standard attributes
-
-    @discardableResult
-    public func reference(_ reference: inout LabelView?) -> Self {
-        reference = self
-        return self
-    }
-
-    @discardableResult
-    public func style(_ style: Style) -> Self {
-        style.style(self)
-        return self
-    }
-
-    @discardableResult
-    public func with(_ configuration: (_ view: LabelView) -> Void) -> Self {
-        configuration(self)
-        return self
-    }
-
 }
 
-extension LabelView {
-    
-    @discardableResult
-    public func color<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == UIColor {
-        rxBinding(binding, view: self) { $0.textColor = $1 }
-        return self
+extension ViewBuilderInternalUILabel: ViewBuilderPaddable {
+
+    public func setPadding(_ padding: UIEdgeInsets) {
+        labelMargins = padding
     }
     
-    @discardableResult
-    public func text<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == String {
-        rxBinding(binding, view: self) { $0.text = $1 }
-        return self
-    }
-
-    @discardableResult
-    public func text<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == String? {
-        rxBinding(binding, view: self) { $0.text = $1 }
-        return self
-    }
-
 }
 
-extension LabelView: ViewBuilderPaddable {
-
-    @discardableResult
-    public func padding(insets: UIEdgeInsets) -> Self {
-        self.labelMargins = insets
-        return self
-    }
-
-}

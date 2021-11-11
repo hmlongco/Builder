@@ -1,43 +1,63 @@
 //
 //  Builder+View.swift
-//  ViewHelpers
+//  ViewBuilder
 //
-//  Created by Michael Long on 10/29/19.
-//  Copyright © 2019 Michael Long. All rights reserved.
+//  Created by Michael Long on 11/8/21.
 //
 
 import UIKit
-import RxSwift
+
+// Allows UIView to use basic view modifiers and integrate with view builders
+extension UIView: ModifiableView {
+    
+    public var modifiableView: UIView {
+        self
+    }
+    
+    public func asUIView() -> UIView {
+        self
+    }
+    
+    public func asViews() -> [UIView] {
+        [self]
+    }
+    
+}
+
+// Helpers for view conversion
+extension UIView {
+    
+    public func addSubview(_ view: View) {
+        addSubview(view.asUIView())
+    }
+    
+    public func insertSubview(_ view: View, at index: Int) {
+        insertSubview(view.asUIView(), at: index)
+    }
+    
+}
 
 extension UIView {
-
-    func embed(_ builder: ViewBuilder, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
-        self.addSubviewWithConstraints(builder.build(), padding, safeArea)
-    }
-
-    func embed(in view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
-        view.addSubviewWithConstraints(self, padding, safeArea)
-    }
 
     func empty() {
         self.subviews.forEach { $0.removeFromSuperview() }
     }
     
-    func reset(_ builder: ViewBuilder, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+    func reset(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         let existingSubviews = subviews
-        addSubviewWithConstraints(builder.build(), padding, safeArea)
+        addSubviewWithConstraints(view.asUIView(), padding, safeArea)
         existingSubviews.forEach { $0.removeFromSuperview() }
     }
 
-    public func transtion(to page: ViewBuilder, position: EmbedPosition = .fill, padding: UIEdgeInsets? = nil, safeArea: Bool = false, delay: Double = 0.2) {
-        let newView = page.build()
+    public func transtion(to page: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, delay: Double = 0.2) {
+        let newView = page.asUIView()
         if subviews.isEmpty {
-            embed(newView, position: position, padding: padding, safeArea: safeArea)
+            embed(newView, padding: padding, safeArea: safeArea)
             return
         }
         let oldViews = subviews
         newView.alpha = 0.0
-        embed(newView, position: position, padding: padding, safeArea: safeArea)
+        embed(newView, padding: padding, safeArea: safeArea)
         UIView.animate(withDuration: delay) {
             newView.alpha = 1.0
         } completion: { completed in
@@ -56,186 +76,177 @@ extension UIView {
     }
 }
 
-extension UIView {
-    
-    // custom attributes
-
+// Standard UIView modifiers for all view types
+extension ModifiableView where Base: UIView {
+        
     @discardableResult
-    public func accessibilityIdentifier(_ accessibilityIdentifier: String) -> Self {
-        self.accessibilityIdentifier = accessibilityIdentifier
-        return self
+    public func accessibilityIdentifier(_ accessibilityIdentifier: String) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.accessibilityIdentifier, value: accessibilityIdentifier)
     }
     
     @discardableResult
-    public func alpha(_ alpha: CGFloat) -> Self {
-        self.alpha = alpha
-        return self
+    public func alpha(_ alpha: CGFloat) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.alpha, value: alpha)
     }
 
     @discardableResult
-    public func backgroundColor(_ color: UIColor) -> Self {
-        self.backgroundColor = color
-        return self
-    }
-    
-    @discardableResult
-    public func border(color: UIColor, lineWidth: CGFloat = 0.5) -> Self {
-        self.layer.borderColor = color.cgColor
-        self.layer.borderWidth = lineWidth
-        return self
+    public func backgroundColor(_ color: UIColor?) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.backgroundColor, value: color)
     }
 
     @discardableResult
-    public func clipsToBounds(_ clips: Bool) -> Self {
-        self.clipsToBounds = clips
-        return self
+    public func backgroundImage(_ image: UIImage?) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { $0.backgroundImage(image) }
     }
 
     @discardableResult
-    public func contentCompressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
-        self.setContentCompressionResistancePriority(priority, for: axis)
-        return self
-    }
-
-    @discardableResult
-    public func contentHuggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
-        self.setContentHuggingPriority(priority, for: axis)
-        return self
-    }
-
-    @discardableResult
-    public func contentMode(_ contentMode: UIView.ContentMode) -> Self {
-        self.contentMode = contentMode
-        return self
-    }
-
-    @discardableResult
-    public func cornerRadius(_ radius: CGFloat) -> Self {
-        self.layer.cornerRadius = radius
-        self.clipsToBounds = true
-        return self
-    }
-
-    @discardableResult
-    public func frame(height: CGFloat? = nil, width: CGFloat? = nil) -> Self {
-        if let height = height {
-            let c = self.heightAnchor.constraint(equalToConstant: height)
-            c.priority = UILayoutPriority(rawValue: 999)
-            c.isActive = true
+    public func border(color: UIColor, lineWidth: CGFloat = 0.5) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.layer.borderColor = color.cgColor
+            $0.layer.borderWidth = lineWidth
         }
-        if let width = width {
-            let c = self.widthAnchor.constraint(equalToConstant: width)
-            c.priority = UILayoutPriority(rawValue: 999)
-            c.isActive = true
+    }
+
+    @discardableResult
+    public func clipsToBounds(_ clips: Bool) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.clipsToBounds, value: clips)
+    }
+
+    @discardableResult
+    public func contentCompressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.setContentCompressionResistancePriority(priority, for: axis)
         }
-        return self
     }
 
     @discardableResult
-    public func height(_ height: CGFloat) -> Self {
-        heightAnchor.constraint(equalToConstant: height)
-            .priority(UILayoutPriority(rawValue: 999))
-            .activate()
-        return self
+    public func contentHuggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.setContentHuggingPriority(priority, for: axis)
+        }
     }
 
     @discardableResult
-    public func hidden(_ hidden: Bool) -> Self {
-        self.isHidden = hidden
-        return self
-    }
-
-    public struct TapGestureContext: ViewBuilderContextProvider {
-        var view: UIView
-        var gesture: UIGestureRecognizer
+    public func contentMode(_ contentMode: UIView.ContentMode) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.contentMode, value: contentMode)
     }
 
     @discardableResult
-    public func onTapGesture(_ handler: @escaping (_ context: TapGestureContext) -> Void) -> Self {
-        let gesture = UITapGestureRecognizer()
-        addGestureRecognizer(gesture)
-        let context = TapGestureContext(view: self, gesture: gesture)
-        gesture.rx.event
-            .asControlEvent()
-            .subscribe { (e) in
-                handler(context)
+    public func cornerRadius(_ radius: CGFloat) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.layer.cornerRadius = radius
+            $0.clipsToBounds = true
+        }
+    }
+
+    @discardableResult
+    public func frame(height: CGFloat? = nil, width: CGFloat? = nil) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            if let height = height {
+                let c = $0.heightAnchor.constraint(equalToConstant: height)
+                c.priority = UILayoutPriority(rawValue: 999)
+                c.isActive = true
             }
-            .disposed(by: rxDisposeBag)
-        return self
-    }
-    
-    @discardableResult
-    public func shadow(color: UIColor, radius: CGFloat, opacity: Float = 0.5, offset: CGSize = .zero) -> Self {
-        self.layer.shadowColor = color.cgColor
-        self.layer.shadowOffset = offset
-        self.layer.shadowRadius = radius
-        self.layer.shadowOpacity = opacity
-        self.clipsToBounds = false
-        return self
-    }
-
-    @discardableResult
-    public func tintColor(_ color: UIColor) -> Self {
-        self.tintColor = color
-        return self
-    }
-
-    @discardableResult
-    public func translatesAutoresizingMaskIntoConstraints(_ translate: Bool) -> Self {
-        self.translatesAutoresizingMaskIntoConstraints = translate
-        return self
-    }
-
-    @discardableResult
-    public func width(_ width: CGFloat) -> Self {
-        widthAnchor.constraint(equalToConstant: width)
-            .priority(UILayoutPriority(rawValue: 999))
-            .activate()
-        return self
-    }
-
-}
-
-
-extension UIView {
-    
-    @discardableResult
-    public func alpha<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == CGFloat {
-        rxBinding(binding, view: self) { $0.alpha = $1 }
-        return self
-    }
-    
-    @discardableResult
-    public func hidden<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == Bool {
-        rxBinding(binding, view: self) { $0.isHidden = $1 }
-        return self
-    }
-
-    public func rxBinding<B:RxBinding, V:View, T>(_ binding: B, view: V, handler: @escaping (_ view: V, _ value: T) -> Void) where B.T == T {
-        binding.asObservable()
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak view] value in
-                if let view = view {
-                    handler(view, value)
-                }
-            })
-            .disposed(by: rxDisposeBag)
-    }
-
-}
-
-
-extension NSObject {
-
-    private static var RxDisposeBagAttributesKey: UInt8 = 0
-
-    public var rxDisposeBag: DisposeBag {
-        if let disposeBag = objc_getAssociatedObject( self, &UIView.RxDisposeBagAttributesKey ) as? DisposeBag {
-            return disposeBag
+            if let width = width {
+                let c =  $0.widthAnchor.constraint(equalToConstant: width)
+                c.priority = UILayoutPriority(rawValue: 999)
+                c.isActive = true
+            }
         }
-        let disposeBag = DisposeBag()
-        objc_setAssociatedObject(self, &UIView.RxDisposeBagAttributesKey, disposeBag, .OBJC_ASSOCIATION_RETAIN)
-        return disposeBag
+    }
+
+    @discardableResult
+    public func height(_ height: CGFloat) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            let c = $0.heightAnchor.constraint(equalToConstant: height)
+            c.priority = UILayoutPriority(rawValue: 999)
+            c.isActive = true
+        }
+    }
+
+    @discardableResult
+    public func hidden(_ hidden: Bool) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.isHidden, value: hidden)
+    }
+    
+    @discardableResult
+    public func roundedCorners(radius: CGFloat, corners: CACornerMask) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.layer.maskedCorners = corners
+            $0.layer.cornerRadius = radius
+        }
+    }
+    
+    @discardableResult
+    public func shadow(color: UIColor, radius: CGFloat, opacity: Float = 0.5, offset: CGSize = .zero) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.layer.shadowColor = color.cgColor
+            $0.layer.shadowOffset = offset
+            $0.layer.shadowRadius = radius
+            $0.layer.shadowOpacity = opacity
+            $0.clipsToBounds = false
+        }
+    }
+
+    @discardableResult
+    public func tintColor(_ color: UIColor) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.tintColor, value: color)
+    }
+
+    @discardableResult
+    public func translatesAutoresizingMaskIntoConstraints(_ translate: Bool) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.translatesAutoresizingMaskIntoConstraints, value: translate)
+    }
+
+    @discardableResult
+    public func width(_ width: CGFloat) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            let c = $0.widthAnchor.constraint(equalToConstant: width)
+            c.priority = UILayoutPriority(rawValue: 999)
+            c.isActive = true
+        }
+    }
+    
+}
+
+
+
+extension ModifiableView where Base: UIView {
+    
+    @discardableResult
+    public func alpha<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == CGFloat {
+        ViewModifier(modifiableView, binding: binding, keyPath: \.alpha)
+    }
+    
+    @discardableResult
+    public func hidden<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == Bool {
+        ViewModifier(modifiableView, binding: binding, keyPath: \.isHidden)
+    }
+
+}
+
+
+
+struct TapGestureContext<Base:UIView>: ViewBuilderContextProvider {
+    var view: Base
+    var gesture: UIGestureRecognizer
+}
+
+extension ModifiableView {
+    
+    @discardableResult
+    func onTapGesture(_ handler: @escaping (_ context: TapGestureContext<Base>) -> Void) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            let gesture = UITapGestureRecognizer()
+            $0.addGestureRecognizer(gesture)
+            let context = TapGestureContext(view: $0, gesture: gesture)
+            gesture.rx.event
+                .asControlEvent()
+                .subscribe { (e) in
+                    handler(context)
+                }
+                .disposed(by: $0.rxDisposeBag)
+        }
     }
 
 }

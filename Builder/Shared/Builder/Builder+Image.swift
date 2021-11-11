@@ -1,6 +1,6 @@
 //
 //  Builder+Image.swift
-//  ViewHelpers
+//  ViewBuilder
 //
 //  Created by Michael Long on 10/29/19.
 //  Copyright © 2019 Michael Long. All rights reserved.
@@ -9,65 +9,45 @@
 import UIKit
 import RxSwift
 
-class ImageView: UIImageView {
 
-    public init(configuration: (_ view: UIImageView) -> Void) {
-        super.init(frame: .zero)
-        self.translatesAutoresizingMaskIntoConstraints = false
-        configuration(self)
+public struct ImageView: ModifiableView {
+    
+    public let modifiableView = Modified(UIImageView()) {
+        $0.translatesAutoresizingMaskIntoConstraints = false
     }
-
+    
+    // lifecycle
     public init(_ image: UIImage?) {
-        super.init(frame: .zero)
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.image = image
+        modifiableView.image = image
     }
 
     public init<Binding:RxBinding>(_ image: Binding) where Binding.T == UIImage {
-        super.init(frame: .zero)
-        self.translatesAutoresizingMaskIntoConstraints = false
         self.image(bind: image)
     }
 
     public init<Binding:RxBinding>(_ image: Binding) where Binding.T == UIImage? {
-        super.init(frame: .zero)
-        self.translatesAutoresizingMaskIntoConstraints = false
         self.image(bind: image)
     }
-
-    required public init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
-    // standard attributes
-
-    @discardableResult
-    public func reference(_ reference: inout ImageView?) -> Self {
-        reference = self
-        return self
-    }
-
-    @discardableResult
-    public func with(_ configuration: (_ view: ImageView) -> Void) -> Self {
-        configuration(self)
-        return self
+    // deprecated
+    public init(configuration: (_ view: UIImageView) -> Void) {
+        configuration(modifiableView)
     }
 
 }
 
 
-extension ImageView {
-        
+// Custom UIImageView modifiers
+extension ModifiableView where Base: UIImageView {
+
     @discardableResult
-    public func image<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == UIImage {
-        rxBinding(binding, view: self) { $0.image = $1 }
-        return self
+    public func image<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == UIImage {
+        ViewModifier(modifiableView, binding: binding) { $0.image = $1 }
     }
 
     @discardableResult
-    public func image<Binding:RxBinding>(bind binding: Binding) -> Self where Binding.T == UIImage? {
-        rxBinding(binding, view: self) { $0.image = $1 }
-        return self
+    public func image<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == UIImage? {
+        ViewModifier(modifiableView, binding: binding) { $0.image = $1 }
     }
 
 }
