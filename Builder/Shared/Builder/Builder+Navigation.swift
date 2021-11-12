@@ -51,7 +51,7 @@ extension UIBarButtonItem {
     @discardableResult
     public func onTap(_ handler: @escaping (_ item: UIBarButtonItem) -> Void) -> Self {
         self.rx.tap
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .throttle(.milliseconds(300), latest: false, scheduler: MainScheduler.instance)
             .subscribe(onNext: { [unowned self] () in handler(self) })
             .disposed(by: rxDisposeBag)
         return self

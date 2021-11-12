@@ -79,7 +79,7 @@ extension ModifiableView where Base: UIButton {
     public func onTap(_ handler: @escaping (_ context: ButtonView.Context) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView) { [unowned modifiableView] view in
             view.rx.tap
-                .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+                .throttle(.milliseconds(300), latest: false, scheduler: MainScheduler.instance)
                 .subscribe(onNext: { () in handler(ButtonView.Context(view: modifiableView)) })
                 .disposed(by: view.rxDisposeBag)
         }

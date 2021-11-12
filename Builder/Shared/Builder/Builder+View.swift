@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 // Allows UIView to use basic view modifiers and integrate with view builders
 extension UIView: ModifiableView {
@@ -242,6 +243,7 @@ extension ModifiableView {
             let context = TapGestureContext(view: $0, gesture: gesture)
             gesture.rx.event
                 .asControlEvent()
+                .throttle(.milliseconds(300), latest: false, scheduler: MainScheduler.instance)
                 .subscribe { (e) in
                     handler(context)
                 }
