@@ -24,7 +24,7 @@ struct MainUsersTableView: ViewBuilder {
     func build() -> View {
         TableView(DynamicItemViewBuilder(users) { user in
             TableViewCell {
-                MainCardBuilder(user: user)
+                MainCardView(user: user)
             }
             .accessoryType(.disclosureIndicator)
             .onSelect { (context) in
@@ -37,7 +37,7 @@ struct MainUsersTableView: ViewBuilder {
 }
 
 
-struct MainCardBuilder: ViewBuilder {
+struct MainCardView: ViewBuilder {
         
     @Injected var cache: UserImageCache
     

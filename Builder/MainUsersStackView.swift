@@ -17,14 +17,14 @@ import Resolver
 import RxSwift
 
 
-struct MainUsersStackBuilder: ViewBuilder {
+struct MainUsersStackView: ViewBuilder {
     
     let users: [User]
     
     func build() -> View {
         VerticalScrollView {
             VStackView(DynamicItemViewBuilder(users) { user in
-                StackCardBuilder(user: user)
+                StackCardView(user: user)
                     .backgroundColor(.secondarySystemBackground)
                     .cornerRadius(8)
                     .onTapGesture { context in
@@ -39,7 +39,7 @@ struct MainUsersStackBuilder: ViewBuilder {
 }
 
 
-struct StackCardBuilder: ViewBuilder {
+struct StackCardView: ViewBuilder {
     
     @Injected var cache: UserImageCache
     

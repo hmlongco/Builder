@@ -9,7 +9,7 @@ import UIKit
 import Resolver
 import RxSwift
 
-struct DetailCardBuilder: ViewBuilder {    
+struct DetailCardView: ViewBuilder {    
 
     @Injected var viewModel: DetailViewModel
 
@@ -18,29 +18,28 @@ struct DetailCardBuilder: ViewBuilder {
     }
 
     func build() -> View {
-        DLSCardBuilder {
+        DLSCardView {
             VStackView {
-                DetailPhotoBuilder(photo: viewModel.photo(), name: viewModel.fullname)
+                DetailPhotoView(photo: viewModel.photo(), name: viewModel.fullname)
                 
                 VStackView {
-                    NameValueBuilder(name: "Address", value: viewModel.street)
-                    NameValueBuilder(name: "", value: viewModel.cityStateZip)
+                    NameValueView(name: "Address", value: viewModel.street)
+                    NameValueView(name: "", value: viewModel.cityStateZip)
                     SpacerView(16)
-                    NameValueBuilder(name: "Email", value: viewModel.email)
-                    NameValueBuilder(name: "Phone1", value: viewModel.phone)
+                    NameValueView(name: "Email", value: viewModel.email)
+                    NameValueView(name: "Phone1", value: viewModel.phone)
                     SpacerView(16)
-                    NameValueBuilder(name: "Age", value: viewModel.age)
+                    NameValueView(name: "Age", value: viewModel.age)
                 }
                 .spacing(2)
                 .padding(20)
             }
         }
-        .build() // required on an outermost ViewBuilder to return it as view
     }
 
 }
 
-struct DLSCardBuilder: ViewBuilder {
+struct DLSCardView: ViewBuilder {
     
     let content: () -> ViewConvertable
     
@@ -63,7 +62,7 @@ struct DLSCardBuilder: ViewBuilder {
     }
 }
 
-struct DetailPhotoBuilder: ViewBuilder {
+struct DetailPhotoView: ViewBuilder {
     
     let photo: Observable<UIImage?>
     let name: String
@@ -87,7 +86,7 @@ struct DetailPhotoBuilder: ViewBuilder {
     }
 }
 
-struct NameValueBuilder: ViewBuilder {
+struct NameValueView: ViewBuilder {
 
     let name: String?
     let value: String?
