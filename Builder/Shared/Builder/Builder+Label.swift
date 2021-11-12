@@ -14,7 +14,7 @@ public struct LabelView: ModifiableView {
         public let style: (_ label: ViewModifier<UILabel>) -> ()
     }
 
-    public let modifiableView = Modified(ViewBuilderInternalUILabel()) {
+    public let modifiableView = Modified(BuilderInternalUILabel()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.font = ViewBuilderEnvironment.defaultLabelFont ?? UIFont.preferredFont(forTextStyle: .callout)
         $0.textColor = ViewBuilderEnvironment.defaultLabelColor ?? $0.textColor
@@ -115,12 +115,12 @@ extension LabelView {
 }
 
 
-public class ViewBuilderInternalUILabel: UILabel {
+public class BuilderInternalUILabel: UILabel {
 
     var labelMargins: UIEdgeInsets = .zero
     
 //    deinit {
-//        print("deinit ViewBuilderInternalUILabel")
+//        print("deinit BuilderInternalUILabel")
 //    }
     
     // support for label padding
@@ -148,7 +148,7 @@ public class ViewBuilderInternalUILabel: UILabel {
 
 }
 
-extension ViewBuilderInternalUILabel: ViewBuilderPaddable {
+extension BuilderInternalUILabel: ViewBuilderPaddable {
 
     public func setPadding(_ padding: UIEdgeInsets) {
         labelMargins = padding

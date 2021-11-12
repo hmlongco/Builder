@@ -15,7 +15,7 @@ struct TableView: ModifiableView {
         let indexPath: IndexPath
     }
 
-    let modifiableView = ViewBuilderInternalTableView()
+    let modifiableView = BuilderInternalTableView()
     
     public init(_ builder: AnyIndexableViewBuilder) {
         modifiableView.set(builder)
@@ -23,7 +23,7 @@ struct TableView: ModifiableView {
 
 }
 
-class ViewBuilderInternalTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
+class BuilderInternalTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
      
     var builder: AnyIndexableViewBuilder!
     
@@ -62,7 +62,7 @@ class ViewBuilderInternalTableView: UITableView, UITableViewDataSource, UITableV
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? ViewBuilderInternalTableViewCell, let selectionHandler = cell.selectionHandler {
+        if let cell = tableView.cellForRow(at: indexPath) as? BuilderInternalTableViewCell, let selectionHandler = cell.selectionHandler {
             let context = TableView.CellContext(view: cell, tableView: self, indexPath: indexPath)
             if selectionHandler(context) {
                 return
@@ -75,50 +75,52 @@ class ViewBuilderInternalTableView: UITableView, UITableViewDataSource, UITableV
 
 struct TableViewCell: ModifiableView {
     
-    let modifiableView = ViewBuilderInternalTableViewCell(frame: .zero)
+    let modifiableView: BuilderInternalTableViewCell
     
-//    convenience public init(title: String) {
-//        self.init(style: .default, reuseIdentifier: "bTitle")
-//        self.textLabel?.text = title
-//    }
-//
-//    convenience public init(title: String, subtitle: String) {
-//        self.init(style: .subtitle, reuseIdentifier: "bSubtitle")
-//        self.textLabel?.text = title
-//        self.detailTextLabel?.text = subtitle
-//    }
-//
-//    convenience public init(name: String, value: String) {
-//        self.init(style: .value1, reuseIdentifier: "bValue1")
-//        self.textLabel?.text = name
-//        self.detailTextLabel?.text = value
-//    }
-//
-//    convenience public init(field: String, value: String) {
-//        self.init(style: .value2, reuseIdentifier: "bValue2")
-//        self.textLabel?.text = field
-//        self.detailTextLabel?.text = value
-//    }
+    public init(title: String) {
+        modifiableView = BuilderInternalTableViewCell(style: .default, reuseIdentifier: "bTitle")
+        modifiableView.textLabel?.text = title
+    }
+
+    public init(title: String, subtitle: String) {
+        modifiableView = BuilderInternalTableViewCell(style: .subtitle, reuseIdentifier: "bSubtitle")
+        modifiableView.textLabel?.text = title
+        modifiableView.detailTextLabel?.text = subtitle
+    }
+
+    public init(name: String, value: String) {
+        modifiableView = BuilderInternalTableViewCell(style: .value1, reuseIdentifier: "bValue1")
+        modifiableView.textLabel?.text = name
+        modifiableView.detailTextLabel?.text = value
+    }
+
+    public init(field: String, value: String) {
+        modifiableView = BuilderInternalTableViewCell(style: .value2, reuseIdentifier: "bValue2")
+        modifiableView.textLabel?.text = field
+        modifiableView.detailTextLabel?.text = value
+    }
 
     public init(_ view: View, padding: UIEdgeInsets? = nil) {
+        self.modifiableView = BuilderInternalTableViewCell(frame: .zero)
         let padding = padding ?? UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         modifiableView.contentView.embed(view.asUIView(), padding: padding)
     }
 
     public init(padding: UIEdgeInsets? = nil, @ViewResultBuilder _ builder: () -> ViewConvertable) {
+        self.modifiableView = BuilderInternalTableViewCell(frame: .zero)
         let padding = padding ?? UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         builder().asViews().forEach { modifiableView.contentView.embed($0, padding: padding) }
     }
     
 }
 
-class ViewBuilderInternalTableViewCell: UITableViewCell {
+class BuilderInternalTableViewCell: UITableViewCell {
     
     var selectionHandler: ((_ tableView: TableView.CellContext) -> Bool)?
 
 }
 
-extension ModifiableView where Base: ViewBuilderInternalTableViewCell {
+extension ModifiableView where Base: BuilderInternalTableViewCell {
 
     @discardableResult
     func accessoryType(_ type: UITableViewCell.AccessoryType) -> ViewModifier<Base> {

@@ -10,7 +10,7 @@ import UIKit
 // Custom builder fot UILabel
 public struct DividerView: ModifiableView {
     
-    public let modifiableView = Modified(ViewBuilderInternalDividerView(frame: .zero)) {
+    public let modifiableView = Modified(BuilderInternalDividerView(frame: .zero)) {
         let subview = UIView(frame: .zero)
         $0.addSubview(subview)
         subview.translatesAutoresizingMaskIntoConstraints = false
@@ -33,7 +33,7 @@ public struct DividerView: ModifiableView {
     
 }
 
-extension ModifiableView where Base: ViewBuilderInternalDividerView {
+extension ModifiableView where Base: BuilderInternalDividerView {
     
     @discardableResult
     public func color(_ color: UIColor?) -> ViewModifier<Base> {
@@ -42,4 +42,4 @@ extension ModifiableView where Base: ViewBuilderInternalDividerView {
     
 }
 
-public class ViewBuilderInternalDividerView: UIView {}
+public class BuilderInternalDividerView: UIView {}

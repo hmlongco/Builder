@@ -42,6 +42,22 @@ struct MenuTableView: ViewBuilder {
     
 }
 
+struct StandardMenuTableViewCell: ViewBuilder {
+    
+    let name: String
+    let description: String
+    let destination: () -> UIViewController
+    
+    func build() -> View {
+        TableViewCell(title: name, subtitle: description)
+            .accessoryType(.disclosureIndicator)
+            .onSelect { (context) in
+                context.push(destination())
+                return false
+            }
+    }
+    
+}
 
 struct MenuTableViewCell: ViewBuilder {
     

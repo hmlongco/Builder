@@ -11,7 +11,7 @@ import RxSwift
 
 public struct HStackView: ModifiableView {
     
-    public let modifiableView = Modified(ViewBuilderInternalUIStackView()) {
+    public let modifiableView = Modified(BuilderInternalUIStackView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .horizontal
         $0.distribution = .fill
@@ -36,7 +36,7 @@ public struct HStackView: ModifiableView {
 
 public struct VStackView: ModifiableView {
     
-    public let modifiableView = Modified(ViewBuilderInternalUIStackView()) {
+    public let modifiableView = Modified(BuilderInternalUIStackView()) {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .vertical
         $0.distribution = .fill
@@ -133,8 +133,8 @@ extension UIStackView {
 }
 
 
-public class ViewBuilderInternalUIStackView: UIStackView {
+public class BuilderInternalUIStackView: UIStackView {
 //    deinit {
-//        print("deinit ViewBuilderInternalUIStackView")
+//        print("deinit BuilderInternalUIStackView")
 //    }
 }

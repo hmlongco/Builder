@@ -11,7 +11,7 @@ import RxSwift
 
 public struct ContainerView: ModifiableView {
     
-    public var modifiableView = Modified(ViewBuilderInternalContainerView(frame: .zero)) {
+    public var modifiableView = Modified(BuilderInternalContainerView(frame: .zero)) {
         $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
@@ -25,7 +25,7 @@ public struct ContainerView: ModifiableView {
 
 }
 
-extension ModifiableView where Base: ViewBuilderInternalContainerView {
+extension ModifiableView where Base: BuilderInternalContainerView {
     
     @discardableResult
     public func onAppear(_ handler: @escaping (_ container: UIView) -> Void) -> ViewModifier<Base> {
@@ -49,7 +49,7 @@ extension ModifiableView where Base: ViewBuilderInternalContainerView {
 
 }
 
-public class ViewBuilderInternalContainerView: UIView {
+public class BuilderInternalContainerView: UIView {
 
     fileprivate var onAppearHandler: ((_ container: UIView) -> Void)?
     fileprivate var onDisappearHandler: ((_ container: UIView) -> Void)?
@@ -84,7 +84,7 @@ public class ViewBuilderInternalContainerView: UIView {
 
 }
 
-extension ViewBuilderInternalContainerView: ViewBuilderPaddable {
+extension BuilderInternalContainerView: ViewBuilderPaddable {
     
     public func setPadding(_ padding: UIEdgeInsets) {
         self.padding = padding
