@@ -26,7 +26,8 @@ struct MainUsersStackView: ViewBuilder {
             VStackView(DynamicItemViewBuilder(users) { user in
                 StackCardView(user: user)
                     .backgroundColor(.secondarySystemBackground)
-                    .cornerRadius(8)
+                    .border(color: .gray)
+                    .shadow(color: .black, radius: 3, opacity: 0.2, offset: CGSize(width: 3, height: 3))
                     .onTapGesture { context in
                         let vc = DetailViewController(user: user)
                         context.present(vc)
@@ -46,19 +47,22 @@ struct StackCardView: ViewBuilder {
     let user: User
     
     func build() -> View {
-        HStackView {
-            ImageView(thumbnail())
-                .frame(height: 60, width: 60)
-            VStackView {
-                LabelView(user.fullname)
-                    .font(.preferredFont(forTextStyle: .body))
-                LabelView(user.email)
-                    .font(.preferredFont(forTextStyle: .footnote))
-                    .color(.secondaryLabel)
-                SpacerView()
+        ContainerView {
+            HStackView {
+                ImageView(thumbnail())
+                    .frame(height: 60, width: 60)
+                VStackView {
+                    LabelView(user.fullname)
+                        .font(.preferredFont(forTextStyle: .body))
+                    LabelView(user.email)
+                        .font(.preferredFont(forTextStyle: .footnote))
+                        .color(.secondaryLabel)
+                    SpacerView()
+                }
+                .padding(h: 8, v: 8)
+                .spacing(4)
+
             }
-            .padding(h: 8, v: 8)
-            .spacing(4)
         }
     }
 

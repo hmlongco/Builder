@@ -9,7 +9,7 @@ import UIKit
 import Resolver
 import RxSwift
 
-class MainViewController: UIViewController {
+class MainStackViewController: UIViewController {
     
     @Injected var viewModel: MainViewModel
 
@@ -17,7 +17,8 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Table View Test"
+        title = "Stack View Test"
+        view.backgroundColor = .systemBackground
         setupSubscriptions()
     }
 
@@ -32,7 +33,7 @@ class MainViewController: UIViewController {
                 case .loading:
                     self.transtion(to: StandardLoadingPage())
                 case .loaded(let users):
-                    self.transtion(to: MainUsersTableView(users: users))
+                    self.transtion(to: MainUsersStackView(users: users))
                 case .empty(let message):
                     self.transtion(to: StandardEmptyPage(message: message))
                 case .error(let error):

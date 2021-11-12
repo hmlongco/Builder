@@ -24,7 +24,6 @@ class MainViewModel {
      }
     
     var state = BehaviorRelay(value: State.initial)
-    var title = "Builder Demo"
     
     private var disposeBag = DisposeBag()
     
