@@ -252,3 +252,21 @@ extension ModifiableView {
     }
 
 }
+
+class BuilderHostingView: UIView {
+    
+    public init(_ view: View) {
+        super.init(frame: .zero)
+        self.embed(view)
+    }
+
+    public init(@ViewResultBuilder _ builder: () -> ViewConvertable) {
+        super.init(frame: .zero)
+        builder().asViews().forEach { self.embed($0) }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
