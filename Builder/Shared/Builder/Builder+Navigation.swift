@@ -20,20 +20,6 @@ extension UINavigationController {
 }
 
 
-//extension UIView {
-//
-//    var currentNavigationController: UINavigationController? {
-//        return currentViewController?.navigationController
-//    }
-//
-//    var currentViewController: UIViewController? {
-//        let firstViewController = sequence(first: self, next: { $0.next }).first(where: { $0 is UIViewController })
-//        return firstViewController as? UIViewController
-//    }
-//
-//}
-
-
 extension UIBarButtonItem {
 
     convenience init(barButtonSystemItem systemItem: UIBarButtonItem.SystemItem) {

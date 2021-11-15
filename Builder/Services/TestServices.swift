@@ -15,7 +15,7 @@ class TestVariable {
     @Variable var switched = true
 
     func test() {
-        let view = SwitchView($switched)
+        _ = SwitchView($switched)
         
         _ = $switched.asObservable()
             .subscribe { name in
