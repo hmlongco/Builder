@@ -78,7 +78,7 @@ extension UIView {
 }
 
 // Standard UIView modifiers for all view types
-extension ModifiableView where Base: UIView {
+extension ModifiableView {
         
     @discardableResult
     public func accessibilityIdentifier(_ accessibilityIdentifier: String) -> ViewModifier<Base> {
@@ -212,7 +212,7 @@ extension ModifiableView where Base: UIView {
 
 
 
-extension ModifiableView where Base: UIView {
+extension ModifiableView {
     
     @discardableResult
     public func alpha<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == CGFloat {
@@ -253,7 +253,7 @@ extension ModifiableView {
 
 }
 
-class BuilderHostingView: UIView {
+class BuilderHostView: UIView {
     
     public init(_ view: View) {
         super.init(frame: .zero)

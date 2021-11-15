@@ -37,12 +37,12 @@ extension UIViewController {
 
 }
 
-class BuilderViewController: UIViewController {
+class BuilderHostViewController: UIViewController {
 
     private var builder: (() -> ViewConvertable)?
-    private var onViewDidLoadBlock: ((_ viewController: BuilderViewController) -> Void)?
-    private var onViewWillAppearBlock: ((_ viewController: BuilderViewController) -> Void)?
-    private var onViewDidAppearBlock: ((_ viewController: BuilderViewController) -> Void)?
+    private var onViewDidLoadBlock: ((_ viewController: BuilderHostViewController) -> Void)?
+    private var onViewWillAppearBlock: ((_ viewController: BuilderHostViewController) -> Void)?
+    private var onViewDidAppearBlock: ((_ viewController: BuilderHostViewController) -> Void)?
 
     public init(@ViewResultBuilder _ builder: @escaping () -> ViewConvertable) {
         self.builder = builder
@@ -79,22 +79,22 @@ class BuilderViewController: UIViewController {
 
 }
 
-extension BuilderViewController {
+extension BuilderHostViewController {
 
     @discardableResult
-    public func onViewDidLoad(block: @escaping (_ viewController: BuilderViewController) -> Void) -> Self {
+    public func onViewDidLoad(block: @escaping (_ viewController: BuilderHostViewController) -> Void) -> Self {
         self.onViewDidLoadBlock = block
         return self
     }
 
     @discardableResult
-    public func onViewWillAppearBlock(block: @escaping (_ viewController: BuilderViewController) -> Void) -> Self {
+    public func onViewWillAppearBlock(block: @escaping (_ viewController: BuilderHostViewController) -> Void) -> Self {
         self.onViewWillAppearBlock = block
         return self
     }
 
     @discardableResult
-    public func onViewDidAppear(block: @escaping (_ viewController: BuilderViewController) -> Void) -> Self {
+    public func onViewDidAppear(block: @escaping (_ viewController: BuilderHostViewController) -> Void) -> Self {
         self.onViewDidAppearBlock = block
         return self
     }
