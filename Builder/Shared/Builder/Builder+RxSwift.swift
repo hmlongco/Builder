@@ -24,11 +24,11 @@ extension Observable: RxBinding {
 
 public protocol RxBidirectionalBinding: RxBinding {
     associatedtype T
-    var relay: BehaviorRelay<T> { get }
+    func asRelay() -> BehaviorRelay<T>
 }
 
 extension BehaviorRelay: RxBidirectionalBinding {
-    public var relay: BehaviorRelay<Element> { self }
+    public func asRelay() -> BehaviorRelay<Element> { self }
 }
 
 
@@ -60,7 +60,6 @@ extension ViewModifier {
     }
         
 }
-
 
 
 extension NSObject {

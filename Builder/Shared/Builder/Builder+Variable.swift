@@ -12,7 +12,7 @@ import RxCocoa
 
 @propertyWrapper public struct Variable<T> {
     
-    public var relay: BehaviorRelay<T>
+    private var relay: BehaviorRelay<T>
     
     public init(_ relay: BehaviorRelay<T>) {
         self.relay = relay
@@ -25,10 +25,6 @@ import RxCocoa
     
     public var projectedValue: Variable<T> {
         get { return self }
-    }
-    
-    public mutating func reset() {
-        relay = BehaviorRelay(value: relay.value)
     }
     
 }
@@ -45,7 +41,6 @@ extension Variable where T:Equatable {
     
     public func onChange(_ observer: @escaping (_ value: T) -> ()) -> Disposable {
         relay
-//            .debug()
             .skip(1)
             .distinctUntilChanged()
             .subscribe { observer($0) }
@@ -64,6 +59,10 @@ extension Variable: RxBinding {
         return relay.asObservable()
     }
     
+    public func observe(on scheduler: ImmediateSchedulerType) -> Observable<T> {
+        return relay.observe(on: scheduler)
+    }
+    
     public func bind(_ observable: Observable<T>) -> Disposable {
         return observable.bind(to: relay)
     }
@@ -71,7 +70,10 @@ extension Variable: RxBinding {
 }
 
 extension Variable: RxBidirectionalBinding {
-    // previously defined
+    public func asRelay() -> BehaviorRelay<T> {
+        return relay
+    }
+    
 }
 
 

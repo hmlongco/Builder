@@ -23,22 +23,22 @@ class MainViewModel {
         case error(String)
      }
     
-    var state = BehaviorRelay(value: State.initial)
+    @Variable private(set) var state = State.initial
     
     private var disposeBag = DisposeBag()
     
     func load() {
-        state.accept(.loading)
+        state = .loading
         service.list()
             .map { $0.sorted(by: { ($0.name.last + $0.name.first) < ($1.name.last + $1.name.first) }) }
             .subscribe { [weak self] (users) in
                 if users.isEmpty {
-                    self?.state.accept(.empty("No current users found..."))
+                    self?.state = .empty("No current users found...")
                 } else {
-                    self?.state.accept(.loaded(users))
+                    self?.state = .loaded(users)
                 }
             } onFailure: { [weak self] (e) in
-                self?.state.accept(.error(e.localizedDescription))
+                self?.state = .error(e.localizedDescription)
             }
             .disposed(by: disposeBag)
     }

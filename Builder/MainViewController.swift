@@ -13,6 +13,7 @@ class MainViewController: UIViewController {
     
     @Injected var viewModel: MainViewModel
 
+    var mainView: UIView?
     let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -22,7 +23,7 @@ class MainViewController: UIViewController {
     }
 
     func setupSubscriptions() {
-        viewModel.state
+        viewModel.$state
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (state) in
                 guard let self = self else { return }
@@ -32,7 +33,7 @@ class MainViewController: UIViewController {
                 case .loading:
                     self.transtion(to: StandardLoadingPage())
                 case .loaded(let users):
-                    self.transtion(to: MainUsersTableView(users: users))
+                    self.transtion(to: MainUsersTableView(users: users).reference(&self.mainView))
                 case .empty(let message):
                     self.transtion(to: StandardEmptyPage(message: message))
                 case .error(let error):

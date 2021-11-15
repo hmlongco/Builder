@@ -45,7 +45,7 @@ extension ModifiableView where Base: UISwitch {
         let modifier = ViewModifier(modifiableView, binding: binding, keyPath: \.isOn)
         modifiableView.rx.isOn
             .changed
-            .bind(to: binding.relay)
+            .bind(to: binding.asRelay())
             .disposed(by: modifiableView.rxDisposeBag)
         return modifier
     }
