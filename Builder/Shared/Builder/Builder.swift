@@ -73,7 +73,7 @@ extension ModifiableView {
     public func asUIView() -> UIView {
         modifiableView
     }
-    public func reference(_ view: inout Base) -> ViewModifier<Base> {
+    public func reference(_ view: inout Base?) -> ViewModifier<Base> {
         ViewModifier(modifiableView) { view = $0 }
     }
     public func with(_ modifier: (_ view: Base) -> Void) -> ViewModifier<Base> {
