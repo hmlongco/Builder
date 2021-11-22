@@ -88,8 +88,20 @@ extension UIView {
     
 }
 
+extension ModifiableView {
+
+    @discardableResult
+    public func position(_ position: UIView.EmbedPosition) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.getBuilderAttributes()?.position = position
+        }
+    }
+
+}
+
 extension UIView {
-    public enum EmbedPosition: CaseIterable {
+
+    public enum EmbedPosition: Int, CaseIterable {
         case fill
         case top
         case topLeft
@@ -105,7 +117,31 @@ extension UIView {
         case bottomCenter
         case bottomRight
     }
+
+    public class BuilderAttributes {
+        var position: UIView.EmbedPosition?
+    }
+
+    private static var BuilderAttributesKey: UInt8 = 0
+
+    public func getBuilderAttributes(required: Bool = true) -> BuilderAttributes? {
+        if let attributes = objc_getAssociatedObject( self, &UIView.BuilderAttributesKey ) as? BuilderAttributes {
+            return attributes
+        }
+        if required {
+            let attributes = BuilderAttributes()
+            objc_setAssociatedObject(self, &UIView.BuilderAttributesKey, attributes, .OBJC_ASSOCIATION_RETAIN)
+            return attributes
+        }
+        return nil
+    }
+
+    public func setBuilderAttributes(_ attributes: BuilderAttributes) {
+        objc_setAssociatedObject(self, &UIView.BuilderAttributesKey, attributes, .OBJC_ASSOCIATION_RETAIN)
+    }
+
 }
+
 
 fileprivate protocol UIViewAnchoring {
     var leadingAnchor: NSLayoutXAxisAnchor { get }

@@ -28,6 +28,9 @@ struct MenuTableView: ViewBuilder {
     
     func build() -> View {
         TableView(StaticViewBuilder {
+            MenuTableViewCell(name: "Login View Test", description: "A basic login field.") {
+                LoginViewController()
+            }
             MenuTableViewCell(name: "Table View Test", description: "A basic master/detail table view with user data pulled from an API.") {
                 MainViewController()
             }

@@ -13,6 +13,8 @@ public struct ContainerView: ModifiableView {
     
     public var modifiableView = Modified(BuilderInternalContainerView(frame: .zero)) {
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.backgroundColor = .clear
+        $0.isUserInteractionEnabled = true
     }
 
     public init(_ view: View?) {
@@ -28,6 +30,11 @@ public struct ContainerView: ModifiableView {
 extension ModifiableView where Base: BuilderInternalContainerView {
     
     @discardableResult
+    func defaultPosition(_ position: UIView.EmbedPosition) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.position, value: position)
+    }
+
+    @discardableResult
     public func onAppear(_ handler: @escaping (_ container: UIView) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView, keyPath: \.onAppearHandler, value: handler)
     }
@@ -35,11 +42,6 @@ extension ModifiableView where Base: BuilderInternalContainerView {
     @discardableResult
     public func onDisappear(_ handler: @escaping (_ container: UIView) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView, keyPath: \.onDisappearHandler, value: handler)
-    }
-
-    @discardableResult
-    func position(_ position: UIView.EmbedPosition) -> ViewModifier<Base> {
-        ViewModifier(modifiableView, keyPath: \.position, value: position)
     }
 
     @discardableResult
@@ -72,7 +74,11 @@ public class BuilderInternalContainerView: UIView {
     override public func didMoveToWindow() {
         // Note didMoveToWindow may be called more than once
         if let views = views {
-            views.asViews().forEach { self.addConstrainedSubview($0.asUIView(), position: position, padding: padding, safeArea: safeArea) }
+            views.asViews().forEach {
+                let view = $0.asUIView()
+                let positioned = view.getBuilderAttributes(required: false)?.position ?? position
+                self.addConstrainedSubview(view, position: positioned, padding: padding, safeArea: safeArea)
+            }
             self.views = nil
         }
         if window == nil {

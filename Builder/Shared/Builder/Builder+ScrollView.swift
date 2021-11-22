@@ -28,7 +28,7 @@ public struct ScrollView: ModifiableView {
 
 public struct VerticalScrollView: ModifiableView {
     
-    public var modifiableView: UIScrollView = Modified(ViewBuilderVerticalScrollView(frame: UIScreen.main.bounds)) {
+    public var modifiableView: UIScrollView = Modified(BuilderVerticalScrollView(frame: UIScreen.main.bounds)) {
         $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
@@ -43,7 +43,7 @@ public struct VerticalScrollView: ModifiableView {
 
 }
 
-fileprivate class ViewBuilderVerticalScrollView: UIScrollView {
+fileprivate class BuilderVerticalScrollView: UIScrollView {
 
     var initialized = false
     

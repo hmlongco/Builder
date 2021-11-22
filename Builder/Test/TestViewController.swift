@@ -40,22 +40,21 @@ class TestViewController: UIViewController {
     func content() -> View {
         VerticalScrollView {
             VStackView {
-                ContainerView {
+                ZStackView {
                     ImageView(UIImage(named: "User-ML"))
                         .contentMode(.scaleAspectFill)
                         .height(250)
                         .cornerRadius(10)
                         .clipsToBounds(true)
 
-                    ContainerView {
-                        LabelView("Contained Text")
-                            .color(.white)
-                            .alignment(.right)
-                            .backgroundColor(UIColor(white: 0, alpha: 0.4))
-                            .padding(h: 12, v: 8)
-                    }
-                    .cornerRadius(10)
-                    .position(.bottom)
+                    LabelView("Contained Text")
+                        .color(.white)
+                        .alignment(.right)
+                        .backgroundColor(UIColor(white: 0, alpha: 0.4))
+                        .padding(h: 12, v: 8)
+                        .roundedCorners(radius: 10, corners: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner])
+                        .clipsToBounds(true)
+                        .position(.bottom)
                 }
                 .backgroundColor(.secondarySystemBackground)
                 .padding(20)

@@ -39,29 +39,6 @@ struct DetailCardView: ViewBuilder {
 
 }
 
-struct DLSCardView: ViewBuilder {
-    
-    let content: () -> ViewConvertable
-    
-    init(@ViewResultBuilder _ content: @escaping () -> ViewConvertable) {
-        self.content = content
-    }
-    
-    func build() -> View {
-        ContainerView {
-            ContainerView {
-                content()
-            }
-            .backgroundColor(.systemBackground)
-            .cornerRadius(16)
-            .border(color: .lightGray)
-        }
-        .backgroundColor(.systemBackground)
-        .cornerRadius(16)
-        .shadow(color: .black, radius: 4, opacity: 0.2, offset: CGSize(width: 3, height: 3))
-    }
-}
-
 struct DetailPhotoView: ViewBuilder {
     
     let photo: Observable<UIImage?>
@@ -80,8 +57,8 @@ struct DetailPhotoView: ViewBuilder {
                 .padding(h: 20, v: 8)
                 .backgroundColor(.black)
                 .alpha(0.7)
+                .position(.bottom)
         }
-        .position(.bottom)
         .height(250)
     }
 }
