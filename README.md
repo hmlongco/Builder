@@ -81,8 +81,8 @@ struct DetailPhotoView: ViewBuilder {
                 .padding(h: 8, v: 8)
                 .backgroundColor(.black)
                 .alpha(0.7)
+                .position(.bottom)
         }
-        .position(.bottom)
         .height(250)
     }
 }
