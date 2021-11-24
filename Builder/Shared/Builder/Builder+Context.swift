@@ -46,36 +46,32 @@ extension ViewBuilderContextProvider {
     
 }
 
+// simple extensions to make context calls shorter
+
 extension ViewBuilderContextProvider {
 
     // goes to top of view chain, then initiates full search of view tree
-    public func findViewWithIdentifier(_ identifier: String) -> UIView? {
-        return view.recursiveFind(identifier, keyPath: \.accessibilityIdentifier, in: view.rootView())
+    public func find<K:RawRepresentable>(_ key: K) -> UIView? where K.RawValue == Int {
+        view.find(key)
+    }
+    public func find<K:RawRepresentable>(_ key: K) -> UIView? where K.RawValue == String {
+        view.find(key)
+    }
+
+    // searches down the tree looking for identifier
+    public func find<K:RawRepresentable>(subview key: K) -> UIView? where K.RawValue == Int {
+        view.find(subview: key)
+    }
+    public func find<K:RawRepresentable>(subview key: K) -> UIView? where K.RawValue == String {
+        view.find(subview: key)
     }
 
     // searches up the tree looking for identifier in superview path
-    public func superviewWithIdentifier(_ identifier: String) -> UIView? {
-        return view.superviewFind(identifier, keyPath: \.accessibilityIdentifier)
+    public func find<K:RawRepresentable>(superview key: K) -> UIView? where K.RawValue == Int {
+        view.find(superview: key)
     }
-
-    // searches subviews looking for identifier (similar to UIKit viewWithTag)
-    public func viewWithIdentifier(_ identifier: String) -> UIView? {
-        return view.recursiveFind(identifier, keyPath: \.accessibilityIdentifier, in: view)
-    }
-
-    // goes to top of view chain, then initiates full search of view tree
-    public func findViewWithTag(_ tag: Int) -> UIView? {
-        return view.recursiveFind(tag, keyPath: \.tag, in: view.rootView())
-    }
-
-    // searches up the tree looking for tag in superview path
-    public func superviewWithTag(_ tag: Int) -> UIView? {
-        return view.superviewFind(tag, keyPath: \.tag)
-    }
-
-    // goes to top of view chain, then initiates full search of view tree
-    public func viewWithTag(_ tag: Int) -> UIView? {
-        return view.viewWithTag(tag)
+    public func find<K:RawRepresentable>(superview key: K) -> UIView? where K.RawValue == String {
+        view.find(superview: key)
     }
 
 }

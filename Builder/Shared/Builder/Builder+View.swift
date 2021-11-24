@@ -30,8 +30,8 @@ extension UIView: ModifiableView {
 extension ModifiableView {
         
     @discardableResult
-    public func accessibilityIdentifier(_ accessibilityIdentifier: String) -> ViewModifier<Base> {
-        ViewModifier(modifiableView, keyPath: \.accessibilityIdentifier, value: accessibilityIdentifier)
+    public func accessibilityIdentifier<T:RawRepresentable>(_ accessibilityIdentifier: T) -> ViewModifier<Base> where T.RawValue == String {
+        ViewModifier(modifiableView) { $0.accessibilityIdentifier = accessibilityIdentifier.rawValue }
     }
     
     @discardableResult
@@ -139,8 +139,8 @@ extension ModifiableView {
     }
 
     @discardableResult
-    public func tag(_ tag: Int) -> ViewModifier<Base> {
-        ViewModifier(modifiableView, keyPath: \.tag, value: tag)
+    public func tag<T:RawRepresentable>(_ tag: T) -> ViewModifier<Base> where T.RawValue == Int {
+        ViewModifier(modifiableView, keyPath: \.tag, value: tag.rawValue)
     }
 
     @discardableResult

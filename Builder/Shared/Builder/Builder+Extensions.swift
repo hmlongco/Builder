@@ -63,28 +63,27 @@ extension UIView {
 extension UIView {
 
     // goes to top of view chain, then initiates full search of view tree
-    public func findViewWithIdentifier(_ identifier: String) -> UIView? {
-        return recursiveFind(identifier, keyPath: \.accessibilityIdentifier, in: rootView())
+    public func find<K:RawRepresentable>(_ key: K) -> UIView? where K.RawValue == Int {
+        recursiveFind(key.rawValue, keyPath: \.tag, in: rootView())
+    }
+    public func find<K:RawRepresentable>(_ key: K) -> UIView? where K.RawValue == String {
+        recursiveFind(key.rawValue, keyPath: \.accessibilityIdentifier, in: rootView())
+    }
+
+    // searches down the tree looking for identifier
+    public func find<K:RawRepresentable>(subview key: K) -> UIView? where K.RawValue == Int {
+        recursiveFind(key.rawValue, keyPath: \.tag, in: self)
+    }
+    public func find<K:RawRepresentable>(subview key: K) -> UIView? where K.RawValue == String {
+        recursiveFind(key.rawValue, keyPath: \.accessibilityIdentifier, in: self)
     }
 
     // searches up the tree looking for identifier in superview path
-    public func superviewWithIdentifier(_ identifier: String) -> UIView? {
-        return superviewFind(identifier, keyPath: \.accessibilityIdentifier)
+    public func find<K:RawRepresentable>(superview key: K) -> UIView? where K.RawValue == Int {
+        superviewFind(key.rawValue, keyPath: \.tag)
     }
-
-    // searches subviews looking for identifier (similar to UIKit viewWithTag)
-    public func viewWithIdentifier(_ identifier: String) -> UIView? {
-        return recursiveFind(identifier, keyPath: \.accessibilityIdentifier, in: self)
-    }
-
-    // goes to top of view chain, then initiates full search of view tree
-    public func findViewWithTag(_ tag: Int) -> UIView? {
-        return recursiveFind(tag, keyPath: \.tag, in: rootView())
-    }
-
-    // searches up the tree looking for tag in superview path
-    public func superviewWithTag(_ tag: Int) -> UIView? {
-        return superviewFind(tag, keyPath: \.tag)
+    public func find<K:RawRepresentable>(superview key: K) -> UIView? where K.RawValue == String {
+        superviewFind(key.rawValue, keyPath: \.accessibilityIdentifier)
     }
 
     internal func rootView() -> UIView {
@@ -117,3 +116,22 @@ extension UIView {
     }
 
 }
+
+extension Int: RawRepresentable {
+    public init?(rawValue: Int) {
+        self = rawValue
+    }
+    public var rawValue: Int {
+        self
+    }
+}
+
+extension String: RawRepresentable {
+    public init?(rawValue: String) {
+        self = rawValue
+    }
+    public var rawValue: String {
+        self
+    }
+}
+

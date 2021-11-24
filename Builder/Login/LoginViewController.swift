@@ -10,6 +10,12 @@ import Resolver
 import RxSwift
 
 
+fileprivate enum IDS: String {
+    case dlscard
+    case logo
+}
+
+
 class LoginViewController: UIViewController {
 
     var viewModel = LoginViewModel()
@@ -20,10 +26,12 @@ class LoginViewController: UIViewController {
         view.backgroundColor = .secondarySystemBackground
         view.embed(LoginView(viewModel: viewModel))
 
-        let test1 = view.viewWithIdentifier("dlscard")!
+        let test1 = view.find(subview: "dlscard")!
         print(test1)
-        let test2 = view.viewWithTag(456)!
+        let test2 = view.find(subview: IDS.dlscard)!
         print(test2)
+        let test3 = view.find(subview: 456)!
+        print(test3)
     }
 
 }
@@ -36,12 +44,12 @@ struct LoginView: ViewBuilder {
     func build() -> View {
         VerticalScrollView {
             ZStackView {
-                ZStackView {
+                ContainerView {
                     LabelView("Login Demo")
+                        .accessibilityIdentifier(IDS.logo)
                         .alignment(.center)
                         .font(.headline)
                         .color(.white)
-                        .tag(100)
                         .position(.top)
                         .height(50)
                 }
@@ -94,9 +102,8 @@ struct LoginView: ViewBuilder {
 
                                 ButtonView("Login Help")
                                     .onTap { context in
-                                        context.view.findViewWithTag(456)?.alpha = 0.5
-//                                        print(context.view.superviewWithIdentifier("dlscard")!) // testing identifiers
-//                                        print(context.view.superviewWithTag(456)!) // testing identifiers
+                                        print(context.view.find(superview: "dlscard")!) // testing identifiers
+                                        print(context.view.find(456)!) // testing identifiers
                                     }
                             }
                             .spacing(6)
@@ -105,7 +112,7 @@ struct LoginView: ViewBuilder {
                         .spacing(20)
                         .padding(top: 30, left: 20, bottom: 20, right: 20)
                     }
-                    .accessibilityIdentifier("dlscard") // testing identifiers
+                    .accessibilityIdentifier(IDS.dlscard) // testing identifiers
 
                     ContainerView()
                         .height(600)
@@ -123,10 +130,10 @@ struct LoginView: ViewBuilder {
             let y = context.view.contentOffset.y
             if y > 50 {
                 context.viewController?.navigationItem.title = "Login Demo"
-                context.viewWithTag(100)?.alpha = 0
+                context.find(IDS.logo)?.alpha = 0
             } else {
                 context.viewController?.navigationItem.title = ""
-                context.viewWithTag(100)?.alpha = 1 - ((y * 2) / 100)
+                context.find(IDS.logo)?.alpha = 1 - ((y * 2) / 100)
             }
         }
     }
