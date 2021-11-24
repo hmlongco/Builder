@@ -9,16 +9,32 @@ import UIKit
 
 extension UIView {
     
-    
-    func embed(_ view: UIView, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+    public enum EmbedPosition: Int, CaseIterable {
+        case fill
+        case top
+        case topLeft
+        case topCenter
+        case topRight
+        case left
+        case center
+        case centerLeft
+        case centerRight
+        case right
+        case bottom
+        case bottomLeft
+        case bottomCenter
+        case bottomRight
+    }
+
+    public func embed(_ view: UIView, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         self.addConstrainedSubview(view, position: .fill, padding: padding ?? .zero, safeArea: safeArea)
     }
 
-    func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+    public func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         self.addConstrainedSubview(view.asUIView(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
     }
 
-    func embed(in view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+    public func embed(in view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         view.asUIView().addConstrainedSubview(self, position: .fill, padding: padding ?? .zero, safeArea: safeArea)
     }
 
@@ -101,25 +117,9 @@ extension ModifiableView {
 
 extension UIView {
 
-    public enum EmbedPosition: Int, CaseIterable {
-        case fill
-        case top
-        case topLeft
-        case topCenter
-        case topRight
-        case left
-        case center
-        case centerLeft
-        case centerRight
-        case right
-        case bottom
-        case bottomLeft
-        case bottomCenter
-        case bottomRight
-    }
-
     public class BuilderAttributes {
         var position: UIView.EmbedPosition?
+        var insets: UIEdgeInsets?
     }
 
     private static var BuilderAttributesKey: UInt8 = 0

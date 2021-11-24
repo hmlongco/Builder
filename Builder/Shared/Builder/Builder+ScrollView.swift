@@ -11,8 +11,9 @@ import UIKit
 
 public struct ScrollView: ModifiableView {
     
-    public var modifiableView = Modified(UIScrollView(frame: UIScreen.main.bounds)) {
+    public var modifiableView = Modified(BuilderInternalScrollView(frame: UIScreen.main.bounds)) {
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.delegate = $0
     }
 
     public init(_ view: View?, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
@@ -22,14 +23,29 @@ public struct ScrollView: ModifiableView {
 
     public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewResultBuilder _ builder: () -> ViewConvertable) {
         builder().asViews().forEach { modifiableView.embed($0, padding: padding, safeArea: safeArea) }
+    }
+
+}
+
+extension ModifiableView where Base: UIScrollView {
+
+    @discardableResult
+    public func bounces(_ bounce: Bool) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.bounces, value: bounce)
+    }
+
+    @discardableResult
+    public func onDidScroll(_ handler: @escaping (_ context: ViewBuilderContext<UIScrollView>) -> Void) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { ($0 as? BuilderInternalScrollView)?.scrollViewDidScrollHandler = handler }
     }
 
 }
 
 public struct VerticalScrollView: ModifiableView {
     
-    public var modifiableView: UIScrollView = Modified(BuilderVerticalScrollView(frame: UIScreen.main.bounds)) {
+    public var modifiableView = Modified(BuilderVerticalScrollView(frame: UIScreen.main.bounds)) {
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.delegate = $0
     }
 
     public init(_ view: View?, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
@@ -43,14 +59,21 @@ public struct VerticalScrollView: ModifiableView {
 
 }
 
-fileprivate class BuilderVerticalScrollView: UIScrollView {
+public class BuilderInternalScrollView: UIScrollView, UIScrollViewDelegate {
 
-    var initialized = false
-    
-    override public func didMoveToWindow() {
-        guard initialized == false, window != nil, let superview = superview, let subview = subviews.first else { return }
-        superview.widthAnchor.constraint(equalTo: subview.widthAnchor).isActive = true
-        initialized = true
+    var scrollViewDidScrollHandler: ((_ context: ViewBuilderContext<UIScrollView>) -> Void)?
+
+    @objc public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollViewDidScrollHandler?(ViewBuilderContext(view: self))
+    }
+
+}
+
+public class BuilderVerticalScrollView: BuilderInternalScrollView {
+
+    override public func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        subviews.forEach { superview?.widthAnchor.constraint(equalTo: $0.widthAnchor).isActive = true }
     }
 
 }

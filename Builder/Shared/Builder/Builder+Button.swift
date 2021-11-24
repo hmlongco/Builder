@@ -14,11 +14,11 @@ import RxCocoa
 public struct ButtonView: ModifiableView {
     
     public struct Context: ViewBuilderContextProvider {
-        var view: UIButton
+        public var view: UIButton
     }
     
     public struct Style {
-        let style: (_ button: ViewModifier<UIButton>) -> ()
+        public let style: (_ button: ViewModifier<UIButton>) -> ()
     }
 
     public let modifiableView = Modified(UIButton()) {

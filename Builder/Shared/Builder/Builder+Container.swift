@@ -17,7 +17,7 @@ public struct ContainerView: ModifiableView {
         $0.isUserInteractionEnabled = true
     }
 
-    public init(_ view: View?) {
+    public init(_ view: View? = nil) {
         modifiableView.views = view
     }
 
@@ -70,17 +70,20 @@ public class BuilderInternalContainerView: UIView {
         self.init(frame: .zero)
         self.views = builder()
     }
+
+    override public func didMoveToSuperview() {
+        views?.asViews().forEach {
+            let view = $0.asUIView()
+            let attributes = view.getBuilderAttributes(required: false)
+            let position = attributes?.position ?? position
+            let padding = attributes?.insets ?? padding
+            addConstrainedSubview(view, position: position, padding: padding, safeArea: safeArea)
+        }
+        super.didMoveToSuperview()
+    }
         
     override public func didMoveToWindow() {
         // Note didMoveToWindow may be called more than once
-        if let views = views {
-            views.asViews().forEach {
-                let view = $0.asUIView()
-                let positioned = view.getBuilderAttributes(required: false)?.position ?? position
-                self.addConstrainedSubview(view, position: positioned, padding: padding, safeArea: safeArea)
-            }
-            self.views = nil
-        }
         if window == nil {
             onDisappearHandler?(self)
         } else if let vc = context.viewController, let nc = vc.navigationController, nc.topViewController == vc {

@@ -18,8 +18,15 @@ class LoginViewModel {
     @Variable var password: String? = ""
     @Variable var passwordError: String? = nil
 
+    @Variable var error: String? = nil
+
     init() {
 
+    }
+
+    func login() {
+        usernameError = (username?.isEmpty ?? true) ? "Required" : nil
+        passwordError = (password?.isEmpty ?? true) ? "Required" : nil
     }
 
 }

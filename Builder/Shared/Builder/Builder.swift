@@ -123,7 +123,7 @@ extension ViewBuilder {
 
 
 
-struct ViewBuilderEnvironment {
+public struct ViewBuilderEnvironment {
     static public var defaultButtonFont: UIFont?
     static public var defaultButtonColor: UIColor?
     static public var defaultLabelFont: UIFont?

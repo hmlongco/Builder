@@ -8,50 +8,84 @@
 import UIKit
 import RxSwift
 
-protocol ViewBuilderContextProvider {
+public protocol ViewBuilderContextProvider {
     associatedtype Base: UIView
     var view: Base { get }
 }
 
 extension ViewBuilderContextProvider {
     
-    var viewController: UIViewController? {
+    public var viewController: UIViewController? {
         let firstViewController = sequence(first: view, next: { $0.next }).first(where: { $0 is UIViewController })
         return firstViewController as? UIViewController
     }
     
-    var navigationController: UINavigationController? {
+    public var navigationController: UINavigationController? {
         viewController?.navigationController
     }
     
-    var disposeBag: DisposeBag {
+    public var disposeBag: DisposeBag {
         view.rxDisposeBag
     }
     
-    func present(_ view: View, animated: Bool = true) {
+    public func present(_ view: View, animated: Bool = true) {
         navigationController?.present(UIViewController(view.asUIView()), animated: animated)
     }
     
-    func present<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
+    public func present<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
         viewController?.present(vc, configure: configure)
     }
 
-    func push(_ view: View, animated: Bool = true) {
+    public func push(_ view: View, animated: Bool = true) {
         navigationController?.pushViewController(UIViewController(view.asUIView()), animated: animated)
     }
 
-    func push<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
+    public func push<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
         viewController?.push(vc, configure: configure)
     }
     
 }
 
-struct ViewBuilderContext<Base:UIView>: ViewBuilderContextProvider {
-    var view: Base
+extension ViewBuilderContextProvider {
+
+    // goes to top of view chain, then initiates full search of view tree
+    public func findViewWithIdentifier(_ identifier: String) -> UIView? {
+        return view.recursiveFind(identifier, keyPath: \.accessibilityIdentifier, in: view.rootView())
+    }
+
+    // searches up the tree looking for identifier in superview path
+    public func superviewWithIdentifier(_ identifier: String) -> UIView? {
+        return view.superviewFind(identifier, keyPath: \.accessibilityIdentifier)
+    }
+
+    // searches subviews looking for identifier (similar to UIKit viewWithTag)
+    public func viewWithIdentifier(_ identifier: String) -> UIView? {
+        return view.recursiveFind(identifier, keyPath: \.accessibilityIdentifier, in: view)
+    }
+
+    // goes to top of view chain, then initiates full search of view tree
+    public func findViewWithTag(_ tag: Int) -> UIView? {
+        return view.recursiveFind(tag, keyPath: \.tag, in: view.rootView())
+    }
+
+    // searches up the tree looking for tag in superview path
+    public func superviewWithTag(_ tag: Int) -> UIView? {
+        return view.superviewFind(tag, keyPath: \.tag)
+    }
+
+    // goes to top of view chain, then initiates full search of view tree
+    public func viewWithTag(_ tag: Int) -> UIView? {
+        return view.viewWithTag(tag)
+    }
+
+}
+
+public struct ViewBuilderContext<Base:UIView>: ViewBuilderContextProvider {
+    public var view: Base
 }
 
 extension UIView {
-    var context: ViewBuilderContext<UIView> {
+    public var context: ViewBuilderContext<UIView> {
         ViewBuilderContext(view: self)
     }
 }

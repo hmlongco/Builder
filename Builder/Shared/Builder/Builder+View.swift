@@ -25,57 +25,6 @@ extension UIView: ModifiableView {
     
 }
 
-// Helpers for view conversion
-extension UIView {
-    
-    public func addSubview(_ view: View) {
-        addSubview(view.asUIView())
-    }
-    
-    public func insertSubview(_ view: View, at index: Int) {
-        insertSubview(view.asUIView(), at: index)
-    }
-    
-}
-
-extension UIView {
-
-    func empty() {
-        self.subviews.forEach { $0.removeFromSuperview() }
-    }
-    
-    func reset(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
-        let existingSubviews = subviews
-        addSubviewWithConstraints(view.asUIView(), padding, safeArea)
-        existingSubviews.forEach { $0.removeFromSuperview() }
-    }
-
-    public func transtion(to page: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, delay: Double = 0.2) {
-        let newView = page.asUIView()
-        if subviews.isEmpty {
-            embed(newView, padding: padding, safeArea: safeArea)
-            return
-        }
-        let oldViews = subviews
-        newView.alpha = 0.0
-        embed(newView, padding: padding, safeArea: safeArea)
-        UIView.animate(withDuration: delay) {
-            newView.alpha = 1.0
-        } completion: { completed in
-            if completed {
-                oldViews.forEach { $0.removeFromSuperview() }
-            }
-        }
-    }
-
-    // deprecated version
-    @discardableResult
-    func embedModified<V:UIView>(_ view: V, padding: UIEdgeInsets? = nil, safeArea: Bool = false, _ modifier: (_ view: V) -> Void) -> V {
-        addSubviewWithConstraints(view, padding, safeArea)
-        modifier(view)
-        return view
-    }
-}
 
 // Standard UIView modifiers for all view types
 extension ModifiableView {
@@ -190,6 +139,11 @@ extension ModifiableView {
     }
 
     @discardableResult
+    public func tag(_ tag: Int) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.tag, value: tag)
+    }
+
+    @discardableResult
     public func tintColor(_ color: UIColor) -> ViewModifier<Base> {
         ViewModifier(modifiableView, keyPath: \.tintColor, value: color)
     }
@@ -197,6 +151,11 @@ extension ModifiableView {
     @discardableResult
     public func translatesAutoresizingMaskIntoConstraints(_ translate: Bool) -> ViewModifier<Base> {
         ViewModifier(modifiableView, keyPath: \.translatesAutoresizingMaskIntoConstraints, value: translate)
+    }
+
+    @discardableResult
+    public func userInteractionEnabled(_ enabled: Bool) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.isUserInteractionEnabled, value: enabled)
     }
 
     @discardableResult
@@ -228,15 +187,15 @@ extension ModifiableView {
 
 
 
-struct TapGestureContext<Base:UIView>: ViewBuilderContextProvider {
-    var view: Base
-    var gesture: UIGestureRecognizer
+public struct TapGestureContext<Base:UIView>: ViewBuilderContextProvider {
+    public var view: Base
+    public var gesture: UIGestureRecognizer
 }
 
 extension ModifiableView {
     
     @discardableResult
-    func onTapGesture(_ handler: @escaping (_ context: TapGestureContext<Base>) -> Void) -> ViewModifier<Base> {
+    public func onTapGesture(_ handler: @escaping (_ context: TapGestureContext<Base>) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
             let gesture = UITapGestureRecognizer()
             $0.addGestureRecognizer(gesture)
@@ -252,6 +211,7 @@ extension ModifiableView {
     }
 
 }
+
 
 class BuilderHostView: UIView {
     
