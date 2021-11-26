@@ -7,10 +7,11 @@
 
 import UIKit
 import RxSwift
+import Resolver
 
 class TestViewController: UIViewController {
     
-    @Variable var pageTitle: String = "This is a title!"
+    @Variable var pageTitle: String = "ViewBuilder Features!"
     @Variable var hidden: Bool = false
     @Variable var tapped: Bool = false
     
@@ -27,7 +28,7 @@ class TestViewController: UIViewController {
             }
             
             $hidden.onChange { value in
-                print(value)
+                print("Changed \(value)")
             }
             
             $tapped.onChange { value in
@@ -65,13 +66,14 @@ class TestViewController: UIViewController {
                     self?.tapped.toggle()
                 }
 
-                VStackView {
-                    LabelView($pageTitle)
-                        .font(.largeTitle)
-                    LabelView("This is stacked text!")
-                        .color(.red)
-                }
-                
+                LabelView($pageTitle)
+                    .font(.largeTitle)
+
+                LabelView("This is some text! In fact, this is some amazing multiline text!")
+                    .font(.preferredFont(forTextStyle: .callout))
+                    .color(.label)
+                    .numberOfLines(0)
+
                 HStackView {
                     LabelView("Hide Details")
                     SpacerView()
@@ -112,6 +114,10 @@ class TestViewController: UIViewController {
             .padding(30)
         }
         .backgroundColor(.tertiarySystemBackground)
+        .onReceive($hidden) { _, value in
+            print("Received \(value)")
+        }
+
     }
 
 }
@@ -124,14 +130,39 @@ struct DetailsView: ViewBuilder {
         VStackView {
             DividerView()
             if true {
-                LabelView("This is conditional text!")
-                    .backgroundColor(.yellow)
+                VStackView {
+                    ForEach(3) { _ in
+                        BulletFootnoteItemView(text: "This is some bulletted text.")
+                    }
+                }
+                .spacing(1)
             }
             DividerView()
         }
         .hidden(bind: $hidden)
     }
     
+}
+
+struct BulletFootnoteItemView: ViewBuilder {
+    let text: String
+    func build() -> View {
+        HStackView {
+            LabelView("•")
+                .alignment(.center)
+                .color(.secondaryLabel)
+                .font(.footnote)
+                .width(20)
+            LabelView(text)
+                .alignment(.left)
+                .contentHuggingPriority(.defaultLow, for: .horizontal)
+                .color(.secondaryLabel)
+                .font(.footnote)
+                .numberOfLines(0)
+            SpacerView()
+        }
+        .spacing(4)
+    }
 }
 
 struct SomeViewBuilder2: ViewBuilder {

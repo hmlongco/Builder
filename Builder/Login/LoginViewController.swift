@@ -64,30 +64,28 @@ struct LoginView: ViewBuilder {
                             VStackView {
                                 TextField(viewModel.$username)
                                     .placeholder("Username")
-                                    .with {
-                                        $0.borderStyle = .roundedRect
-                                        $0.textContentType = .username
-                                    }
+                                    .set(keyPath: \.borderStyle, value: .roundedRect) // properties w/o dedicated builder
+                                    .set(keyPath: \.textContentType, value: .username) // properties w/o dedicated builder
                                     .tag(456) // testing identifiers
                                 LabelView(viewModel.$usernameError)
                                     .font(.footnote)
                                     .color(.red)
                                     .hidden(bind: viewModel.$usernameError.asObservable().map { $0 == nil })
+                                    .padding(h: 8, v: 0)
                             }
                             .spacing(2)
 
                             VStackView {
                                 TextField(viewModel.$password)
                                     .placeholder("Password")
-                                    .with {
-                                        $0.borderStyle = .roundedRect
-                                        $0.textContentType = .password
-                                        $0.isSecureTextEntry = true
-                                    }
+                                    .set(keyPath: \.borderStyle, value: .roundedRect) // properties w/o dedicated builder
+                                    .set(keyPath: \.textContentType, value: .password) // properties w/o dedicated builder
+                                    .set(keyPath: \.isSecureTextEntry, value: true) // properties w/o dedicated builder
                                 LabelView(viewModel.$passwordError)
                                     .font(.footnote)
                                     .color(.red)
                                     .hidden(bind: viewModel.$passwordError.asObservable().map { $0 == nil })
+                                    .padding(h: 8, v: 0)
                             }
                             .spacing(2)
 

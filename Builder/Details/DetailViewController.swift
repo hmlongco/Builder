@@ -35,35 +35,33 @@ class DetailViewController: UIViewController {
     }
 
     func contentView() -> View {
-        ContainerView {
-            VerticalScrollView {
-                VStackView {
-                    DetailCardView(user: viewModel.user)
-                    
-                    HStackView {
-                        LabelView("Accept Terms")
-                        SpacerView()
-                        SwitchView(viewModel.$accepted)
-                            .onTintColor(.blue)
-    //                        .onChange { [weak self] value in
-    //                            self?.testSwtichValue = value
-    //                        }
-                    }
-                    
-                    ButtonView("Dismiss")
-                        .enabled(bind: viewModel.$accepted)
-                        .style(.filled)
-                        .onTap { [dismissible] _ in
-                            dismissible.dismiss()
-                        }
-                    
-                    LabelView("Inforamtion presented above is not repesentative of any person, living, dead, undead, or fictional.")
-                        .style(.footnote)
-                    
+        VerticalScrollView {
+            VStackView {
+                DetailCardView(user: viewModel.user)
+
+                HStackView {
+                    LabelView("Accept Terms")
                     SpacerView()
+                    SwitchView(viewModel.$accepted)
+                        .onTintColor(.blue)
                 }
-                .padding(20)
-                .spacing(20)
+
+                ButtonView("Submit")
+                    .enabled(bind: viewModel.$accepted)
+                    .style(.filled)
+                    .onTap { [weak dismissible] _ in
+                        dismissible?.dismiss()
+                    }
+
+                LabelView("Inforamtion presented above is not repesentative of any person, living, dead, undead, or fictional.")
+                    .style(.footnote)
+
+                SpacerView()
+            }
+            .padding(20)
+            .spacing(20)
+            .onReceive(viewModel.$accepted) { _, value in
+                print(value)
             }
         }
         .backgroundColor(.quaternarySystemFill)
