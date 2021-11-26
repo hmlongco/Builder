@@ -25,6 +25,14 @@ extension UIView: ModifiableView {
     
 }
 
+extension ModifiableView {
+
+    @discardableResult
+    public func set<T>(keyPath: ReferenceWritableKeyPath<Base, T>, value: T) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: keyPath, value: value)
+    }
+
+}
 
 // Standard UIView modifiers for all view types
 extension ModifiableView {
