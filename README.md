@@ -11,7 +11,7 @@ Builder is a simple iOS Master/Detail app written in Swift that demonstrates qui
 5. Using Resolver to mock user data for application development.
 6. Using Resolver to mock user data for unit tests.
 
-With the inclusion of #4, #5, and #6, this app does double duty as the often requested *demo* app for [Resolver](https://github.com/hmlongco/Resolver.git) .
+With the inclusion of #3, #5, and #6, this app does double duty as the often requested *demo* app for [Resolver](https://github.com/hmlongco/Resolver.git) .
 
 ## Builder User Interface Library
 
