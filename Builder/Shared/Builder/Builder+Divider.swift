@@ -18,7 +18,7 @@ public struct DividerView: ModifiableView {
             subview.backgroundColor = .secondaryLabel
         } else {
             subview.alpha = 0.4
-            subview.backgroundColor = ViewBuilderEnvironment.defaultSeparatorColor ?? UIColor.label
+            subview.backgroundColor = ViewBuilderEnvironment.defaultSeparatorColor ?? UIColor.black
         }
         subview.topAnchor.constraint(equalTo: $0.topAnchor, constant: 4.0).isActive = true
         subview.leftAnchor.constraint(equalTo: $0.leftAnchor).isActive = true

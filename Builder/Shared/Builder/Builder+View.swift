@@ -64,9 +64,7 @@ extension ModifiableView {
 
     @discardableResult
     public func contentCompressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) {
-            $0.setContentCompressionResistancePriority(priority, for: axis)
-        }
+        ViewModifier(modifiableView) { $0.setContentCompressionResistancePriority(priority, for: axis) }
     }
 
     @discardableResult
@@ -93,14 +91,16 @@ extension ModifiableView {
     public func frame(height: CGFloat? = nil, width: CGFloat? = nil) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
             if let height = height {
-                let c = $0.heightAnchor.constraint(equalToConstant: height)
-                c.priority = UILayoutPriority(rawValue: 999)
-                c.isActive = true
+                $0.heightAnchor
+                    .constraint(equalToConstant: height)
+                    .priority(UILayoutPriority(rawValue: 999))
+                    .activate()
             }
             if let width = width {
-                let c =  $0.widthAnchor.constraint(equalToConstant: width)
-                c.priority = UILayoutPriority(rawValue: 999)
-                c.isActive = true
+                $0.widthAnchor
+                    .constraint(equalToConstant: width)
+                    .priority(UILayoutPriority(rawValue: 999))
+                    .activate()
             }
         }
     }
@@ -108,9 +108,10 @@ extension ModifiableView {
     @discardableResult
     public func height(_ height: CGFloat) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
-            let c = $0.heightAnchor.constraint(equalToConstant: height)
-            c.priority = UILayoutPriority(rawValue: 999)
-            c.isActive = true
+            $0.heightAnchor
+                .constraint(equalToConstant: height)
+                .priority(UILayoutPriority(rawValue: 999))
+                .activate()
         }
     }
 
@@ -161,9 +162,10 @@ extension ModifiableView {
     @discardableResult
     public func width(_ width: CGFloat) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
-            let c = $0.widthAnchor.constraint(equalToConstant: width)
-            c.priority = UILayoutPriority(rawValue: 999)
-            c.isActive = true
+            $0.widthAnchor
+                .constraint(equalToConstant: width)
+                .priority(UILayoutPriority(rawValue: 999))
+                .activate()
         }
     }
     
@@ -181,6 +183,11 @@ extension ModifiableView {
     @discardableResult
     public func hidden<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == Bool {
         ViewModifier(modifiableView, binding: binding, keyPath: \.isHidden)
+    }
+
+    @discardableResult
+    public func userInteractionEnabled<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == Bool {
+        ViewModifier(modifiableView, binding: binding, keyPath: \.isUserInteractionEnabled)
     }
 
 }

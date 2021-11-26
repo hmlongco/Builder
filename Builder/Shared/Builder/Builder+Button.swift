@@ -62,11 +62,6 @@ extension ModifiableView where Base: UIButton {
     }
 
     @discardableResult
-    public func enabled(_ enabled: Bool) -> ViewModifier<Base> {
-        ViewModifier(modifiableView, keyPath: \.isEnabled, value: enabled)
-    }
-
-    @discardableResult
     public func font(_ font: UIFont?) -> ViewModifier<Base> {
         ViewModifier(modifiableView) { $0.titleLabel?.font = font }
     }
@@ -89,20 +84,6 @@ extension ModifiableView where Base: UIButton {
     @discardableResult
     public func style(_ style: ButtonView.Style) -> ViewModifier<Base> {
         ViewModifier(modifiableView) { style.style(ViewModifier($0)) }
-    }
-
-}
-
-extension ModifiableView where Base: UIButton {
-
-    @discardableResult
-    public func enabled<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == Bool {
-        ViewModifier(modifiableView, binding: binding) { $0.isEnabled = $1 }
-    }
-
-    @discardableResult
-    public func selected<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == Bool {
-        ViewModifier(modifiableView, binding: binding) { $0.isSelected = $1 }
     }
 
 }

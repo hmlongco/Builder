@@ -80,6 +80,11 @@ extension ModifiableView where Base: UILabel {
     }
 
     @discardableResult
+    public func lineBreakMode(_ mode: NSLineBreakMode) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.lineBreakMode, value: mode)
+    }
+
+    @discardableResult
     public func numberOfLines(_ numberOfLines: Int) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
             $0.numberOfLines = numberOfLines

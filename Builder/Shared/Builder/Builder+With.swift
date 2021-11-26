@@ -7,6 +7,7 @@
 
 import UIKit
 
+@discardableResult
 public func With<V:View>(_ view: V, _ configuration: ((_ view: V) -> Void)? = nil) -> V {
     configuration?(view)
     return view

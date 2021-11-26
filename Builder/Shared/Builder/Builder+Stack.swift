@@ -121,6 +121,10 @@ extension UIStackView {
         }
     }
 
+    public func addViews(@ViewResultBuilder _ builder: () -> ViewConvertable) {
+        builder().asViews().forEach { self.addArrangedSubview($0.asUIView()) }
+    }
+
     public func reset(to view: View) {
         empty()
         addArrangedSubview(view)
