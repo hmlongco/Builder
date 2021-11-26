@@ -5,9 +5,9 @@
 Builder is a simple iOS Master/Detail app written in Swift that demonstrates quite a few technologies, tricks, and techniques:
 
 1. Using declarative function-builder design patterns for constructing UIKit-based user interfaces.
-2. Using builder patterns to construct network requests.
-3. Using RxSwift for MVVM data binding.
-4. Using the [Resolver](https://github.com/hmlongco/Resolver.git) dependency injection system to construct MVVM architectures.
+2. Using RxSwift for MVVM data binding.
+3. Using the [Resolver](https://github.com/hmlongco/Resolver.git) dependency injection system to construct MVVM architectures.
+4. Using builder patterns to construct network requests.
 5. Using Resolver to mock user data for application development.
 6. Using Resolver to mock user data for unit tests.
 
@@ -113,39 +113,6 @@ Although small in size, it allows simple user interfaces to be constructed quick
 
 I've used this in several projects to get the benefits of declarative programming in legacy UIKit-based applications that can't yet support SwiftUI and its minimum base SDK of iOS 13, iOS 14, or iOS 15.
 
-## Builder Networking Library
-
-This URLSession-based library uses builder patterns to construct network requests.
-```swift
-struct UserService: UserServiceType {
-    
-    @Injected var session: ClientSessionManagerType
-
-    func list() -> Single<[User]> {
-        session.builder()
-            .add(path: "/")
-            .add(parameters: ["results":20, "nat":"us", "seed":"999"])
-            .rx
-            .send(.get)
-            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .utility))
-            .retry(1)
-            .map { (results: UserResultType) in results.results }
-    }
-
-    func thumbnail(forUser user: User) -> Single<UIImage?> {
-        guard let path = user.picture?.thumbnail else {
-            return .just(nil)
-        }
-        return session.builder(forURL: URL(string: path))
-            .rx
-            .send(.get)
-            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .utility))
-            .map { (data: Data) -> UIImage? in UIImage(data: data) }
-    }
-
-}
-```
-There are extensions for using this functionality with RxSwift (as shown), Combine, as well as with a standard Result-based callback mechanism.
 
 ## Using RxSwift for MVVM Data Binding
 
@@ -230,6 +197,40 @@ class MainViewModel {
 Above we're using Resolver's @Injected property wrapper to find and instantiate the dependencies needed for our main view model.
 
 Injections tie together the master view, detail view, the view models, and the API and data caching layers of the application.
+
+## Builder Networking Library
+
+This URLSession-based library uses builder patterns to construct network requests.
+```swift
+struct UserService: UserServiceType {
+    
+    @Injected var session: ClientSessionManagerType
+
+    func list() -> Single<[User]> {
+        session.builder()
+            .add(path: "/")
+            .add(parameters: ["results":20, "nat":"us", "seed":"999"])
+            .rx
+            .send(.get)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .utility))
+            .retry(1)
+            .map { (results: UserResultType) in results.results }
+    }
+
+    func thumbnail(forUser user: User) -> Single<UIImage?> {
+        guard let path = user.picture?.thumbnail else {
+            return .just(nil)
+        }
+        return session.builder(forURL: URL(string: path))
+            .rx
+            .send(.get)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .utility))
+            .map { (data: Data) -> UIImage? in UIImage(data: data) }
+    }
+
+}
+```
+There are extensions for using this functionality with RxSwift (as shown), Combine, as well as with a standard Result-based callback mechanism. That said, using Combine would tie us once again to a recent version version of iOS and largely defeat the benefits of using Builder.
 
 ## Structuring Applications for Mocking and Testing
 
