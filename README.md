@@ -60,7 +60,11 @@ struct DetailCardView: ViewBuilder {
 
 }
 ```
-And here are the dependent subviews which show the actual UIKit views being constructed.
+Like SwiftUI, Builder uses structs to create user defined views. Unlike SwiftUI, however, Builder uses those definitions to essentially build a standard set of UIKit views that define our interface.
+
+## More Views
+
+Here are some of the dependent subviews which show the actual UIKit views being constructed.
 
 ```swift
 struct DetailPhotoView: ViewBuilder {
