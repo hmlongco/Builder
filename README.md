@@ -33,38 +33,38 @@ struct DetailCardView: ViewBuilder {
     }
 
     var body: View {
-        ContainerView {
+        DLSCardView {
             VStackView {
                 DetailPhotoView(photo: viewModel.photo(), name: viewModel.fullname)
                 
                 VStackView {
                     NameValueView(name: "Address", value: viewModel.street)
                     NameValueView(name: "", value: viewModel.cityStateZip)
-                    
                     SpacerView(16)
-                    
                     NameValueView(name: "Email", value: viewModel.email)
                     NameValueView(name: "Phone1", value: viewModel.phone)
-                    
                     SpacerView(16)
-                    
                     NameValueView(name: "Age", value: viewModel.age)
                 }
                 .spacing(2)
                 .padding(20)
             }
+            .onAppear { _ in
+                print("DLS Card Appeared")
+            }
+            .onDisappear { _ in
+                print("DLS Card Disappeared")
+            }
         }
-        .backgroundColor(.quaternarySystemFill)
-        .cornerRadius(16)
     }
-
 }
+
 ```
 Like SwiftUI, Builder uses structs to create user defined views. Unlike SwiftUI, however, Builder uses those definitions to essentially build a standard set of UIKit views that define our interface.
 
 ## More Views
 
-Here are some of the dependent subviews which show the actual UIKit views being constructed.
+Here are a few more of the dependent subviews which show the actual UIKit views being constructed.
 
 ```swift
 struct DetailPhotoView: ViewBuilder {
@@ -80,9 +80,9 @@ struct DetailPhotoView: ViewBuilder {
             
             LabelView(name)
                 .alignment(.right)
-                .font(.headline)
+                .font(.title2)
                 .color(.white)
-                .padding(h: 8, v: 8)
+                .padding(h: 20, v: 8)
                 .backgroundColor(.black)
                 .alpha(0.7)
                 .position(.bottom)
@@ -151,9 +151,9 @@ There are extensions for using this functionality with RxSwift (as shown), Combi
 
 Using Builder to construct UIKit-based interfaces leads to another question: how do we update our interfaces?
 
-This app uses RxSwift in many places to bind views and view models and view controllers together. 
+This app uses RxSwift in many places to bind views and view models and view controllers together. We saw this in one of the earlier examples when an observable was passed and "bound" to an ImageView so that it would be updated when the image for that user was loaded.
 
-This example subscribes to a `@Variable` and updates our interface when the variable state changes. This is similar to `@State` in SwiftUI. (Variable basically wraps a RxSwift BehaviorRelay.)
+This following example subscribes to a `@Variable` and updates our interface when the variable state changes. This is similar to `@State` in SwiftUI. (Variable basically wraps a RxSwift BehaviorRelay.)
 
 ```swift
     func setupSubscriptions() {
