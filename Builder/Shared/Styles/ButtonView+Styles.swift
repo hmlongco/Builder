@@ -13,7 +13,8 @@ extension ButtonView.Style {
         button
             .cornerRadius(8)
             .color(.white)
-            .buttonBackgroundColor(.blue)
+            .backgroundColor(.blue, for: .normal)
+            .backgroundColor(.blue.darker(), for: .highlighted)
             .padding(10)
     }
     

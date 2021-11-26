@@ -13,7 +13,7 @@ struct StandardErrorPage: ViewBuilder {
     
     let error: String
 
-    func build() -> View {
+    var body: View {
         return VerticalScrollView {
             VStackView {
                 LabelView(error)

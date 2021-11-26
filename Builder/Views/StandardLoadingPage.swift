@@ -11,7 +11,7 @@ import RxSwift
 
 struct StandardLoadingPage: ViewBuilder {
 
-    func build() -> View {
+    var body: View {
         return VerticalScrollView {
             VStackView {
                 With(UIActivityIndicatorView()) {

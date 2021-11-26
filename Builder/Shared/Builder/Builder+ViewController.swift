@@ -27,7 +27,7 @@ extension UIViewController {
         } else {
             self.view.backgroundColor = .white
         }
-        self.view.embed(view.asUIView(), padding: padding, safeArea: safeArea)
+        self.view.embed(view.build(), padding: padding, safeArea: safeArea)
     }
     
     public func transtion(to page: View, position: UIView.EmbedPosition = .fill, padding: UIEdgeInsets? = nil,

@@ -21,7 +21,7 @@ struct MainUsersTableView: ViewBuilder {
     
     let users: [User]
     
-    func build() -> View {
+    var body: View {
         TableView(DynamicItemViewBuilder(users) { user in
             TableViewCell {
                 MainCardView(user: user)
@@ -32,6 +32,12 @@ struct MainUsersTableView: ViewBuilder {
                 return false
             }
         })
+        .onAppear { _ in
+            print("Table View Appeared")
+        }
+        .onDisappear { _ in
+            print("Table View Disappeared")
+        }
     }
     
 }
@@ -43,7 +49,7 @@ struct MainCardView: ViewBuilder {
     
     let user: User
     
-    func build() -> View {
+    var body: View {
         HStackView {
             ImageView(thumbnail())
                 .cornerRadius(25)

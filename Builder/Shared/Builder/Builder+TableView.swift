@@ -23,9 +23,12 @@ struct TableView: ModifiableView {
 
 }
 
-class BuilderInternalTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
+class BuilderInternalTableView: UITableView, UITableViewDataSource, UITableViewDelegate, BuilderInternalViewEvents {
      
-    var builder: AnyIndexableViewBuilder!
+    public var onAppearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
+    public var onDisappearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
+
+    public var builder: AnyIndexableViewBuilder!
     
     public init() {
         super.init(frame: .zero, style: .plain)
@@ -48,6 +51,15 @@ class BuilderInternalTableView: UITableView, UITableViewDataSource, UITableViewD
             .disposed(by: rxDisposeBag)
     }
     
+    override public func didMoveToWindow() {
+        // Note didMoveToWindow may be called more than once
+        if window == nil {
+            onDisappearHandler?(ViewBuilderContext(view: self))
+        } else if let vc = context.viewController, let nc = vc.navigationController, nc.topViewController == vc {
+            onAppearHandler?(ViewBuilderContext(view: self))
+        }
+    }
+
     // delegates
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -55,7 +67,7 @@ class BuilderInternalTableView: UITableView, UITableViewDataSource, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = builder.view(at: indexPath.row)?.asUIView() as? UITableViewCell else {
+        guard let cell = builder.view(at: indexPath.row)?.build() as? UITableViewCell else {
             return UITableViewCell(frame: tableView.bounds)
         }
         return cell
@@ -103,7 +115,7 @@ struct TableViewCell: ModifiableView {
     public init(_ view: View, padding: UIEdgeInsets? = nil) {
         self.modifiableView = BuilderInternalTableViewCell(frame: .zero)
         let padding = padding ?? UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
-        modifiableView.contentView.embed(view.asUIView(), padding: padding)
+        modifiableView.contentView.embed(view.build(), padding: padding)
     }
 
     public init(padding: UIEdgeInsets? = nil, @ViewResultBuilder _ builder: () -> ViewConvertable) {

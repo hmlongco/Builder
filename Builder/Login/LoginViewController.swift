@@ -41,7 +41,7 @@ struct LoginView: ViewBuilder {
 
     let viewModel: LoginViewModel
 
-    func build() -> View {
+    var body: View {
         VerticalScrollView {
             ZStackView {
                 ContainerView {

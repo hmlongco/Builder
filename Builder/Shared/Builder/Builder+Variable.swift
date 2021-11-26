@@ -79,14 +79,14 @@ extension Variable: RxBidirectionalBinding {
 
 //struct A: ViewBuilder {
 //    @Variable var name = "Michael"
-//    func build() -> View {
+//    var body: View {
 //        B(name: $name)
 //    }
 //}
 //
 //struct B: ViewBuilder  {
 //    @Variable var name: String
-//    func build() -> View {
+//    var body: View {
 //         LabelView(name)
 //    }
 //}

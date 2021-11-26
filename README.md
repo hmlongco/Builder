@@ -32,7 +32,7 @@ struct DetailCardView: ViewBuilder {
         viewModel.configure(user)
     }
 
-    func build() -> View {
+    var body: View {
         ContainerView {
             VStackView {
                 DetailPhotoView(photo: viewModel.photo(), name: viewModel.fullname)
@@ -68,7 +68,7 @@ struct DetailPhotoView: ViewBuilder {
     let photo: Observable<UIImage?>
     let name: String
 
-    func build() -> View {
+    var body: View {
         ZStackView {
             ImageView(photo)
                 .contentMode(.scaleAspectFill)
@@ -92,7 +92,7 @@ struct NameValueView: ViewBuilder {
     let name: String?
     let value: String?
 
-    func build() -> View {
+    var body: View {
         HStackView {
             LabelView(name)
                 .color(.secondaryLabel)
@@ -147,10 +147,13 @@ There are extensions for using this functionality with RxSwift (as shown), Combi
 
 Using Builder to construct UIKit-based interfaces leads to another question: how do we update our interfaces?
 
-This app uses RxSwift in many places to bind views and view models and view controllers together.
+This app uses RxSwift in many places to bind views and view models and view controllers together. 
+
+This example subscribes to a `@Variable` and updates our interface when the variable state changes. This is similar to `@State` in SwiftUI. (Variable basically wraps a RxSwift BehaviorRelay.)
+
 ```swift
     func setupSubscriptions() {
-        viewModel.state
+        viewModel.$state
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (state) in
                 switch state {
@@ -167,6 +170,44 @@ This app uses RxSwift in many places to bind views and view models and view cont
             .disposed(by: disposeBag)
     }
 ```
+The view model defines the enumerated state and is updated when load is called. 
+```swift
+class MainViewModel {
+    
+    @Injected var images: UserImageCache
+    @Injected var service: UserServiceType
+
+    enum State: Equatable {
+        case initial
+        case loading
+        case loaded([User])
+        case empty(String)
+        case error(String)
+     }
+    
+    @Variable private(set) var state = State.initial
+    
+    private var disposeBag = DisposeBag()
+    
+    func load() {
+        state = .loading
+        service.list()
+            .map { $0.sorted(by: { ($0.name.last + $0.name.first) < ($1.name.last + $1.name.first) }) }
+            .subscribe { [weak self] (users) in
+                if users.isEmpty {
+                    self?.state = .empty("No current users found...")
+                } else {
+                    self?.state = .loaded(users)
+                }
+            } onFailure: { [weak self] (e) in
+                self?.state = .error(e.localizedDescription)
+            }
+            .disposed(by: disposeBag)
+    }
+
+}
+```
+
 ## Using Resolver for MVVM
 
 The application also demonstrates using the [Resolver](https://github.com/hmlongco/Resolver.git) dependency injection system to construct MVVM architectures.

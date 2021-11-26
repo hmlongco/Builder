@@ -26,7 +26,7 @@ class MenuViewController: UIViewController {
 
 struct MenuTableView: ViewBuilder {
     
-    func build() -> View {
+    var body: View {
         TableView(StaticViewBuilder {
             MenuTableViewCell(name: "Login View Test", description: "A basic login field.") {
                 LoginViewController()
@@ -51,7 +51,7 @@ struct StandardMenuTableViewCell: ViewBuilder {
     let description: String
     let destination: () -> UIViewController
     
-    func build() -> View {
+    var body: View {
         TableViewCell(title: name, subtitle: description)
             .accessoryType(.disclosureIndicator)
             .onSelect { (context) in
@@ -68,7 +68,7 @@ struct MenuTableViewCell: ViewBuilder {
     let description: String
     let destination: () -> UIViewController
     
-    func build() -> View {
+    var body: View {
         TableViewCell {
             VStackView {
                 LabelView(name)

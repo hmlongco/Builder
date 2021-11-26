@@ -29,7 +29,7 @@ extension ViewBuilderContextProvider {
     }
     
     public func present(_ view: View, animated: Bool = true) {
-        navigationController?.present(UIViewController(view.asUIView()), animated: animated)
+        navigationController?.present(UIViewController(view.build()), animated: animated)
     }
     
     public func present<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
@@ -37,7 +37,7 @@ extension ViewBuilderContextProvider {
     }
 
     public func push(_ view: View, animated: Bool = true) {
-        navigationController?.pushViewController(UIViewController(view.asUIView()), animated: animated)
+        navigationController?.pushViewController(UIViewController(view.build()), animated: animated)
     }
 
     public func push<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {

@@ -13,7 +13,7 @@ struct StandardEmptyPage: ViewBuilder {
 
     let message: String
 
-    func build() -> View {
+    var body: View {
         return VerticalScrollView {
             VStackView {
                 LabelView(message)

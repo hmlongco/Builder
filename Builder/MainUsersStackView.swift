@@ -21,7 +21,7 @@ struct MainUsersStackView: ViewBuilder {
     
     let users: [User]
     
-    func build() -> View {
+    var body: View {
         VerticalScrollView {
             VStackView(DynamicItemViewBuilder(users) { user in
                 StackCardView(user: user)
@@ -46,7 +46,7 @@ struct StackCardView: ViewBuilder {
     
     let user: User
     
-    func build() -> View {
+    var body: View {
         ContainerView {
             HStackView {
                 ImageView(thumbnail())

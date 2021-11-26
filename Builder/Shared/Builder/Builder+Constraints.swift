@@ -31,11 +31,11 @@ extension UIView {
     }
 
     public func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
-        self.addConstrainedSubview(view.asUIView(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
+        self.addConstrainedSubview(view.build(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
     }
 
     public func embed(in view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
-        view.asUIView().addConstrainedSubview(self, position: .fill, padding: padding ?? .zero, safeArea: safeArea)
+        view.build().addConstrainedSubview(self, position: .fill, padding: padding ?? .zero, safeArea: safeArea)
     }
 
     public func addConstrainedSubview(_ view: UIView, position: EmbedPosition, padding: UIEdgeInsets, safeArea: Bool = false) {
@@ -99,7 +99,7 @@ extension UIView {
 
     // deprecated
     public func addSubviewWithConstraints(_ view: View, _ padding: UIEdgeInsets?, _ safeArea: Bool) {
-        addConstrainedSubview(view.asUIView(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
+        addConstrainedSubview(view.build(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
     }
     
 }

@@ -30,11 +30,11 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = viewModel.fullname
-        view.embed(contentView())
+        view.embed(contents())
         view.backgroundColor = .systemBackground
     }
 
-    func contentView() -> View {
+    func contents() -> View {
         VerticalScrollView {
             VStackView {
                 DetailCardView(user: viewModel.user)

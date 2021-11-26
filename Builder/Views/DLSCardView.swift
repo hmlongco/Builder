@@ -15,7 +15,7 @@ struct DLSCardView: ViewBuilder {
         self.content = content
     }
 
-    func build() -> View {
+    var body: View {
         ContainerView {
             ContainerView {
                 content()

@@ -11,11 +11,11 @@ import UIKit
 extension UIView {
 
     public func addSubview(_ view: View) {
-        addSubview(view.asUIView())
+        addSubview(view.build())
     }
 
     public func insertSubview(_ view: View, at index: Int) {
-        insertSubview(view.asUIView(), at: index)
+        insertSubview(view.build(), at: index)
     }
 
 }
@@ -28,12 +28,12 @@ extension UIView {
 
     public func reset(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         let existingSubviews = subviews
-        addSubviewWithConstraints(view.asUIView(), padding, safeArea)
+        addSubviewWithConstraints(view.build(), padding, safeArea)
         existingSubviews.forEach { $0.removeFromSuperview() }
     }
 
     public func transtion(to page: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, delay: Double = 0.2) {
-        let newView = page.asUIView()
+        let newView = page.build()
         if subviews.isEmpty {
             embed(newView, padding: padding, safeArea: safeArea)
             return

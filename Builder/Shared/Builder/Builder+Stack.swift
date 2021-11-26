@@ -106,7 +106,7 @@ extension UIStackView: ViewBuilderPaddable {
 extension UIStackView {
     
     public func addArrangedSubview(_ view: View) {
-        addArrangedSubview(view.asUIView())
+        addArrangedSubview(view.build())
     }
     
     public func addArrangedSubviews(_ views: View?...) {
@@ -122,7 +122,7 @@ extension UIStackView {
     }
 
     public func addViews(@ViewResultBuilder _ builder: () -> ViewConvertable) {
-        builder().asViews().forEach { self.addArrangedSubview($0.asUIView()) }
+        builder().asViews().forEach { self.addArrangedSubview($0.build()) }
     }
 
     public func reset(to view: View) {
@@ -137,8 +137,18 @@ extension UIStackView {
 }
 
 
-public class BuilderInternalUIStackView: UIStackView {
-//    deinit {
-//        print("deinit BuilderInternalUIStackView")
-//    }
+public class BuilderInternalUIStackView: UIStackView, BuilderInternalViewEvents {
+
+    public var onAppearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
+    public var onDisappearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
+
+    override public func didMoveToWindow() {
+        // Note didMoveToWindow may be called more than once
+        if window == nil {
+            onDisappearHandler?(ViewBuilderContext(view: self))
+        } else if let vc = context.viewController, let nc = vc.navigationController, nc.topViewController == vc {
+            onAppearHandler?(ViewBuilderContext(view: self))
+        }
+    }
+
 }

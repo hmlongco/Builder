@@ -17,7 +17,7 @@ struct DetailCardView: ViewBuilder {
         viewModel.configure(user)
     }
 
-    func build() -> View {
+    var body: View {
         DLSCardView {
             VStackView {
                 DetailPhotoView(photo: viewModel.photo(), name: viewModel.fullname)
@@ -34,6 +34,12 @@ struct DetailCardView: ViewBuilder {
                 .spacing(2)
                 .padding(20)
             }
+            .onAppear { _ in
+                print("DLS Card Appeared")
+            }
+            .onDisappear { _ in
+                print("DLS Card Disappeared")
+            }
         }
     }
 
@@ -44,7 +50,7 @@ struct DetailPhotoView: ViewBuilder {
     let photo: Observable<UIImage?>
     let name: String
 
-    func build() -> View {
+    var body: View {
         ZStackView {
             ImageView(photo)
                 .contentMode(.scaleAspectFill)
@@ -68,7 +74,7 @@ struct NameValueView: ViewBuilder {
     let name: String?
     let value: String?
 
-    func build() -> View {
+    var body: View {
         HStackView {
             LabelView(name)
                 .color(.secondaryLabel)

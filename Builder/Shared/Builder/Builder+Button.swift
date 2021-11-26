@@ -52,8 +52,8 @@ extension ModifiableView where Base: UIButton {
     }
 
     @discardableResult
-    public func buttonBackgroundColor(_ color: UIColor) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) { $0.setBackgroundImage(UIImage(color: color), for: .normal) }
+    public func backgroundColor(_ color: UIColor, for state: UIControl.State) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { $0.setBackgroundImage(UIImage(color: color), for: state) }
     }
 
     @discardableResult

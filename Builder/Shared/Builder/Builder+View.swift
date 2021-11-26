@@ -15,7 +15,7 @@ extension UIView: ModifiableView {
         self
     }
     
-    public func asUIView() -> UIView {
+    public func build() -> UIView {
         self
     }
     

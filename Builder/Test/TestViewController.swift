@@ -11,10 +11,12 @@ import Resolver
 
 class TestViewController: UIViewController {
     
-    @Variable var pageTitle: String = "ViewBuilder Features!"
+    @Variable var pageTitle: String = "Builder Test View"
     @Variable var hidden: Bool = false
     @Variable var tapped: Bool = false
-    
+
+    var scrollView: UIScrollView?
+
     let bag = DisposeBag()
     
     override func viewDidLoad() {
@@ -48,7 +50,7 @@ class TestViewController: UIViewController {
                         .cornerRadius(10)
                         .clipsToBounds(true)
 
-                    LabelView("Contained Text")
+                    LabelView("Michael Long")
                         .color(.white)
                         .alignment(.right)
                         .backgroundColor(UIColor(white: 0, alpha: 0.4))
@@ -66,13 +68,16 @@ class TestViewController: UIViewController {
                     self?.tapped.toggle()
                 }
 
-                LabelView($pageTitle)
-                    .font(.largeTitle)
+                VStackView {
+                    LabelView($pageTitle)
+                        .font(.largeTitle)
 
-                LabelView("This is some text! In fact, this is some amazing multiline text!")
-                    .font(.preferredFont(forTextStyle: .callout))
-                    .color(.label)
-                    .numberOfLines(0)
+                    LabelView("This demonstrates how easy it is to enable multiline text using Builder!")
+                        .font(.preferredFont(forTextStyle: .callout))
+                        .color(.label)
+                        .numberOfLines(0)
+                }
+                .spacing(2)
 
                 HStackView {
                     LabelView("Hide Details")
@@ -97,27 +102,22 @@ class TestViewController: UIViewController {
                     .style(.filled)
                     .onTap { [weak self] _ in
                         UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut], animations: {
-                            self?.pageTitle = "This is a changed title!"
+                            self?.pageTitle = "Changed the title!"
                             self?.hidden.toggle()
                         })
                     }
 
-                LabelView("This is some more text! In fact, this is more text than we've ever seen before in a single line!")
-                    .font(.preferredFont(forTextStyle: .footnote))
-                    .color(.secondaryLabel)
-                    .numberOfLines(0)
-                
                 SpacerView()
                     .backgroundColor(.tertiarySystemBackground)
             }
-            .spacing(8)
+            .spacing(16)
             .padding(30)
         }
         .backgroundColor(.tertiarySystemBackground)
         .onReceive($hidden) { _, value in
             print("Received \(value)")
         }
-
+        .reference(&scrollView)
     }
 
 }
@@ -126,27 +126,32 @@ struct DetailsView: ViewBuilder {
     
     @Variable var hidden: Bool
 
-    func build() -> View {
+    var body: View {
         VStackView {
             DividerView()
-            if true {
-                VStackView {
-                    ForEach(3) { _ in
-                        BulletFootnoteItemView(text: "This is some bulletted text.")
-                    }
+            LabelView("This is some text in a smal font. In fact, it's so small that I have to wonder why you're reading this at all.")
+                .font(.preferredFont(forTextStyle: .footnote))
+                .color(.secondaryLabel)
+                .numberOfLines(0)
+            VStackView {
+                ForEach(3) { _ in
+                    BulletFootnoteItemView(text: "This is some bulletted text.")
                 }
-                .spacing(1)
             }
+            .spacing(1)
             DividerView()
         }
+        .spacing(8)
         .hidden(bind: $hidden)
     }
     
 }
 
 struct BulletFootnoteItemView: ViewBuilder {
+
     let text: String
-    func build() -> View {
+
+    var body: View {
         HStackView {
             LabelView("•")
                 .alignment(.center)
@@ -162,64 +167,5 @@ struct BulletFootnoteItemView: ViewBuilder {
             SpacerView()
         }
         .spacing(4)
-    }
-}
-
-struct SomeViewBuilder2: ViewBuilder {
-    func build() -> View {
-        LabelView("This is some text!")
-            .hidden(false)
-            .font(.preferredFont(forTextStyle: .largeTitle))
-            .with {
-                $0.heightAnchor.constraint(equalToConstant: 200).isActive = true
-                $0.widthAnchor.constraint(equalToConstant: 350).isActive = true
-            }
-    }
-}
-
-struct AnotherViewBuilder2: ViewBuilder {
-    func build() -> View {
-        SomeViewBuilder1()
-            .hidden(true)
-    }
-}
-
-struct AnotherViewBuilder3: ViewBuilder {
-    func build() -> View {
-        UITextView()
-            .hidden(true)
-            .with {
-                $0.heightAnchor.constraint(equalToConstant: 200).isActive = true
-                $0.widthAnchor.constraint(equalToConstant: 350).isActive = true
-            }
-    }
-}
-
-struct SomeViewBuilder1: ViewBuilder {
-    func build() -> View {
-        LabelView("This is VB1 Text!")
-    }
-}
-
-struct AnotherViewBuilder1: ViewBuilder {
-    func build() -> View {
-        SomeViewBuilder1()
-    }
-}
-
-struct AnotherViewBuilder4: ViewBuilder {
-    func build() -> View {
-        UITextView()
-    }
-}
-
-struct AnotherViewBuilder5: ViewBuilder {
-    func build() -> View {
-        SomeViewBuilder1()
-            .hidden(true)
-            .with {
-                $0.heightAnchor.constraint(equalToConstant: 200).isActive = true
-                $0.widthAnchor.constraint(equalToConstant: 350).isActive = true
-            }
     }
 }
