@@ -151,9 +151,9 @@ There are extensions for using this functionality with RxSwift (as shown), Combi
 
 Using Builder to construct UIKit-based interfaces leads to another question: how do we update our interfaces?
 
-This app uses RxSwift in many places to bind views and view models and view controllers together. We saw this in one of the earlier examples when an observable was passed and "bound" to an ImageView so that it would be updated when the image for that user was loaded.
+This app uses RxSwift in many places to bind views and view models and view controllers together. We saw this in `DetailPhotoView` example where an observable was passed to the view and "bound" to an ImageView so that it would be updated when the image for that user was eventually loaded.
 
-This following example subscribes to a `@Variable` and updates our interface when the variable state changes. This is similar to `@State` in SwiftUI. (Variable basically wraps a RxSwift BehaviorRelay.)
+Another example demonstrates how we can subscribe to a `@Variable` and update our interface when the variable state changes. This is similar to `@State` in SwiftUI. (Variable basically wraps a RxSwift BehaviorRelay.)
 
 ```swift
     func setupSubscriptions() {
@@ -174,6 +174,7 @@ This following example subscribes to a `@Variable` and updates our interface whe
             .disposed(by: disposeBag)
     }
 ```
+
 The view model defines the enumerated state and is updated when load is called. 
 ```swift
 class MainViewModel {
@@ -211,6 +212,7 @@ class MainViewModel {
 
 }
 ```
+Note the use of `private(set)` on our state variable. This ensures that our view model (and only our view model) can manipulate our state variable.
 
 ## Using Resolver for MVVM
 
