@@ -58,9 +58,26 @@ extension ViewModifier {
             })
             .disposed(by: view.rxDisposeBag)
     }
-        
+
 }
 
+extension ModifiableView {
+
+    public func onReceive<B:RxBinding, T>(_ binding: B, handler: @escaping (_ context: ViewBuilderContext<Base>, _ value: T) -> Void)
+        -> ViewModifier<Base> where B.T == T {
+            ViewModifier(modifiableView) {
+                binding.asObservable()
+                    .observe(on: MainScheduler.instance)
+                    .subscribe(onNext: { [weak modifiableView] value in
+                        if let view = modifiableView {
+                            handler(ViewBuilderContext(view: view), value)
+                        }
+                    })
+                    .disposed(by: $0.rxDisposeBag)
+            }
+    }
+
+}
 
 extension NSObject {
 
