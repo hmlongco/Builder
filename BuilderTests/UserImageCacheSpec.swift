@@ -19,7 +19,7 @@ class UserImageCacheSpec: XCTestCase {
     }
     
     override func tearDown() {
-        Resolver.root = .mock
+        Resolver.root = .main
     }
 
     func testImageThumbnails() throws {

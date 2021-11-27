@@ -25,49 +25,91 @@ class MenuViewController: UIViewController {
 }
 
 struct MenuTableView: ViewBuilder {
-    
+
+    struct Option {
+        let name: String
+        let description: String
+        let destination: () -> UIViewController
+    }
+
+    let options: [Option] = [
+        Option(name: "Login View Test", description: "A basic login field.") {
+            LoginViewController()
+        },
+        Option(name: "Table View Test", description: "A basic master/detail table view with user data pulled from an API.") {
+            MainViewController()
+        },
+        Option(name: "Stack View Test", description: "A basic master/detail dynamic stack view with user data pulled from an API.") {
+            MainStackViewController()
+        },
+        Option(name: "Test Views", description: "A basic view that tests many elements of ViewBuilder.") {
+            TestViewController()
+        }
+    ]
+
     var body: View {
         TableView(StaticViewBuilder {
-            MenuTableViewCell(name: "Login View Test", description: "A basic login field.") {
+            ForEach(options) {
+                MenuTableViewCell(option: $0)
+            }
+        })
+    }
+
+}
+
+struct MenuTableViewCell: ViewBuilder {
+
+    let option: MenuTableView.Option
+
+    var body: View {
+        TableViewCell {
+            VStackView {
+                LabelView(option.name)
+                    .font(.headline)
+                LabelView(option.description)
+                    .font(.footnote)
+                    .color(.secondaryLabel)
+                    .numberOfLines(0)
+            }
+            .spacing(2)
+        }
+        .accessoryType(.disclosureIndicator)
+        .onSelect { (context) in
+            context.push(option.destination())
+            return false
+        }
+    }
+
+}
+
+struct MenuTableViewOLD: ViewBuilder {
+
+    var body: View {
+        TableView(StaticViewBuilder {
+            MenuTableViewCellOLD(name: "Login View Test", description: "A basic login field.") {
                 LoginViewController()
             }
-            MenuTableViewCell(name: "Table View Test", description: "A basic master/detail table view with user data pulled from an API.") {
+            MenuTableViewCellOLD(name: "Table View Test", description: "A basic master/detail table view with user data pulled from an API.") {
                 MainViewController()
             }
-            MenuTableViewCell(name: "Stack View Test", description: "A basic master/detail dynamic stack view with user data pulled from an API.") {
+            MenuTableViewCellOLD(name: "Stack View Test", description: "A basic master/detail dynamic stack view with user data pulled from an API.") {
                 MainStackViewController()
             }
-            MenuTableViewCell(name: "Test Views", description: "A basic view that tests many elements of ViewBuilder.") {
+            MenuTableViewCellOLD(name: "Test Views", description: "A basic view that tests many elements of ViewBuilder.") {
                 TestViewController()
             }
         })
     }
-    
+
 }
 
-struct StandardMenuTableViewCell: ViewBuilder {
-    
+
+struct MenuTableViewCellOLD: ViewBuilder {
+
     let name: String
     let description: String
     let destination: () -> UIViewController
-    
-    var body: View {
-        TableViewCell(title: name, subtitle: description)
-            .accessoryType(.disclosureIndicator)
-            .onSelect { (context) in
-                context.push(destination())
-                return false
-            }
-    }
-    
-}
 
-struct MenuTableViewCell: ViewBuilder {
-    
-    let name: String
-    let description: String
-    let destination: () -> UIViewController
-    
     var body: View {
         TableViewCell {
             VStackView {
@@ -86,5 +128,5 @@ struct MenuTableViewCell: ViewBuilder {
             return false
         }
     }
-    
+
 }

@@ -8,17 +8,8 @@
 import Foundation
 import Resolver
 
-#if MOCK
-extension Resolver {
-    static var mock = Resolver(parent: main)
-}
-#endif
-
 extension Resolver: ResolverRegistering {
     public static func registerAllServices() {
-        #if MOCK
-        root = mock
-        #endif
         registerNetworking()
         registerServices()
         registerMain()

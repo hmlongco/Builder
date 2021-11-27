@@ -19,13 +19,13 @@ class MainViewModelSpec: XCTestCase {
     }
     
     override func tearDown() {
-        Resolver.root = .mock
+        Resolver.root = Resolver.main  
     }
     
     func testInitialState() throws {
         let vm = MainViewModel()
 
-        test("Test initial state", value: vm.state.asObservable()) {
+        test("Test initial state", value: vm.$state.asObservable()) {
             $0 == .initial
         }
     }
@@ -35,7 +35,8 @@ class MainViewModelSpec: XCTestCase {
         var previousState: MainViewModel.State!
         
         test("Test loaded state") { done in
-            _ = vm.state
+            _ = vm.$state
+                .asObservable()
                 .subscribe(onNext: { (state) in
                     switch state {
                     case .initial:
@@ -65,7 +66,8 @@ class MainViewModelSpec: XCTestCase {
         var previousState: MainViewModel.State!
 
         test("Test empty state") { done in
-            _ = vm.state
+            _ = vm.$state
+                .asObservable()
                 .subscribe(onNext: { (state) in
                     switch state {
                     case .initial:
@@ -92,7 +94,8 @@ class MainViewModelSpec: XCTestCase {
         var previousState: MainViewModel.State!
 
         test("Test list error state") { done in
-            _ = vm.state
+            _ = vm.$state
+                .asObservable()
                 .subscribe(onNext: { (state) in
                     switch state {
                     case .initial:

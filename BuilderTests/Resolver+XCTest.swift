@@ -17,11 +17,11 @@ extension Resolver {
     static var test: Resolver!
     
     static func resetUnitTestRegistrations() {
-        Resolver.test = Resolver(parent: .mock)
-        Resolver.root = .test
+        Resolver.test = Resolver(child: .main)
+        Resolver.root = Resolver.test
         Resolver.test.register { MockUserService() as UserServiceType }
         Resolver.test.register { UserImageCache() } // use our own and not global
         
-        MockDelayInterceptot.delay = 0.0
+        MockDelayInterceptor.delay = 0.0
     }
 }

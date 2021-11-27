@@ -32,12 +32,6 @@ struct MainUsersTableView: ViewBuilder {
                 return false
             }
         })
-        .onAppear { _ in
-            print("Table View Appeared")
-        }
-        .onDisappear { _ in
-            print("Table View Disappeared")
-        }
     }
     
 }

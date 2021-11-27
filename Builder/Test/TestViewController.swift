@@ -130,12 +130,12 @@ struct DetailsView: ViewBuilder {
         VStackView {
             DividerView()
             LabelView("This is some text in a smal font. In fact, it's so small that I have to wonder why you're reading this at all.")
-                .font(.preferredFont(forTextStyle: .footnote))
+                .font(.footnote)
                 .color(.secondaryLabel)
                 .numberOfLines(0)
             VStackView {
-                ForEach(3) { _ in
-                    BulletFootnoteItemView(text: "This is some bulletted text.")
+                ForEach(3) { index in
+                    BulletFootnoteItemView(text: "This is some text explaining item \(index + 1).")
                 }
             }
             .spacing(1)
