@@ -15,13 +15,59 @@ With the inclusion of #3, #5, and #6, this app does double duty as the often req
 
 ## Builder User Interface Library
 
-The Builder user interface library allows declarative programming paradigms to be used when constructing UIKit-based applications. 
+Builder lets you define your UIKit-based user interfaces using a simple, declarative format similar to that used by SwiftUI and Flutter. Builder is also based on RxSwift, with means that you have all of the reactive data binding and user interface control and functionality you'd expect from such a marriage.
 
-Here's the detail view for the app.
+With Builder, interfaces are composed and described using "views" and "modifiers" in a builder pattern. 
 
-![Image](https://github.com/hmlongco/Builder/blob/main/SampleDetail.png?raw=true)
+```
+    LabelView($title)
+        .color(.red)
+        .font(.title1)
+```
 
-And the card view "builder" code that generates it.
+When rendered, each "view" of a given type builds a corresponding UIView which is then modified as needed with the desired properties and behaviors.
+
+Combine just a few views together, and you can quickly and easily achieve some dynamic user interfaces
+
+![Detail Card View](https://github.com/hmlongco/Builder/blob/main/SampleDetail.png?raw=true)
+
+Declarative programming using Builder eliminates the need for Interface Builder Storyboards, Segues, and NIBs, and even custom UIViewControllers. All of those things are still there, of course, lying in wait for the times when they're truly needed for some bit of custom functionality.
+
+Like SwiftUI, the goal behind Builder is to eliminate much of the hassle behind creating and developing user interfaces.
+
+But unlike SwiftUI, with Builder you also have the power to reach under the hood at any point in time and directly work with the generated views and interface elements and tweak them to your hearts content.
+
+### Why Builder?
+
+#### SwiftUI
+
+With SwiftUI and Combine available, why use Builder and RxSwift? Well, I guess the answer to that question actually depends on your definition of *available*.
+
+**The problem is that SwiftUI and Combine both require iOS 13 at a minimum.** No support for iOS 12 or iOS 11. 
+
+And if I were using SwiftUI in a production app I'd probably consider **iOS 14** to be the minimum version suitable for application development. And even then there are some critical components that require iOS 15!
+
+Same for using Combine. That too would have tied me to iOS 13/14 as the minimum version... which is what I was trying to avoid in the first place.
+
+Hence the problem. There aren't too many developers who can drop support for earlier versions of iOS in their applications and go iOS 14 or 15 only. Which in turn means that most of us wouldn't see any of the benefits of doing declarative, reactive programming for another couple of **years**. 
+
+That's simply too long.
+
+#### CwlViews
+
+There are a few other declarative frameworks out there, the most notable of which is Matt Gallagher's [CwlViews](https://www.cocoawithlove.com/blog/introducing-cwlviews.html).
+
+While CwlViews has some cool and interesting features, it's biggest drawback lies in its implementation of its own reactive framework. I firmly believe in RxSwift and perhaps more to the point, RxSwift has a large and loyal base of users plus tons of available resources, books, and articles devoted to it.
+
+I wanted declarative development *and* I wanted my RxSwift. What can I say? I'm greedy.
+
+#### Flutter, React Native, et. al.
+
+There are other "cross-platform" frameworks out there, but I'm an iOS Swift developer at heart and doing iOS development in Dart or JavaScript simply doesn't interest me.
+
+### Views
+
+In Builder, screens are composed of views that are composed of views that are composed of views. Here's the card view "builder" code that generates the sample shown above.
 
 ```swift
 struct DetailCardView: ViewBuilder {    
@@ -33,7 +79,7 @@ struct DetailCardView: ViewBuilder {
     }
 
     var body: View {
-        DLSCardView {
+        StandardCardView {
             VStackView {
                 DetailPhotoView(photo: viewModel.photo(), name: viewModel.fullname)
                 
@@ -49,22 +95,16 @@ struct DetailCardView: ViewBuilder {
                 .spacing(2)
                 .padding(20)
             }
-            .onAppear { _ in
-                print("DLS Card Appeared")
-            }
-            .onDisappear { _ in
-                print("DLS Card Disappeared")
-            }
         }
     }
 }
 
 ```
-Like SwiftUI, Builder uses structs to create user defined views. Unlike SwiftUI, however, Builder uses those definitions to essentially build a standard set of UIKit views that define our interface.
+Builder uses structs to define views just like SwiftUI. But unlike SwiftUI, Builder uses those definitions to build an underlying one-for-one set of UIKit views that reflects our interface.
 
-## More Views
+### Composition
 
-Here are a few more of the dependent subviews which show the actual UIKit views being constructed.
+Like SwiftUI and Flutter, Builder encourages composition. View's can represent entire screens, as shown above; or they can be used to render portions of a screen, as shown in our `DetailPhotoView`. 
 
 ```swift
 struct DetailPhotoView: ViewBuilder {
@@ -90,7 +130,26 @@ struct DetailPhotoView: ViewBuilder {
         .height(250)
     }
 }
+```
+Note that this view is small, well-defined, and self-contained. In fact, it would be pretty easy to use it elsewhere in the app if needed. 
 
+Builder encourages such composition.
+
+So, is there a downside to interface composition? Well, practically speaking... nope.
+
+Builder views are highly performant and non-resource intensive. As with SwiftUI, view "definitions" are typically struct-based value types, and many of the modifiers are little more than key path-based assignments.
+
+Generating the actual corresponding UIViews *is* more resource intensive, true, but those views need to be created anyway, regardless of whether or not you use Builder, construct them manually, or generate them from Storyboards. 
+
+The upside? Well, unlike using Storyboards and NIBs and binding them to UIViewControllers and UIViews with dozens of IBOUtlets, this approach actively *encourages* breaking your interface down in small, individual, easily understood and easily testable interface elements.
+
+### Stack-Based Layout
+
+As in SwiftUI, almost all of our view layouts are constructed by nesting views within vertical and horizontal stackviews.
+
+Here's another one of the dependent subviews that shows we're using two label views in a horizontal stack view. Builder is going to generate the corresponding `UIStackView` and `UILabelViews` for us.
+
+```swift
 struct NameValueView: ViewBuilder {
 
     let name: String?
@@ -109,38 +168,79 @@ struct NameValueView: ViewBuilder {
 
 }
 ```
-Although small in size, it allows simple user interfaces to be constructed quickly and easily. 
 
-I've used this in several projects to get the benefits of declarative programming in legacy UIKit-based applications that can't yet support SwiftUI and its minimum base SDK of iOS 13, iOS 14, or iOS 15.
+### Table Views
+
+While stacks are Builder's primary "stock in trade", here's a basic table view layout.
+```swift
+struct MainUsersTableView: ViewBuilder {
+    
+    let users: [User]
+    
+    var body: View {
+        TableView(DynamicItemViewBuilder(users) { user in
+            TableViewCell {
+                MainCardView(user: user)
+            }
+            .accessoryType(.disclosureIndicator)
+            .onSelect { (context) in
+                context.push(DetailViewController(user: user))
+                return false
+            }
+        })
+    }
+    
+}
+```
+That's it. Note we didn't need to manually create and configure a UITableViewController. No delegates. No datasources. But we still have a complete table view with navigation and custom table view cells, all in about 17 lines of code.
+
+Although relatively small in size, Builder allows simple user interfaces to be constructed quickly and easily. 
+
+I've used Builder in several projects to get the benefits of declarative programming in legacy UIKit-based applications that can't yet support SwiftUI and its minimum base SDK of iOS 13, iOS 14, or iOS 15.
 
 
 ## Using RxSwift for MVVM Data Binding
 
 Using Builder to construct UIKit-based interfaces leads to another question: how do we update our interfaces?
 
+Unlike SwiftUI which is constantly diffing Views and rebuilding our interfaces accordingly, Builder tends to generate a standard, "static" set of UIViews. This means that we need some way to signal changes to our data and to update our user-interface accordingly.
+
 This app uses RxSwift in many places to bind views and view models and view controllers together. We saw this in `DetailPhotoView` example where an observable was passed to the view and "bound" to an ImageView so that it would be updated when the image for that user was eventually loaded.
 
-Another example demonstrates how we can subscribe to a `@Variable` and update our interface when the variable state changes. This is similar to `@State` in SwiftUI. (Variable basically wraps a RxSwift BehaviorRelay.)
+### Minor State Changes
+
+It's also common to bind an observable to a view's `hidden` attribure and let the stackview show and hide the element accordingly.
+```swift
+    LabelView("This is some text.")
+        .hidden(bind: viewModel.hideText)
+```
+Builder has extensions for binding to hidden attributes, colors, and other common attachment points.
+
+### Major State Changes
+
+Another example from `MainStackViewController` demonstrates how we can subscribe to a Builder `@Variable` and update our interface when the variable state changes. This is similar to `@State` in SwiftUI. (Variable basically wraps a RxSwift BehaviorRelay.)
 
 ```swift
-    func setupSubscriptions() {
-        viewModel.$state
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] (state) in
-                switch state {
-                case .loading:
-                    self?.displayLoadingView()
-                case .loaded(let users):
-                    self?.displayUsers(users)
-                case .empty(let message):
-                    self?.displayEmptyView(message)
-                case .error(let error):
-                    self?.displayErrorView(error)
-                }
-            })
-            .disposed(by: disposeBag)
-    }
+    viewModel.$state
+        .observe(on: MainScheduler.instance)
+        .subscribe(onNext: { [weak self] (state) in
+            guard let self = self else { return }
+            switch state {
+            case .initial:
+                self.viewModel.load()
+            case .loading:
+                self.transtion(to: StandardLoadingPage())
+            case .loaded(let users):
+                self.transtion(to: MainUsersStackView(users: users))
+            case .empty(let message):
+                self.transtion(to: StandardEmptyPage(message: message))
+            case .error(let error):
+                self.transtion(to: StandardErrorPage(error: error))
+            }
+        })
+        .disposed(by: disposeBag)
 ```
+The code `self.transtion(to: ...)` basically replaces the current view tree with a new one. Once more, we're basically replicating in UIKit what SwiftUI would do for us when it diff'ed the view tree and discovered a change.
 
 The view model defines the enumerated state and is updated when load is called. 
 ```swift
@@ -617,4 +717,4 @@ By changing the factory provided for `UserServiceType` prior to constructing the
 
 Just download the project and run it.
 
-Currently it requires Xcode 12.4.
+Currently it requires Xcode 12.5 as a minimum.
