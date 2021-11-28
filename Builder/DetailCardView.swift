@@ -21,17 +21,17 @@ struct DetailCardView: ViewBuilder {
         DLSCardView {
             VStackView {
                 DetailPhotoView(photo: viewModel.photo(), name: viewModel.fullname)
-                
+                    .height(250)
                 VStackView {
                     NameValueView(name: "Address", value: viewModel.street)
                     NameValueView(name: "", value: viewModel.cityStateZip)
-                    SpacerView(16)
+                    SpacerView(8)
                     NameValueView(name: "Email", value: viewModel.email)
                     NameValueView(name: "Phone1", value: viewModel.phone)
-                    SpacerView(16)
+                    SpacerView(8)
                     NameValueView(name: "Age", value: viewModel.age)
                 }
-                .spacing(2)
+                .spacing(0)
                 .padding(20)
             }
             .onAppear { _ in
@@ -55,7 +55,6 @@ struct DetailPhotoView: ViewBuilder {
             ImageView(photo)
                 .contentMode(.scaleAspectFill)
                 .clipsToBounds(true)
-            
             LabelView(name)
                 .alignment(.right)
                 .font(.title2)
@@ -65,7 +64,6 @@ struct DetailPhotoView: ViewBuilder {
                 .alpha(0.7)
                 .position(.bottom)
         }
-        .height(250)
     }
 }
 
