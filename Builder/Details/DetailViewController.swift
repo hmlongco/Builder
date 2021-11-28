@@ -60,8 +60,8 @@ class DetailViewController: UIViewController {
             }
             .padding(20)
             .spacing(20)
-            .onReceive(viewModel.$accepted) { _, value in
-                print(value)
+            .onReceive(viewModel.$accepted) { context, value in
+                context.view.accessibilityLabel = value ? "Terms accepted." : "Terms Not yet accepted."
             }
         }
         .backgroundColor(.quaternarySystemFill)
