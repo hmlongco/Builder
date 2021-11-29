@@ -72,6 +72,9 @@ public protocol ModifiableView: View {
 
 // Standard "builder" modifiers for all view types
 extension ModifiableView {
+    public func asBaseView() -> Base {
+        modifiableView
+    }
     public func build() -> UIView {
         modifiableView
     }

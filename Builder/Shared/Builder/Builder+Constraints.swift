@@ -10,6 +10,18 @@ import UIKit
 extension ModifiableView {
 
     @discardableResult
+    public func contentCompressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { $0.setContentCompressionResistancePriority(priority, for: axis) }
+    }
+
+    @discardableResult
+    public func contentHuggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.setContentHuggingPriority(priority, for: axis)
+        }
+    }
+
+    @discardableResult
     public func frame(height: CGFloat? = nil, width: CGFloat? = nil) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
             if let height = height {

@@ -15,6 +15,7 @@ extension ButtonView.Style {
             .color(.white)
             .backgroundColor(.blue, for: .normal)
             .backgroundColor(.blue.darker(), for: .highlighted)
+            .backgroundColor(.gray, for: .disabled)
             .padding(10)
     }
     

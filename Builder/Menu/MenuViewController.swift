@@ -49,9 +49,11 @@ struct MenuTableView: ViewBuilder {
 
     var body: View {
         TableView(StaticViewBuilder {
+//            LabelView("This is a test")
             ForEach(options) {
                 MenuTableViewCell(option: $0)
             }
+//            LabelView("This is another test")
         })
     }
 

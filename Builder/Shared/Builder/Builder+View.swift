@@ -66,18 +66,6 @@ extension ModifiableView {
     }
 
     @discardableResult
-    public func contentCompressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) { $0.setContentCompressionResistancePriority(priority, for: axis) }
-    }
-
-    @discardableResult
-    public func contentHuggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) {
-            $0.setContentHuggingPriority(priority, for: axis)
-        }
-    }
-
-    @discardableResult
     public func contentMode(_ contentMode: UIView.ContentMode) -> ViewModifier<Base> {
         ViewModifier(modifiableView, keyPath: \.contentMode, value: contentMode)
     }
