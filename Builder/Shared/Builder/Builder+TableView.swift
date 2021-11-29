@@ -65,10 +65,16 @@ class BuilderInternalTableView: UITableView, UITableViewDataSource, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = builder.view(at: indexPath.row)?.build() as? UITableViewCell else {
+        guard let view = builder.view(at: indexPath.row) else {
             return UITableViewCell(frame: tableView.bounds)
         }
-        return cell
+        if let cell = view.build() as? UITableViewCell {
+            return cell
+        }
+        if let cell = TableViewCell({ view }).build() as? UITableViewCell {
+            return cell
+        }
+        return UITableViewCell(frame: tableView.bounds)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
