@@ -7,6 +7,48 @@
 
 import UIKit
 
+extension ModifiableView {
+
+    @discardableResult
+    public func frame(height: CGFloat? = nil, width: CGFloat? = nil) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            if let height = height {
+                $0.heightAnchor
+                    .constraint(equalToConstant: height)
+                    .priority(UILayoutPriority(rawValue: 999))
+                    .activate()
+            }
+            if let width = width {
+                $0.widthAnchor
+                    .constraint(equalToConstant: width)
+                    .priority(UILayoutPriority(rawValue: 999))
+                    .activate()
+            }
+        }
+    }
+
+    @discardableResult
+    public func height(_ height: CGFloat) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.heightAnchor
+                .constraint(equalToConstant: height)
+                .priority(UILayoutPriority(rawValue: 999))
+                .activate()
+        }
+    }
+
+    @discardableResult
+    public func width(_ width: CGFloat) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.widthAnchor
+                .constraint(equalToConstant: width)
+                .priority(UILayoutPriority(rawValue: 999))
+                .activate()
+        }
+    }
+
+}
+
 extension UIView {
     
     public enum EmbedPosition: Int, CaseIterable {
@@ -109,39 +151,11 @@ extension ModifiableView {
     @discardableResult
     public func position(_ position: UIView.EmbedPosition) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
-            $0.getBuilderAttributes()?.position = position
+            $0.builderAttributes()?.position = position
         }
     }
 
 }
-
-extension UIView {
-
-    public class BuilderAttributes {
-        var position: UIView.EmbedPosition?
-        var insets: UIEdgeInsets?
-    }
-
-    private static var BuilderAttributesKey: UInt8 = 0
-
-    public func getBuilderAttributes(required: Bool = true) -> BuilderAttributes? {
-        if let attributes = objc_getAssociatedObject( self, &UIView.BuilderAttributesKey ) as? BuilderAttributes {
-            return attributes
-        }
-        if required {
-            let attributes = BuilderAttributes()
-            objc_setAssociatedObject(self, &UIView.BuilderAttributesKey, attributes, .OBJC_ASSOCIATION_RETAIN)
-            return attributes
-        }
-        return nil
-    }
-
-    public func setBuilderAttributes(_ attributes: BuilderAttributes) {
-        objc_setAssociatedObject(self, &UIView.BuilderAttributesKey, attributes, .OBJC_ASSOCIATION_RETAIN)
-    }
-
-}
-
 
 fileprivate protocol UIViewAnchoring {
     var leadingAnchor: NSLayoutXAxisAnchor { get }

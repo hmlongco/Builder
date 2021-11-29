@@ -13,6 +13,8 @@ Builder is a simple iOS Master/Detail app written in Swift that demonstrates qui
 
 With the inclusion of #3, #5, and #6, this app does double duty as the often requested *demo* app for [Resolver](https://github.com/hmlongco/Resolver.git) .
 
+---
+
 ## Builder User Interface Library
 
 Builder lets you define your UIKit-based user interfaces using a simple, declarative format similar to that used by SwiftUI and Flutter. Builder is also based on RxSwift, with means that you have all of the reactive data binding and user interface control and functionality you'd expect from such a marriage.
@@ -39,8 +41,6 @@ But unlike SwiftUI, with Builder you also have the power to reach under the hood
 
 ### Why Builder?
 
-#### SwiftUI
-
 With SwiftUI and Combine available, why use Builder and RxSwift? Well, I guess the answer to that question actually depends on your definition of *available*.
 
 **The problem is that SwiftUI and Combine both require iOS 13 at a minimum.** No support for iOS 12 or iOS 11. 
@@ -65,7 +65,13 @@ I wanted declarative development *and* I wanted my RxSwift. What can I say? I'm 
 
 There are other "cross-platform" frameworks out there, but I'm an iOS Swift developer at heart and doing iOS development in Dart or JavaScript simply doesn't interest me.
 
-### Views
+#### RxSwiftWidgets
+
+Builder wasn't my first attempt at a SwiftUI-like library. I created [RxSwiftWidgets](https://github.com/hmlongco/RxSwiftWidgets) almost immediately after SwiftUI was announced, but was frustrated by several issues inherent in its implementation.
+
+I started over with Builder to see if I could do better. (Spoiler alert: I could.)
+
+### Views and View Builders
 
 In Builder, screens are composed of views that are composed of views that are composed of views. Here's the card view "builder" code that generates the sample shown above.
 
@@ -81,18 +87,18 @@ struct DetailCardView: ViewBuilder {
     var body: View {
         StandardCardView {
             VStackView {
-                DetailPhotoView(photo: viewModel.photo(), name: viewModel.fullname)
-                
+                LabeledPhotoView(photo: viewModel.photo(), name: viewModel.fullname)
+                    .height(250)
                 VStackView {
                     NameValueView(name: "Address", value: viewModel.street)
                     NameValueView(name: "", value: viewModel.cityStateZip)
-                    SpacerView(16)
+                    SpacerView(8)
                     NameValueView(name: "Email", value: viewModel.email)
                     NameValueView(name: "Phone1", value: viewModel.phone)
-                    SpacerView(16)
+                    SpacerView(8)
                     NameValueView(name: "Age", value: viewModel.age)
                 }
-                .spacing(2)
+                .spacing(0)
                 .padding(20)
             }
         }
@@ -100,14 +106,24 @@ struct DetailCardView: ViewBuilder {
 }
 
 ```
-Builder uses structs to define views just like SwiftUI. But unlike SwiftUI, Builder uses those definitions to build an underlying one-for-one set of UIKit views that reflects our interface.
+Builder uses structs to define views just like SwiftUI, even down to the `var body: View` paradigm. But unlike SwiftUI, it uses those definitions to create an underlying one-for-one set of UIKit views that reflects our interface.
+
+Any Builder view can be converted into its UIView or, in this case, its corresponding *set* of UIViews by simply calling `.build()`.
+
+```swift
+    let view: UIView = DetailCardView().build()
+```
+In many cases, however, some strategically placed UIView extensions do a lot of that behind-the-scenes scut-work for you, and you can just treat Builder views like any other UIView.
+```swift
+    anotherview.insertSubview(DetailCardView(), at: 0)
+```
 
 ### Composition
 
-Like SwiftUI and Flutter, Builder encourages composition. View's can represent entire screens, as shown above; or they can be used to render portions of a screen, as shown in our `DetailPhotoView`. 
+Like SwiftUI and Flutter, Builder encourages composition. View's can represent entire screens, as shown above; or they can be used to render portions of a screen, as shown in the `LabeledPhotoView` we used in our earlier view. 
 
 ```swift
-struct DetailPhotoView: ViewBuilder {
+struct LabeledPhotoView: ViewBuilder {
     
     let photo: Observable<UIImage?>
     let name: String
@@ -117,7 +133,6 @@ struct DetailPhotoView: ViewBuilder {
             ImageView(photo)
                 .contentMode(.scaleAspectFill)
                 .clipsToBounds(true)
-            
             LabelView(name)
                 .alignment(.right)
                 .font(.title2)
@@ -127,13 +142,10 @@ struct DetailPhotoView: ViewBuilder {
                 .alpha(0.7)
                 .position(.bottom)
         }
-        .height(250)
-    }
+     }
 }
 ```
-Note that this view is small, well-defined, and self-contained. In fact, it would be pretty easy to use it elsewhere in the app if needed. 
-
-Builder encourages such composition.
+Note that this view is small, well-defined, and self-contained. In fact, it would be pretty easy to use it elsewhere in the app if needed. It's a nice little well-composed component.
 
 So, is there a downside to interface composition? Well, practically speaking... nope.
 
@@ -143,11 +155,11 @@ Generating the actual corresponding UIViews *is* more resource intensive, true, 
 
 The upside? Well, unlike using Storyboards and NIBs and binding them to UIViewControllers and UIViews with dozens of IBOUtlets, this approach actively *encourages* breaking your interface down in small, individual, easily understood and easily testable interface elements.
 
-### Stack-Based Layout
+### Stack-Based Layouts
 
-As in SwiftUI, almost all of our view layouts are constructed by nesting views within vertical and horizontal stackviews.
+As with SwiftUI, almost all of our view layouts are constructed by nesting views within vertical and horizontal stackviews. (Though sometimes we also use single containers and z-stacks to enhance our layouts.)
 
-Here's another one of the dependent subviews that shows we're using two label views in a horizontal stack view. Builder is going to generate the corresponding `UIStackView` and `UILabelViews` for us.
+Here's another one of our card view's dependent subviews that shows we're using two label views in a horizontal stack view.
 
 ```swift
 struct NameValueView: ViewBuilder {
@@ -168,6 +180,9 @@ struct NameValueView: ViewBuilder {
 
 }
 ```
+`HStackView` and `LabelView` are elemental Builder views that directly generate the corresponding `UIStackView` and `UILabelViews` for us. 
+
+And again, as with SwiftUI, Builder is somewhat opinionated as to how those views should be presented. Quite a few view options are "baked in" such that we dont have to continually set the things we're going to need over and over and over again. (Like repeatingly setting `translatesAutoresizingMaskIntoConstraints` to false on each and every manually constructed view. Been there, done that.)
 
 ### Table Views
 
@@ -198,27 +213,48 @@ Although relatively small in size, Builder allows simple user interfaces to be c
 
 I've used Builder in several projects to get the benefits of declarative programming in legacy UIKit-based applications that can't yet support SwiftUI and its minimum base SDK of iOS 13, iOS 14, or iOS 15.
 
+---
 
 ## Using RxSwift for MVVM Data Binding
 
 Using Builder to construct UIKit-based interfaces leads to another question: how do we update our interfaces?
 
-Unlike SwiftUI which is constantly diffing Views and rebuilding our interfaces accordingly, Builder tends to generate a standard, "static" set of UIViews. This means that we need some way to signal changes to our data and to update our user-interface accordingly.
+Unlike SwiftUI which is constantly diffing and comparing views and rebuilding our interfaces accordingly, Builder tends to generate a standard, "static" set of UIViews. This means that we need some way to signal changes to our data and to update our user-interface accordingly.
 
-This app uses RxSwift in many places to bind views and view models and view controllers together. We saw this in `DetailPhotoView` example where an observable was passed to the view and "bound" to an ImageView so that it would be updated when the image for that user was eventually loaded.
+This app uses RxSwift in many places to bind views and view models and view controllers together. We saw this in `DetailPhotoView` example where an observable was passed to the view and "bound" to an ImageView in it's initializer so that it would be updated when the image for that user was eventually loaded.
+
+Same for LabelViews and its associated text. But we can do more.
 
 ### Minor State Changes
 
-It's also common to bind an observable to a view's `hidden` attribure and let the stackview show and hide the element accordingly.
+One thing we do a lot of in Builder is bind an observable to a view's `hidden` attribure and let the stackview show and hide the element accordingly.
 ```swift
-    LabelView("This is some text.")
-        .hidden(bind: viewModel.hideText)
+    LabelView("Opps! An unexpected error occurred!")
+        .hidden(bind: viewModel.showErrorMessage)
 ```
-Builder has extensions for binding to hidden attributes, colors, and other common attachment points.
+Builder has extensions for binding to hidden attributes, colors, and a few other common attachment points. If Builder doesn't already have a built-in binding for that property, just use a keypath.
+```swift
+    LabelView("Some text")
+        .bind(keyPath: \.backgroundColor, binding: $color)
+```
+
+And if all else fails you can simply listen to an observable and handle state accordingly.
+
+```swift
+    LabelView(viewModel.terms)
+        .onReceive(viewModel.$accepted) { context, value in
+            context.view.accessibilityLabel = value ? "Terms accepted." : "Terms not yet accepted."
+        }
+```
+Finally, you may have noticed that in the previous examples we're binding to a property or subscribing to an observable, but no `Disposable` is in evidence. 
+
+That's because Builder is managing that for us behind the scenes. Builder will, if needed, create a `DisposeBag` for us and associate it with the view in question. When the view is eventually released any bindings associated with that view will be unsubscribed.
+
+This happens automatically, so we don't have to worry about it. I might also mention that only views where a binding is actually specified in the code get an associated `DisposeBag`, so we don't have to worry about any negative performance aspects when dealing with the majority of views that don't have bound properties.
 
 ### Major State Changes
 
-Another example from `MainStackViewController` demonstrates how we can subscribe to a Builder `@Variable` and update our interface when the variable state changes. This is similar to `@State` in SwiftUI. (Variable basically wraps a RxSwift BehaviorRelay.)
+Another example from `MainStackViewController` demonstrates how we can subscribe to a Builder `@Variable` and update our interface when the variable state changes. This is similar to `@State` in SwiftUI. 
 
 ```swift
     viewModel.$state
@@ -240,7 +276,7 @@ Another example from `MainStackViewController` demonstrates how we can subscribe
         })
         .disposed(by: disposeBag)
 ```
-The code `self.transtion(to: ...)` basically replaces the current view tree with a new one. Once more, we're basically replicating in UIKit what SwiftUI would do for us when it diff'ed the view tree and discovered a change.
+The code `self.transtion(to: ...)` basically replaces the current view tree with a new one. Since Builder doesn't "diff" the treeview, we're basically manually replicatiing in UIKit what SwiftUI would do for us whenever a major state change occurs.
 
 The view model defines the enumerated state and is updated when load is called. 
 ```swift
@@ -279,7 +315,11 @@ class MainViewModel {
 
 }
 ```
-Note the use of `private(set)` on our state variable. This ensures that our view model (and only our view model) can manipulate our state variable.
+Note the use of `private(set)` on our state variable. This ensures that our view model (and only our view model) can manipulate our state variable. 
+
+*(This is better than exposing a RxSwift BehaviorRelay or PublishSubject over which we'd have no such control.)*
+
+---
 
 ## Using Resolver for MVVM
 
@@ -297,6 +337,8 @@ class MainViewModel {
 Above we're using Resolver's @Injected property wrapper to find and instantiate the dependencies needed for our main view model.
 
 Injections tie together the master view, detail view, the view models, and the API and data caching layers of the application.
+
+---
 
 ## Builder Networking Library
 
@@ -332,6 +374,8 @@ struct UserService: UserServiceType {
 ```
 There are extensions for using this functionality with RxSwift (as shown), Combine, as well as with a standard Result-based callback mechanism. That said, using Combine would tie us once again to a recent version version of iOS and largely defeat the benefits of using Builder.
 
+---
+
 ## Structuring Applications for Mocking and Testing
 
 Everyone knows that using an architecture like MVVM in your iOS application can help to avoid Massive-View-Controller-Syndrome, where the entirity of your screen's logic and code is shoehorned into a single, massive `UIViewController`. And everyone knows that breaking out all of that business logic can help make the components of your application easier to understand.
@@ -358,7 +402,7 @@ On the flip side, no one likes fixing bugs, and writing unit tests on error cond
 
 Another set of wins.
 
-### 
+---
 
 
 ## Using Resolver to mock user data for application development

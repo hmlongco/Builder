@@ -23,11 +23,8 @@ struct TableView: ModifiableView {
 
 }
 
-class BuilderInternalTableView: UITableView, UITableViewDataSource, UITableViewDelegate, BuilderInternalViewEvents {
+class BuilderInternalTableView: UITableView, UITableViewDataSource, UITableViewDelegate, ViewBuilderEventHandling {
      
-    public var onAppearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
-    public var onDisappearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
-
     public var builder: AnyIndexableViewBuilder!
     
     public init() {
@@ -52,11 +49,12 @@ class BuilderInternalTableView: UITableView, UITableViewDataSource, UITableViewD
     }
     
     override public func didMoveToWindow() {
+        guard let attributes = optionalBuilderAttributes() else { return }
         // Note didMoveToWindow may be called more than once
         if window == nil {
-            onDisappearHandler?(ViewBuilderContext(view: self))
+            attributes.onDisappearHandler?(ViewBuilderContext(view: self))
         } else if let vc = context.viewController, let nc = vc.navigationController, nc.topViewController == vc {
-            onAppearHandler?(ViewBuilderContext(view: self))
+            attributes.onAppearHandler?(ViewBuilderContext(view: self))
         }
     }
 

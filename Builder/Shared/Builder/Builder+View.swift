@@ -53,11 +53,6 @@ extension ModifiableView {
     }
 
     @discardableResult
-    public func backgroundImage(_ image: UIImage?) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) { $0.backgroundImage(image) }
-    }
-
-    @discardableResult
     public func border(color: UIColor, lineWidth: CGFloat = 0.5) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
             $0.layer.borderColor = color.cgColor
@@ -92,34 +87,6 @@ extension ModifiableView {
         ViewModifier(modifiableView) {
             $0.layer.cornerRadius = radius
             $0.clipsToBounds = true
-        }
-    }
-
-    @discardableResult
-    public func frame(height: CGFloat? = nil, width: CGFloat? = nil) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) {
-            if let height = height {
-                $0.heightAnchor
-                    .constraint(equalToConstant: height)
-                    .priority(UILayoutPriority(rawValue: 999))
-                    .activate()
-            }
-            if let width = width {
-                $0.widthAnchor
-                    .constraint(equalToConstant: width)
-                    .priority(UILayoutPriority(rawValue: 999))
-                    .activate()
-            }
-        }
-    }
-
-    @discardableResult
-    public func height(_ height: CGFloat) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) {
-            $0.heightAnchor
-                .constraint(equalToConstant: height)
-                .priority(UILayoutPriority(rawValue: 999))
-                .activate()
         }
     }
 
@@ -166,27 +133,12 @@ extension ModifiableView {
     public func userInteractionEnabled(_ enabled: Bool) -> ViewModifier<Base> {
         ViewModifier(modifiableView, keyPath: \.isUserInteractionEnabled, value: enabled)
     }
-
-    @discardableResult
-    public func width(_ width: CGFloat) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) {
-            $0.widthAnchor
-                .constraint(equalToConstant: width)
-                .priority(UILayoutPriority(rawValue: 999))
-                .activate()
-        }
-    }
     
 }
 
 
 
 extension ModifiableView {
-    
-    @discardableResult
-    public func alpha<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == CGFloat {
-        ViewModifier(modifiableView, binding: binding, keyPath: \.alpha)
-    }
     
     @discardableResult
     public func hidden<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == Bool {
@@ -196,33 +148,6 @@ extension ModifiableView {
     @discardableResult
     public func userInteractionEnabled<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == Bool {
         ViewModifier(modifiableView, binding: binding, keyPath: \.isUserInteractionEnabled)
-    }
-
-}
-
-
-
-public struct TapGestureContext<Base:UIView>: ViewBuilderContextProvider {
-    public var view: Base
-    public var gesture: UIGestureRecognizer
-}
-
-extension ModifiableView {
-    
-    @discardableResult
-    public func onTapGesture(_ handler: @escaping (_ context: TapGestureContext<Base>) -> Void) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) {
-            let gesture = UITapGestureRecognizer()
-            $0.addGestureRecognizer(gesture)
-            let context = TapGestureContext(view: $0, gesture: gesture)
-            gesture.rx.event
-                .asControlEvent()
-                .throttle(.milliseconds(300), latest: false, scheduler: MainScheduler.instance)
-                .subscribe { (e) in
-                    handler(context)
-                }
-                .disposed(by: $0.rxDisposeBag)
-        }
     }
 
 }

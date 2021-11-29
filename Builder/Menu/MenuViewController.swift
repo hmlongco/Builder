@@ -17,7 +17,7 @@ class MenuViewController: UIViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "ViewBuilder Demo"
+        title = "Builder Demo"
         view.backgroundColor = .systemBackground
         view.embed(MenuTableView())
     }

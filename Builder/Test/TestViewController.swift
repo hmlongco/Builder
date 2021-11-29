@@ -14,6 +14,7 @@ class TestViewController: UIViewController {
     @Variable var pageTitle: String = "Builder Test View"
     @Variable var hidden: Bool = false
     @Variable var tapped: Bool = false
+    @Variable var color: UIColor? = UIColor(white: 0, alpha: 0.4)
 
     var scrollView: UIScrollView?
 
@@ -53,7 +54,7 @@ class TestViewController: UIViewController {
                     LabelView("Michael Long")
                         .color(.white)
                         .alignment(.right)
-                        .backgroundColor(UIColor(white: 0, alpha: 0.4))
+                        .bind(keyPath: \.backgroundColor, binding: $color)
                         .padding(h: 12, v: 8)
                         .roundedCorners(radius: 10, corners: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner])
                         .clipsToBounds(true)
@@ -65,7 +66,7 @@ class TestViewController: UIViewController {
                 .roundedCorners(radius: 16, corners: [.layerMinXMinYCorner, .layerMaxXMaxYCorner])
                 .shadow(color: .black, radius: 2, opacity: 0.2, offset: CGSize(width: 2, height: 2))
                 .onTapGesture { [weak self] _ in
-                    self?.tapped.toggle()
+                    self?.color = .red
                 }
 
                 VStackView {

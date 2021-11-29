@@ -61,7 +61,7 @@ extension ModifiableView {
     @available(iOS, unavailable) // not yet working as expected
     @discardableResult
     public func margins(insets: UIEdgeInsets) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) { $0.getBuilderAttributes()?.insets = insets }
+        ViewModifier(modifiableView) { $0.builderAttributes()?.insets = insets }
     }
 
 }

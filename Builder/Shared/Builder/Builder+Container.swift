@@ -41,10 +41,7 @@ extension ModifiableView where Base: BuilderInternalContainerView {
 
 }
 
-public class BuilderInternalContainerView: UIView, BuilderInternalViewEvents {
-
-    public var onAppearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
-    public var onDisappearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
+public class BuilderInternalContainerView: UIView, ViewBuilderEventHandling {
 
     fileprivate var views: ViewConvertable?
     fileprivate var padding: UIEdgeInsets = .zero
@@ -64,7 +61,7 @@ public class BuilderInternalContainerView: UIView, BuilderInternalViewEvents {
     override public func didMoveToSuperview() {
         views?.asViews().forEach {
             let view = $0.build()
-            let attributes = view.getBuilderAttributes(required: false)
+            let attributes = view.optionalBuilderAttributes()
             let position = attributes?.position ?? position
             let padding = attributes?.insets ?? padding
             addConstrainedSubview(view, position: position, padding: padding, safeArea: safeArea)
@@ -73,11 +70,12 @@ public class BuilderInternalContainerView: UIView, BuilderInternalViewEvents {
     }
 
     override public func didMoveToWindow() {
+        guard let attributes = optionalBuilderAttributes() else { return }
         // Note didMoveToWindow may be called more than once
         if window == nil {
-            onDisappearHandler?(ViewBuilderContext(view: self))
+            attributes.onDisappearHandler?(ViewBuilderContext(view: self))
         } else if let vc = context.viewController, let nc = vc.navigationController, nc.topViewController == vc {
-            onAppearHandler?(ViewBuilderContext(view: self))
+            attributes.onAppearHandler?(ViewBuilderContext(view: self))
         }
     }
 
@@ -90,24 +88,4 @@ extension BuilderInternalContainerView: ViewBuilderPaddable {
     }
 
 }
-
-public protocol BuilderInternalViewEvents: UIView {
-    var onAppearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)? { get set }
-    var onDisappearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)? { get set }
-}
-
-extension ModifiableView where Base: BuilderInternalViewEvents {
-
-    @discardableResult
-    public func onAppear(_ handler: @escaping (_ context: ViewBuilderContext<UIView>) -> Void) -> ViewModifier<Base> {
-        ViewModifier(modifiableView, keyPath: \.onAppearHandler, value: handler)
-    }
-
-    @discardableResult
-    public func onDisappear(_ handler: @escaping (_ context: ViewBuilderContext<UIView>) -> Void) -> ViewModifier<Base> {
-        ViewModifier(modifiableView, keyPath: \.onDisappearHandler, value: handler)
-    }
-
-}
-
 

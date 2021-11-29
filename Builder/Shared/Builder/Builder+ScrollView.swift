@@ -59,11 +59,8 @@ public struct VerticalScrollView: ModifiableView {
 
 }
 
-public class BuilderInternalScrollView: UIScrollView, BuilderInternalViewEvents, UIScrollViewDelegate {
+public class BuilderInternalScrollView: UIScrollView, UIScrollViewDelegate {
 
-    public var onAppearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
-    public var onDisappearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
-    
     public var scrollViewDidScrollHandler: ((_ context: ViewBuilderContext<UIScrollView>) -> Void)?
 
     @objc public func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -71,11 +68,12 @@ public class BuilderInternalScrollView: UIScrollView, BuilderInternalViewEvents,
     }
 
     override public func didMoveToWindow() {
+        guard let attributes = optionalBuilderAttributes() else { return }
         // Note didMoveToWindow may be called more than once
         if window == nil {
-            onDisappearHandler?(ViewBuilderContext(view: self))
+            attributes.onDisappearHandler?(ViewBuilderContext(view: self))
         } else if let vc = context.viewController, let nc = vc.navigationController, nc.topViewController == vc {
-            onAppearHandler?(ViewBuilderContext(view: self))
+            attributes.onAppearHandler?(ViewBuilderContext(view: self))
         }
     }
 

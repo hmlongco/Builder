@@ -24,10 +24,6 @@ extension ViewBuilderContextProvider {
         viewController?.navigationController
     }
     
-    public var disposeBag: DisposeBag {
-        view.rxDisposeBag
-    }
-    
     public func present(_ view: View, animated: Bool = true) {
         navigationController?.present(UIViewController(view.build()), animated: animated)
     }
@@ -44,6 +40,10 @@ extension ViewBuilderContextProvider {
         viewController?.push(vc, configure: configure)
     }
     
+    public var disposeBag: DisposeBag {
+        view.rxDisposeBag
+    }
+
 }
 
 // simple extensions to make context calls shorter

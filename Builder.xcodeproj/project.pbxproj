@@ -30,6 +30,8 @@
 		4C4AD76E27513CFF00EF12C6 /* Builder+ForEach.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4AD76D27513CFF00EF12C6 /* Builder+ForEach.swift */; };
 		4C4AD7702751881700EF12C6 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4AD76F2751881700EF12C6 /* UIColor+Extensions.swift */; };
 		4C4AD772275189E000EF12C6 /* TestViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4AD771275189E000EF12C6 /* TestViews.swift */; };
+		4C4AD7742753FAAB00EF12C6 /* Builder+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4AD7732753FAAB00EF12C6 /* Builder+Attributes.swift */; };
+		4C4AD77627542E5300EF12C6 /* Builder+Gestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4AD77527542E5300EF12C6 /* Builder+Gestures.swift */; };
 		4C57859225CA2958005D42BB /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C57859125CA2958005D42BB /* DetailViewController.swift */; };
 		4C57859725CAEA60005D42BB /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C57859625CAEA60005D42BB /* Rx+Extensions.swift */; };
 		4C5FF94225E4189100E929A4 /* XCTTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FF94125E4189100E929A4 /* XCTTest+Extensions.swift */; };
@@ -139,6 +141,8 @@
 		4C4AD76D27513CFF00EF12C6 /* Builder+ForEach.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Builder+ForEach.swift"; sourceTree = "<group>"; };
 		4C4AD76F2751881700EF12C6 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		4C4AD771275189E000EF12C6 /* TestViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViews.swift; sourceTree = "<group>"; };
+		4C4AD7732753FAAB00EF12C6 /* Builder+Attributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+Attributes.swift"; sourceTree = "<group>"; };
+		4C4AD77527542E5300EF12C6 /* Builder+Gestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+Gestures.swift"; sourceTree = "<group>"; };
 		4C57859125CA2958005D42BB /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		4C57859625CAEA60005D42BB /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
 		4C5FF94125E4189100E929A4 /* XCTTest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTTest+Extensions.swift"; sourceTree = "<group>"; };
@@ -410,6 +414,7 @@
 			isa = PBXGroup;
 			children = (
 				4C9CC3B625B4F2D4002BE06D /* Builder.swift */,
+				4C4AD7732753FAAB00EF12C6 /* Builder+Attributes.swift */,
 				4C9CC3B725B4F2D4002BE06D /* Builder+Button.swift */,
 				4C40B2B126E2E07100598D9E /* Builder+Constraints.swift */,
 				4C9CC3BF25B4F2D4002BE06D /* Builder+Container.swift */,
@@ -419,6 +424,7 @@
 				4C9CC3BB25B4F2D4002BE06D /* Builder+Dynamic.swift */,
 				4C4AD733274DEC9700EF12C6 /* Builder+Extensions.swift */,
 				4C4AD76D27513CFF00EF12C6 /* Builder+ForEach.swift */,
+				4C4AD77527542E5300EF12C6 /* Builder+Gestures.swift */,
 				4CEE4D592695DD7E00312FD1 /* Builder+Group.swift */,
 				4C9CC3BA25B4F2D4002BE06D /* Builder+Image.swift */,
 				4C9CC3BD25B4F2D4002BE06D /* Builder+Label.swift */,
@@ -682,6 +688,7 @@
 			files = (
 				4CA19EE0273DCB0100EE7433 /* Builder+RxSwift.swift in Sources */,
 				4C4AD7702751881700EF12C6 /* UIColor+Extensions.swift in Sources */,
+				4C4AD77627542E5300EF12C6 /* Builder+Gestures.swift in Sources */,
 				4C9CC3EC25B4F627002BE06D /* User.swift in Sources */,
 				4C249B6825C656AF00EAA1E9 /* Builder+ZStack.swift in Sources */,
 				4C9CC3CA25B4F2D4002BE06D /* Builder+View.swift in Sources */,
@@ -732,6 +739,7 @@
 				4C4AD734274DEC9700EF12C6 /* Builder+Extensions.swift in Sources */,
 				4CA19EE8273E108700EE7433 /* MainStackViewController.swift in Sources */,
 				4C65866125ED23040073003C /* MainUsersStackView.swift in Sources */,
+				4C4AD7742753FAAB00EF12C6 /* Builder+Attributes.swift in Sources */,
 				4CF96452274BE76500C0824C /* LoginViewModel.swift in Sources */,
 				4CA19EE6273E0C8C00EE7433 /* MenuViewController.swift in Sources */,
 				4CF9644E274B0B1600C0824C /* Builder+TextField.swift in Sources */,
@@ -865,7 +873,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -881,6 +889,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9ZVHDWC4WU;
 				INFOPLIST_FILE = Builder/Info.plist;
@@ -988,7 +997,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1004,6 +1013,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9ZVHDWC4WU;
 				INFOPLIST_FILE = Builder/Info.plist;
@@ -1117,7 +1127,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1173,7 +1183,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1189,6 +1199,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9ZVHDWC4WU;
 				INFOPLIST_FILE = Builder/Info.plist;
@@ -1210,6 +1221,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9ZVHDWC4WU;
 				INFOPLIST_FILE = Builder/Info.plist;

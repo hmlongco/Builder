@@ -20,7 +20,7 @@ public struct HStackView: ModifiableView {
     }
     
     // lifecycle
-    public init(@ViewResultBuilder _ builder: () -> ViewConvertable) {
+    public init(spacing: CGFloat = UIStackView.spacingUseSystem, @ViewResultBuilder _ builder: () -> ViewConvertable) {
         builder().asViews().forEach { modifiableView.addArrangedSubview($0) }
     }
     
@@ -45,7 +45,8 @@ public struct VStackView: ModifiableView {
     }
     
     // lifecycle
-    public init(@ViewResultBuilder _ builder: () -> ViewConvertable) {
+    public init(spacing: CGFloat = UIStackView.spacingUseSystem, @ViewResultBuilder _ builder: () -> ViewConvertable) {
+        modifiableView.spacing = spacing
         builder().asViews().forEach { modifiableView.addArrangedSubview($0) }
     }
     
@@ -136,18 +137,15 @@ extension UIStackView {
     }
 }
 
-
-public class BuilderInternalUIStackView: UIStackView, BuilderInternalViewEvents {
-
-    public var onAppearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
-    public var onDisappearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
+public class BuilderInternalUIStackView: UIStackView, ViewBuilderEventHandling {
 
     override public func didMoveToWindow() {
+        guard let attributes = optionalBuilderAttributes() else { return }
         // Note didMoveToWindow may be called more than once
         if window == nil {
-            onDisappearHandler?(ViewBuilderContext(view: self))
+            attributes.onDisappearHandler?(ViewBuilderContext(view: self))
         } else if let vc = context.viewController, let nc = vc.navigationController, nc.topViewController == vc {
-            onAppearHandler?(ViewBuilderContext(view: self))
+            attributes.onAppearHandler?(ViewBuilderContext(view: self))
         }
     }
 

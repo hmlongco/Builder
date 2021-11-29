@@ -63,6 +63,18 @@ extension ViewModifier {
 
 extension ModifiableView {
 
+    @discardableResult
+    public func bind<B:RxBinding, T>(keyPath: ReferenceWritableKeyPath<Base, T>, binding: B) -> ViewModifier<Base> where B.T == T {
+        ViewModifier(modifiableView) {
+            binding.asObservable()
+                .observe(on: MainScheduler.instance)
+                .subscribe(onNext: { [weak modifiableView] value in
+                    modifiableView?[keyPath: keyPath] = value
+                })
+                .disposed(by: $0.rxDisposeBag)
+        }
+    }
+
     public func onReceive<B:RxBinding, T>(_ binding: B, handler: @escaping (_ context: ViewBuilderContext<Base>, _ value: T) -> Void)
         -> ViewModifier<Base> where B.T == T {
             ViewModifier(modifiableView) {
