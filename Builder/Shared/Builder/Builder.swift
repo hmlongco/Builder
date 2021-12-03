@@ -78,9 +78,11 @@ extension ModifiableView {
     public func build() -> UIView {
         modifiableView
     }
+    @discardableResult
     public func reference<V:UIView>(_ view: inout V?) -> ViewModifier<Base> {
         ViewModifier(modifiableView) { view = $0 as? V }
     }
+    @discardableResult
     public func with(_ modifier: (_ view: Base) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView, modifier: modifier)
     }

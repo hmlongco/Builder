@@ -75,6 +75,7 @@ extension ModifiableView {
         }
     }
 
+    @discardableResult
     public func onReceive<B:RxBinding, T>(_ binding: B, handler: @escaping (_ context: ViewBuilderContext<Base>, _ value: T) -> Void)
         -> ViewModifier<Base> where B.T == T {
             ViewModifier(modifiableView) {

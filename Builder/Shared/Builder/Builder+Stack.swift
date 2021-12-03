@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import SwiftUI
 
 
 public struct HStackView: ModifiableView {
@@ -58,6 +59,12 @@ public struct VStackView: ModifiableView {
         subscribe(to: builder)
     }
 
+    public init<Binding:RxBinding>(_ binding: Binding) where Binding.T == [View] {
+        onReceive(binding) { context, views in
+            context.view.reset(to: views)
+        }
+    }
+    
 }
 
 extension ModifiableView where Base: UIStackView {

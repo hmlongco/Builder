@@ -22,53 +22,77 @@ extension ModifiableView {
 
     @discardableResult
     public func onTapGesture(numberOfTaps: Int = 1, _ handler: @escaping (_ context: BuilderTapGestureContext<Base>) -> Void) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) {
+        ViewModifier(modifiableView) { view in
             let gesture = UITapGestureRecognizer()
             gesture.numberOfTapsRequired = numberOfTaps
-            $0.addGestureRecognizer(gesture)
-            let context = BuilderTapGestureContext(view: $0, gesture: gesture)
+            view.addGestureRecognizer(gesture)
+            view.isUserInteractionEnabled = true
             gesture.rx.event
                 .asControlEvent()
                 .throttle(.milliseconds(300), latest: false, scheduler: MainScheduler.instance)
-                .subscribe { (e) in
+                .subscribe { [weak view, weak gesture] (e) in
+                    guard let view = view, let gesture = gesture else { return }
+                    let context = BuilderTapGestureContext(view: view, gesture: gesture)
                     handler(context)
                 }
-                .disposed(by: $0.rxDisposeBag)
+                .disposed(by: view.rxDisposeBag)
         }
     }
 
     @discardableResult
     public func onSwipeLeft(_ handler: @escaping (_ context: BuilderSwipeGestureContext<Base>) -> Void) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) {
+        ViewModifier(modifiableView) { view in
             let gesture = UISwipeGestureRecognizer()
             gesture.direction = .left
-            $0.addGestureRecognizer(gesture)
-            let context = BuilderSwipeGestureContext(view: $0, gesture: gesture)
+            view.addGestureRecognizer(gesture)
+            view.isUserInteractionEnabled = true
             gesture.rx.event
                 .asControlEvent()
                 .throttle(.milliseconds(300), latest: false, scheduler: MainScheduler.instance)
-                .subscribe { (e) in
+                .subscribe { [weak view, weak gesture] (e) in
+                    guard let view = view, let gesture = gesture else { return }
+                    let context = BuilderSwipeGestureContext(view: view, gesture: gesture)
                     handler(context)
                 }
-                .disposed(by: $0.rxDisposeBag)
+                .disposed(by: view.rxDisposeBag)
         }
     }
 
     @discardableResult
     public func onSwipeRight(_ handler: @escaping (_ context: BuilderSwipeGestureContext<Base>) -> Void) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) {
+        ViewModifier(modifiableView) { view in
             let gesture = UISwipeGestureRecognizer()
             gesture.direction = .right
-            $0.addGestureRecognizer(gesture)
-            let context = BuilderSwipeGestureContext(view: $0, gesture: gesture)
+            view.addGestureRecognizer(gesture)
+            view.isUserInteractionEnabled = true
             gesture.rx.event
                 .asControlEvent()
                 .throttle(.milliseconds(300), latest: false, scheduler: MainScheduler.instance)
-                .subscribe { (e) in
+                .subscribe { [weak view, weak gesture] (e) in
+                    guard let view = view, let gesture = gesture else { return }
+                    let context = BuilderSwipeGestureContext(view: view, gesture: gesture)
                     handler(context)
                 }
-                .disposed(by: $0.rxDisposeBag)
+                .disposed(by: view.rxDisposeBag)
         }
     }
+
+    @discardableResult
+    func hideKeyboardOnBackgroundTap() -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { view in
+            let gesture = UITapGestureRecognizer()
+            gesture.numberOfTapsRequired = 1
+            gesture.cancelsTouchesInView = false
+            view.addGestureRecognizer(gesture)
+            gesture.rx.event
+                .asControlEvent()
+                .throttle(.milliseconds(300), latest: false, scheduler: MainScheduler.instance)
+                .subscribe { [weak view] _ in
+                    view?.endEditing(true)
+                }
+                .disposed(by: view.rxDisposeBag)
+        }
+    }
+
 
 }

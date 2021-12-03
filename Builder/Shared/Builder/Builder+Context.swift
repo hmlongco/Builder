@@ -39,6 +39,10 @@ extension ViewBuilderContextProvider {
     public func push<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
         viewController?.push(vc, configure: configure)
     }
+
+    public func endEditing() {
+        view.rootView().endEditing(true)
+    }
     
     public var disposeBag: DisposeBag {
         view.rxDisposeBag

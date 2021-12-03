@@ -84,6 +84,11 @@ extension ModifiableView {
     }
     
     @discardableResult
+    public func identifier<T:RawRepresentable>(_ identifier: T) -> ViewModifier<Base> where T.RawValue == String {
+        ViewModifier(modifiableView) { $0.accessibilityIdentifier = identifier.rawValue }
+    }
+
+    @discardableResult
     public func roundedCorners(radius: CGFloat, corners: CACornerMask) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
             $0.layer.maskedCorners = corners
