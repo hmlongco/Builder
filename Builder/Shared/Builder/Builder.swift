@@ -109,8 +109,11 @@ public struct ViewModifier<Base:UIView>: ModifiableView {
 
 
 // Helper function to simplify custom view builder initialization
-public func Modified<T:AnyObject>( _ instance: T, modify: (_ instance: T) -> Void) -> T {
-    modify(instance)
+public func Modified<T:UIView>( _ instance: T, modify: ((_ instance: T) -> Void)? = nil) -> T {
+    // common modifications
+    instance.translatesAutoresizingMaskIntoConstraints = false
+    // user modifications
+    modify?(instance)
     return instance
 }
 

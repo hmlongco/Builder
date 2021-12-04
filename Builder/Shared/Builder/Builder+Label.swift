@@ -15,7 +15,6 @@ public struct LabelView: ModifiableView {
     }
 
     public let modifiableView = Modified(BuilderInternalUILabel()) {
-        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.font = ViewBuilderEnvironment.defaultLabelFont ?? UIFont.preferredFont(forTextStyle: .callout)
         $0.textColor = ViewBuilderEnvironment.defaultLabelColor ?? $0.textColor
         $0.textAlignment = .left

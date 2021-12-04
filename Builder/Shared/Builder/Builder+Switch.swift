@@ -12,7 +12,6 @@ import UIKit
 public struct SwitchView: ModifiableView {
     
     public let modifiableView: UISwitch = Modified(UISwitch()) {
-        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.onTintColor = ViewBuilderEnvironment.defaultButtonColor
     }
     
@@ -42,12 +41,23 @@ extension ModifiableView where Base: UISwitch {
     
     @discardableResult
     public func isOn<Binding:RxBidirectionalBinding>(bidirectionalBind binding: Binding) -> ViewModifier<Base> where Binding.T == Bool {
-        let modifier = ViewModifier(modifiableView, binding: binding, keyPath: \.isOn)
-        modifiableView.rx.isOn
-            .changed
-            .bind(to: binding.asRelay())
-            .disposed(by: modifiableView.rxDisposeBag)
-        return modifier
+        ViewModifier(modifiableView) { switchView in
+            let relay = binding.asRelay()
+            switchView.rxDisposeBag.insert(
+                relay
+                    .subscribe(onNext: { [weak switchView] value in
+                        if let view = switchView, view.isOn != value {
+                            view.isOn = value
+                        }
+                    }),
+                switchView.rx.isOn
+                    .subscribe(onNext: { [weak relay] value in
+                        if let relay = relay, relay.value != value {
+                            relay.accept(value)
+                        }
+                    })
+            )
+        }
     }
     
     @discardableResult
@@ -56,12 +66,12 @@ extension ModifiableView where Base: UISwitch {
     }
         
     @discardableResult
-    public func onChange(_ handler: @escaping (_ isOn: Bool) -> Void) -> ViewModifier<Base> {
+    public func onChange(_ handler: @escaping (_ context: ViewBuilderValueContext<UISwitch, Bool>) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
             $0.rx.isOn
                 .changed
-                .subscribe(onNext: { isOn in
-                    handler(isOn)
+                .subscribe(onNext: { [unowned modifiableView] value in
+                    handler(ViewBuilderValueContext(view: modifiableView, value: modifiableView.isOn))
                 })
                 .disposed(by: $0.rxDisposeBag)
         }

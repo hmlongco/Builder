@@ -13,6 +13,11 @@ public protocol ViewBuilderContextProvider {
     var view: Base { get }
 }
 
+public protocol ViewBuilderContextValueProvider: ViewBuilderContextProvider {
+    associatedtype Value
+    var value: Value { get }
+}
+
 extension ViewBuilderContextProvider {
     
     public var viewController: UIViewController? {
@@ -82,6 +87,11 @@ extension ViewBuilderContextProvider {
 
 public struct ViewBuilderContext<Base:UIView>: ViewBuilderContextProvider {
     public var view: Base
+}
+
+public struct ViewBuilderValueContext<Base:UIView, Value>: ViewBuilderContextValueProvider {
+    public let view: Base
+    public var value: Value
 }
 
 extension UIView {

@@ -12,7 +12,6 @@ import RxSwift
 public struct ContainerView: ModifiableView {
 
     public var modifiableView = Modified(BuilderInternalContainerView(frame: .zero)) {
-        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = .clear
         $0.isUserInteractionEnabled = true
     }

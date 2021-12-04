@@ -10,9 +10,7 @@ import UIKit
 
 public struct SpacerView: ModifiableView {
 
-    public var modifiableView = Modified(UIView()) {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-    }
+    public var modifiableView = Modified(UIView())
     
     public init() {
         modifiableView.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -33,9 +31,7 @@ public struct SpacerView: ModifiableView {
 
 public struct FixedSpacerView: ModifiableView {
 
-    public var modifiableView = Modified(UIView()) {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-    }
+    public var modifiableView = Modified(UIView())
     
     public init() {
         modifiableView.setContentHuggingPriority(.required, for: .horizontal)

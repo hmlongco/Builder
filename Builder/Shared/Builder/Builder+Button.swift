@@ -13,16 +13,11 @@ import RxCocoa
 
 public struct ButtonView: ModifiableView {
     
-    public struct Context: ViewBuilderContextProvider {
-        public var view: UIButton
-    }
-    
     public struct Style {
         public let style: (_ button: ViewModifier<UIButton>) -> ()
     }
 
     public let modifiableView = Modified(UIButton()) {
-        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setTitleColor(ViewBuilderEnvironment.defaultButtonColor ?? $0.tintColor, for: .normal)
         $0.titleLabel?.font = ViewBuilderEnvironment.defaultButtonFont ?? .preferredFont(forTextStyle: .headline)
         $0.setContentHuggingPriority(.required, for: .horizontal)
@@ -72,11 +67,11 @@ extension ModifiableView where Base: UIButton {
     }
 
     @discardableResult
-    public func onTap(_ handler: @escaping (_ context: ButtonView.Context) -> Void) -> ViewModifier<Base> {
+    public func onTap(_ handler: @escaping (_ context: ViewBuilderContext<UIButton>) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView) { [unowned modifiableView] view in
             view.rx.tap
                 .throttle(.milliseconds(300), latest: false, scheduler: MainScheduler.instance)
-                .subscribe(onNext: { () in handler(ButtonView.Context(view: modifiableView)) })
+                .subscribe(onNext: { () in handler(ViewBuilderContext(view: modifiableView)) })
                 .disposed(by: view.rxDisposeBag)
         }
     }

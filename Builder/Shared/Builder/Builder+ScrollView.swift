@@ -12,7 +12,6 @@ import UIKit
 public struct ScrollView: ModifiableView {
     
     public var modifiableView = Modified(BuilderInternalScrollView(frame: UIScreen.main.bounds)) {
-        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.delegate = $0
     }
 
@@ -69,7 +68,6 @@ extension ModifiableView where Base: BuilderInternalScrollView {
 public struct VerticalScrollView: ModifiableView {
     
     public var modifiableView = Modified(BuilderVerticalScrollView(frame: UIScreen.main.bounds)) {
-        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.delegate = $0
     }
 

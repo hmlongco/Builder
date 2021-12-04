@@ -13,7 +13,6 @@ import RxCocoa
 public struct TextField: ModifiableView {
 
     public let modifiableView: UITextField = Modified(UITextField()) {
-        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
@@ -149,23 +148,33 @@ extension ModifiableView where Base: UITextField {
 extension ModifiableView where Base: UITextField {
 
     @discardableResult
-    public func onChange(_ handler: @escaping (_ text: String?) -> Void) -> ViewModifier<Base> {
+    public func onChange(_ handler: @escaping (_ context: ViewBuilderValueContext<UITextField, String?>) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
-            $0.rx.text
-                .changed
-                .subscribe(onNext: { text in
-                    handler(text)
+            $0.rx.controlEvent(.editingChanged)
+                .subscribe(onNext: { [unowned modifiableView] () in
+                    handler(ViewBuilderValueContext(view: modifiableView, value: modifiableView.text))
                 })
                 .disposed(by: $0.rxDisposeBag)
         }
     }
 
     @discardableResult
-    public func onEditingDidEndOnExit(_ handler: @escaping (_ field: UITextField) -> Void) -> ViewModifier<Base> {
+    public func onEditingDidEnd(_ handler: @escaping (_ context: ViewBuilderValueContext<UITextField, String?>) -> Void) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.rx.controlEvent([.editingDidEnd])
+                .subscribe(onNext: { [unowned modifiableView] () in
+                    handler(ViewBuilderValueContext(view: modifiableView, value: modifiableView.text))
+                })
+                .disposed(by: $0.rxDisposeBag)
+        }
+    }
+
+    @discardableResult
+    public func onEditingDidEndOnExit(_ handler: @escaping (_ context: ViewBuilderValueContext<UITextField, String?>) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
             $0.rx.controlEvent([.editingDidEndOnExit])
                 .subscribe(onNext: { [unowned modifiableView] () in
-                    handler(modifiableView)
+                    handler(ViewBuilderValueContext(view: modifiableView, value: modifiableView.text))
                 })
                 .disposed(by: $0.rxDisposeBag)
         }

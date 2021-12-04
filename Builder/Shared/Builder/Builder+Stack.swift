@@ -13,7 +13,6 @@ import SwiftUI
 public struct HStackView: ModifiableView {
     
     public let modifiableView = Modified(BuilderInternalUIStackView()) {
-        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .horizontal
         $0.distribution = .fill
         $0.alignment = .fill
@@ -38,7 +37,6 @@ public struct HStackView: ModifiableView {
 public struct VStackView: ModifiableView {
     
     public let modifiableView = Modified(BuilderInternalUIStackView()) {
-        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .vertical
         $0.distribution = .fill
         $0.alignment = .fill
@@ -60,8 +58,8 @@ public struct VStackView: ModifiableView {
     }
 
     public init<Binding:RxBinding>(_ binding: Binding) where Binding.T == [View] {
-        onReceive(binding) { context, views in
-            context.view.reset(to: views)
+        onReceive(binding) { context in
+            context.view.reset(to: context.value)
         }
     }
     

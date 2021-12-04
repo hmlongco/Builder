@@ -12,9 +12,7 @@ import RxSwift
 
 public struct ImageView: ModifiableView {
     
-    public let modifiableView = Modified(UIImageView()) {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-    }
+    public let modifiableView = Modified(UIImageView())
     
     // lifecycle
     public init(_ image: UIImage?) {
