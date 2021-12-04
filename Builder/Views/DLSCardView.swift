@@ -25,7 +25,6 @@ struct DLSCardView: ViewBuilder {
         }
         .backgroundColor(.systemBackground)
         .roundedCorners(radius: 16, corners: [.layerMinXMinYCorner])
-        .border(color: .lightGray)
-        .shadow(color: .black, radius: 4, opacity: 0.2, offset: CGSize(width: 3, height: 3))
+        .shadow(color: .black, radius: 2, opacity: 0.25, offset: CGSize(width: 0, height: 2))
     }
 }

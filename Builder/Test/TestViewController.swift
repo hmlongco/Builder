@@ -115,8 +115,8 @@ class TestViewController: UIViewController {
             .padding(30)
         }
         .backgroundColor(.tertiarySystemBackground)
-        .onReceive($hidden) { _, value in
-            print("Received \(value)")
+        .onReceive($hidden) { context in
+            print("Received \(context.value)")
         }
         .reference(&scrollView)
     }
