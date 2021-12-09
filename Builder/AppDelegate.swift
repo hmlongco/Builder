@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        _ = TestVariable().test()
                 
-        ViewBuilderEnvironment.defaultLabelFont = UIFont.preferredFont(forTextStyle: .callout)
+        ViewBuilderEnvironment.defaultLabelFont = UIFont.preferredFont(forTextStyle: .body)
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

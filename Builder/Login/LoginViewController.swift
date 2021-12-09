@@ -94,7 +94,7 @@ struct LoginView: ViewBuilder {
 
                                 VStackView {
                                     ButtonView("Login")
-                                        .style(.filled)
+                                        .style(StyleButtonFilled())
                                         .onTap { [weak viewModel] _ in
                                             UIView.animate(withDuration: 0.3) {
                                                 viewModel?.login()

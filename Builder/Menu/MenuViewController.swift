@@ -20,6 +20,8 @@ class MenuViewController: UIViewController {
         title = "Builder Demo"
         view.backgroundColor = .systemBackground
         view.embed(MenuTableView())
+
+//        push(ContactInformationViewController())
     }
 
 }
@@ -36,6 +38,9 @@ struct MenuTableView: ViewBuilder {
         Option(name: "Login View Test", description: "A basic login field.") {
             LoginViewController()
         },
+//        Option(name: "Contact View Test", description: "A basic contact us screen with a few twists.") {
+//            ContactInformationViewController()
+//        },
         Option(name: "Table View Test", description: "A basic master/detail table view with user data pulled from an API.") {
             MainViewController()
         },

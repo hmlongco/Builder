@@ -10,10 +10,6 @@ import UIKit
 // Custom builder fot UILabel
 public struct LabelView: ModifiableView {
     
-    public struct Style {
-        public let style: (_ label: ViewModifier<UILabel>) -> ()
-    }
-
     public let modifiableView = Modified(BuilderInternalUILabel()) {
         $0.font = ViewBuilderEnvironment.defaultLabelFont ?? UIFont.preferredFont(forTextStyle: .callout)
         $0.textColor = ViewBuilderEnvironment.defaultLabelColor ?? $0.textColor
@@ -89,11 +85,6 @@ extension ModifiableView where Base: UILabel {
             $0.numberOfLines = numberOfLines
             $0.lineBreakMode = .byWordWrapping
         }
-    }
-
-    @discardableResult
-    public func style(_ style: LabelView.Style) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) { style.style(ViewModifier($0)) }
     }
 
 }

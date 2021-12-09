@@ -7,10 +7,9 @@
 
 import UIKit
 
-extension ButtonView.Style {
-    
-    static let filled = ButtonView.Style { button in
-        button
+struct StyleButtonFilled: BuilderStyle {
+    public func apply(to view: ButtonView.Base) {
+        ViewModifier(view)
             .cornerRadius(8)
             .color(.white)
             .backgroundColor(.blue, for: .normal)
@@ -18,5 +17,4 @@ extension ButtonView.Style {
             .backgroundColor(.gray, for: .disabled)
             .padding(10)
     }
-    
 }

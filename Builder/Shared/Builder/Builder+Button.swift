@@ -13,10 +13,6 @@ import RxCocoa
 
 public struct ButtonView: ModifiableView {
     
-    public struct Style {
-        public let style: (_ button: ViewModifier<UIButton>) -> ()
-    }
-
     public let modifiableView = Modified(UIButton()) {
         $0.setTitleColor(ViewBuilderEnvironment.defaultButtonColor ?? $0.tintColor, for: .normal)
         $0.titleLabel?.font = ViewBuilderEnvironment.defaultButtonFont ?? .preferredFont(forTextStyle: .headline)
@@ -74,11 +70,6 @@ extension ModifiableView where Base: UIButton {
                 .subscribe(onNext: { () in handler(ViewBuilderContext(view: modifiableView)) })
                 .disposed(by: view.rxDisposeBag)
         }
-    }
-
-    @discardableResult
-    public func style(_ style: ButtonView.Style) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) { style.style(ViewModifier($0)) }
     }
 
 }

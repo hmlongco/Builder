@@ -14,5 +14,6 @@ extension Resolver: ResolverRegistering {
         registerServices()
         registerMain()
         registerDetails()
+//        registerContactInformation()
     }
 }

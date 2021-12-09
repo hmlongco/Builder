@@ -48,13 +48,13 @@ class DetailViewController: UIViewController {
 
                 ButtonView("Submit")
                     .enabled(bind: viewModel.$accepted)
-                    .style(.filled)
+                    .style(StyleButtonFilled())
                     .onTap { [weak dismissible] _ in
                         dismissible?.dismiss()
                     }
 
                 LabelView("Inforamtion presented above is not repesentative of any person, living, dead, undead, or fictional.")
-                    .style(.footnote)
+                    .style(StyleLabelFootnote())
 
                 SpacerView()
             }

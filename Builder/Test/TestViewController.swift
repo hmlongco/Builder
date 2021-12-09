@@ -100,7 +100,7 @@ class TestViewController: UIViewController {
                 UISlider()
                 
                 ButtonView("Toggle Switch")
-                    .style(.filled)
+                    .style(StyleButtonFilled())
                     .onTap { [weak self] _ in
                         UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut], animations: {
                             self?.pageTitle = "Changed the title!"

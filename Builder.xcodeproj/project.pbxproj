@@ -22,6 +22,7 @@
 		4C2D812025E408B300E2EBD7 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D811F25E408B300E2EBD7 /* RxSwift */; };
 		4C2D812425E408B300E2EBD7 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D812325E408B300E2EBD7 /* RxRelay */; };
 		4C2D812625E408B300E2EBD7 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D812525E408B300E2EBD7 /* RxCocoa */; };
+		4C3D9C2D27556081007CE720 /* Builder+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3D9C2C27556081007CE720 /* Builder+Styles.swift */; };
 		4C40B2B226E2E07100598D9E /* Builder+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40B2B126E2E07100598D9E /* Builder+Constraints.swift */; };
 		4C40B2B426E4212700598D9E /* Builder+Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40B2B326E4212700598D9E /* Builder+Context.swift */; };
 		4C47033226CB17EE006B6DEC /* Builder+Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C47033126CB17EE006B6DEC /* Builder+Padding.swift */; };
@@ -48,6 +49,17 @@
 		4C65867325ED32150073003C /* StandardErrorPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C65866525ED30280073003C /* StandardErrorPage.swift */; };
 		4C8221C626DC458A00BDD349 /* MainUsersTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8221C526DC458A00BDD349 /* MainUsersTableView.swift */; };
 		4C878EDF25C38C8A004D7216 /* UserImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C878EDE25C38C8A004D7216 /* UserImageCache.swift */; };
+		4C8B50AE275FA656004FFC15 /* MaxWidthTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50A8275FA656004FFC15 /* MaxWidthTextField.swift */; };
+		4C8B50AF275FA656004FFC15 /* CurrencyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50A9275FA656004FFC15 /* CurrencyTextField.swift */; };
+		4C8B50B0275FA656004FFC15 /* TextFieldBehaviorAggregator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50AA275FA656004FFC15 /* TextFieldBehaviorAggregator.swift */; };
+		4C8B50B1275FA656004FFC15 /* BuilderInternalTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50AB275FA656004FFC15 /* BuilderInternalTextField.swift */; };
+		4C8B50B2275FA656004FFC15 /* MaskedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50AC275FA656004FFC15 /* MaskedTextField.swift */; };
+		4C8B50B3275FA656004FFC15 /* NextAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50AD275FA656004FFC15 /* NextAccessoryView.swift */; };
+		4C8B50B5275FA879004FFC15 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50B4275FA879004FFC15 /* String+Extensions.swift */; };
+		4C8B50B7275FA994004FFC15 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50B6275FA994004FFC15 /* UIView+Extensions.swift */; };
+		4C8B50B9275FAB94004FFC15 /* UITextField+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50B8275FAB94004FFC15 /* UITextField+Styles.swift */; };
+		4C8B50BB275FAC93004FFC15 /* MetaTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50BA275FAC93004FFC15 /* MetaTextField.swift */; };
+		4C8B50BD275FED84004FFC15 /* TextField+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50BC275FED84004FFC15 /* TextField+Styles.swift */; };
 		4C9CC36525B4F078002BE06D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC36425B4F078002BE06D /* AppDelegate.swift */; };
 		4C9CC36725B4F078002BE06D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC36625B4F078002BE06D /* SceneDelegate.swift */; };
 		4C9CC36925B4F078002BE06D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC36825B4F078002BE06D /* MainViewController.swift */; };
@@ -133,6 +145,7 @@
 		4C288FBA25B612F0004D54AC /* MOCK.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MOCK.xcconfig; sourceTree = "<group>"; };
 		4C2A0D79268F65C800BF86ED /* Builder+With.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+With.swift"; sourceTree = "<group>"; };
 		4C2A0D7B268F916D00BF86ED /* Builder+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+TableView.swift"; sourceTree = "<group>"; };
+		4C3D9C2C27556081007CE720 /* Builder+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+Styles.swift"; sourceTree = "<group>"; };
 		4C40B2B126E2E07100598D9E /* Builder+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+Constraints.swift"; sourceTree = "<group>"; };
 		4C40B2B326E4212700598D9E /* Builder+Context.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+Context.swift"; sourceTree = "<group>"; };
 		4C47033126CB17EE006B6DEC /* Builder+Padding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+Padding.swift"; sourceTree = "<group>"; };
@@ -159,6 +172,17 @@
 		4C65866B25ED30A20073003C /* StandardEmptyPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardEmptyPage.swift; sourceTree = "<group>"; };
 		4C8221C526DC458A00BDD349 /* MainUsersTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainUsersTableView.swift; sourceTree = "<group>"; };
 		4C878EDE25C38C8A004D7216 /* UserImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCache.swift; sourceTree = "<group>"; };
+		4C8B50A8275FA656004FFC15 /* MaxWidthTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaxWidthTextField.swift; sourceTree = "<group>"; };
+		4C8B50A9275FA656004FFC15 /* CurrencyTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyTextField.swift; sourceTree = "<group>"; };
+		4C8B50AA275FA656004FFC15 /* TextFieldBehaviorAggregator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldBehaviorAggregator.swift; sourceTree = "<group>"; };
+		4C8B50AB275FA656004FFC15 /* BuilderInternalTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuilderInternalTextField.swift; sourceTree = "<group>"; };
+		4C8B50AC275FA656004FFC15 /* MaskedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaskedTextField.swift; sourceTree = "<group>"; };
+		4C8B50AD275FA656004FFC15 /* NextAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextAccessoryView.swift; sourceTree = "<group>"; };
+		4C8B50B4275FA879004FFC15 /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		4C8B50B6275FA994004FFC15 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		4C8B50B8275FAB94004FFC15 /* UITextField+Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+Styles.swift"; sourceTree = "<group>"; };
+		4C8B50BA275FAC93004FFC15 /* MetaTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaTextField.swift; sourceTree = "<group>"; };
+		4C8B50BC275FED84004FFC15 /* TextField+Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TextField+Styles.swift"; sourceTree = "<group>"; };
 		4C9CC36125B4F078002BE06D /* Builder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Builder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C9CC36425B4F078002BE06D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C9CC36625B4F078002BE06D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -252,6 +276,7 @@
 			children = (
 				4C1F921726E94BFE0075A5F4 /* ButtonView+Styles.swift */,
 				4C1F921926E94C140075A5F4 /* LabelView+Styles.swift */,
+				4C8B50BC275FED84004FFC15 /* TextField+Styles.swift */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -308,11 +333,25 @@
 			isa = PBXGroup;
 			children = (
 				4CF9644F274BE2CB00C0824C /* DLSCardView.swift */,
+				4C8B50BA275FAC93004FFC15 /* MetaTextField.swift */,
 				4C65866525ED30280073003C /* StandardErrorPage.swift */,
 				4C65866B25ED30A20073003C /* StandardEmptyPage.swift */,
 				4C65866625ED30800073003C /* StandardLoadingPage.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		4C8B50A7275FA61C004FFC15 /* Fields */ = {
+			isa = PBXGroup;
+			children = (
+				4C8B50AB275FA656004FFC15 /* BuilderInternalTextField.swift */,
+				4C8B50A9275FA656004FFC15 /* CurrencyTextField.swift */,
+				4C8B50AC275FA656004FFC15 /* MaskedTextField.swift */,
+				4C8B50A8275FA656004FFC15 /* MaxWidthTextField.swift */,
+				4C8B50AD275FA656004FFC15 /* NextAccessoryView.swift */,
+				4C8B50AA275FA656004FFC15 /* TextFieldBehaviorAggregator.swift */,
+			);
+			path = Fields;
 			sourceTree = "<group>";
 		};
 		4C9CC35825B4F078002BE06D = {
@@ -404,6 +443,7 @@
 			children = (
 				4C9CC3B225B4F2D4002BE06D /* Builder */,
 				4C9CC3E425B4F47C002BE06D /* Extensions */,
+				4C8B50A7275FA61C004FFC15 /* Fields */,
 				4C9CC3D225B4F2DF002BE06D /* Networking */,
 				4C1F921626E94BE50075A5F4 /* Styles */,
 			);
@@ -434,6 +474,7 @@
 				4C9CC3B425B4F2D4002BE06D /* Builder+ScrollView.swift */,
 				4C9CC3B925B4F2D4002BE06D /* Builder+Spacer.swift */,
 				4C9CC3C025B4F2D4002BE06D /* Builder+Stack.swift */,
+				4C3D9C2C27556081007CE720 /* Builder+Styles.swift */,
 				4C9CC3B325B4F2D4002BE06D /* Builder+Switch.swift */,
 				4C2A0D7B268F916D00BF86ED /* Builder+TableView.swift */,
 				4CF9644D274B0B1600C0824C /* Builder+TextField.swift */,
@@ -461,10 +502,13 @@
 		4C9CC3E425B4F47C002BE06D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				4CF1A64226B399D800E26446 /* Functions+Extensions.swift */,
+				4C57859625CAEA60005D42BB /* Rx+Extensions.swift */,
+				4C8B50B4275FA879004FFC15 /* String+Extensions.swift */,
 				4C4AD76F2751881700EF12C6 /* UIColor+Extensions.swift */,
 				4C9CC3E525B4F499002BE06D /* UIImage+Extensions.swift */,
-				4C57859625CAEA60005D42BB /* Rx+Extensions.swift */,
-				4CF1A64226B399D800E26446 /* Functions+Extensions.swift */,
+				4C8B50B8275FAB94004FFC15 /* UITextField+Styles.swift */,
+				4C8B50B6275FA994004FFC15 /* UIView+Extensions.swift */,
 				4CCB61D026C36F0C0011BD44 /* UIViewController+Extensions.swift */,
 			);
 			path = Extensions;
@@ -690,19 +734,24 @@
 				4C4AD7702751881700EF12C6 /* UIColor+Extensions.swift in Sources */,
 				4C4AD77627542E5300EF12C6 /* Builder+Gestures.swift in Sources */,
 				4C9CC3EC25B4F627002BE06D /* User.swift in Sources */,
+				4C3D9C2D27556081007CE720 /* Builder+Styles.swift in Sources */,
+				4C8B50B7275FA994004FFC15 /* UIView+Extensions.swift in Sources */,
 				4C249B6825C656AF00EAA1E9 /* Builder+ZStack.swift in Sources */,
 				4C9CC3CA25B4F2D4002BE06D /* Builder+View.swift in Sources */,
 				4C2A0D7C268F916D00BF86ED /* Builder+TableView.swift in Sources */,
 				4CD0524825B7AECC0099B277 /* DetailCardView.swift in Sources */,
 				4C9CC3FE25B5099D002BE06D /* UserService.swift in Sources */,
+				4C8B50B0275FA656004FFC15 /* TextFieldBehaviorAggregator.swift in Sources */,
 				4CC5D7A2270D1A80003137BD /* TestServices.swift in Sources */,
 				4CF1A64326B399D800E26446 /* Functions+Extensions.swift in Sources */,
 				4C9CC3C225B4F2D4002BE06D /* Builder+ScrollView.swift in Sources */,
 				4C47033226CB17EE006B6DEC /* Builder+Padding.swift in Sources */,
 				4C57859725CAEA60005D42BB /* Rx+Extensions.swift in Sources */,
+				4C8B50B1275FA656004FFC15 /* BuilderInternalTextField.swift in Sources */,
 				4C57859225CA2958005D42BB /* DetailViewController.swift in Sources */,
 				4C4AD772275189E000EF12C6 /* TestViews.swift in Sources */,
 				4C9CC3E625B4F499002BE06D /* UIImage+Extensions.swift in Sources */,
+				4C8B50BD275FED84004FFC15 /* TextField+Styles.swift in Sources */,
 				4C9CC36925B4F078002BE06D /* MainViewController.swift in Sources */,
 				4CF9644C274B0A1500C0824C /* LoginViewController.swift in Sources */,
 				4C4AD76E27513CFF00EF12C6 /* Builder+ForEach.swift in Sources */,
@@ -733,9 +782,12 @@
 				4C9CC3E025B4F2DF002BE06D /* URLSessionManager.swift in Sources */,
 				4C9CC3C925B4F2D4002BE06D /* Builder+Dynamic.swift in Sources */,
 				4C1F571E25CE344600B6086F /* Dismissible.swift in Sources */,
+				4C8B50B9275FAB94004FFC15 /* UITextField+Styles.swift in Sources */,
 				4C9CC3C625B4F2D4002BE06D /* Builder+Navigation.swift in Sources */,
+				4C8B50B5275FA879004FFC15 /* String+Extensions.swift in Sources */,
 				4C9CC3C525B4F2D4002BE06D /* Builder+Button.swift in Sources */,
 				4C249B1025C5CE5900EAA1E9 /* DetailViewModel.swift in Sources */,
+				4C8B50B2275FA656004FFC15 /* MaskedTextField.swift in Sources */,
 				4C4AD734274DEC9700EF12C6 /* Builder+Extensions.swift in Sources */,
 				4CA19EE8273E108700EE7433 /* MainStackViewController.swift in Sources */,
 				4C65866125ED23040073003C /* MainUsersStackView.swift in Sources */,
@@ -748,11 +800,14 @@
 				4CEE4D5A2695DD7E00312FD1 /* Builder+Group.swift in Sources */,
 				4C4AD76A274FF3AF00EF12C6 /* Builder+Controls.swift in Sources */,
 				4C65864925E9CB8D0073003C /* SessionLoggingInterceptorr.swift in Sources */,
+				4C8B50B3275FA656004FFC15 /* NextAccessoryView.swift in Sources */,
 				4C65864825E9CB8D0073003C /* StandardHeadersInterceptor.swift in Sources */,
 				4CF96450274BE2CB00C0824C /* DLSCardView.swift in Sources */,
 				4C9E51232708AB4200795D2F /* MockDelayInterceptor.swift in Sources */,
 				4C249B1825C5CEE500EAA1E9 /* _Details+Injection.swift in Sources */,
+				4C8B50AE275FA656004FFC15 /* MaxWidthTextField.swift in Sources */,
 				4C9CC3DF25B4F2DF002BE06D /* ClientSessionManager.swift in Sources */,
+				4C8B50AF275FA656004FFC15 /* CurrencyTextField.swift in Sources */,
 				4C9CC3DC25B4F2DF002BE06D /* ClientRequestBuilder+RxSwift.swift in Sources */,
 				4C65867325ED32150073003C /* StandardErrorPage.swift in Sources */,
 				4C9CC3DA25B4F2DF002BE06D /* ClientRequestBuilder.swift in Sources */,
@@ -760,6 +815,7 @@
 				4C9CC3C125B4F2D4002BE06D /* Builder+Switch.swift in Sources */,
 				4C9CC3CE25B4F2D4002BE06D /* Builder+Stack.swift in Sources */,
 				4C65866C25ED30A20073003C /* StandardEmptyPage.swift in Sources */,
+				4C8B50BB275FAC93004FFC15 /* MetaTextField.swift in Sources */,
 				4C40B2B426E4212700598D9E /* Builder+Context.swift in Sources */,
 				4C65862B25E9892C0073003C /* _Networking+Injection.swift in Sources */,
 				4CD0521F25B5433D0099B277 /* _Application+Injection.swift in Sources */,
