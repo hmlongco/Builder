@@ -20,13 +20,23 @@ extension UIViewController {
         self.view.embed(view.build(), padding: padding, safeArea: safeArea)
     }
     
-    public func transition(to page: View, position: UIView.EmbedPosition = .fill, padding: UIEdgeInsets? = nil,
-                          safeArea: Bool = false, delay: Double = 0.2) {
+    public func transition(to page: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, delay: Double = 0.2) {
         view.transition(to: page, padding: padding, safeArea: safeArea, delay: delay)
     }
 
-    public func transition(to viewController: UIViewController, padding: UIEdgeInsets? = nil) {
-        view.transition(to: viewController, padding: padding)
+    public func transition(to viewController: UIViewController, delay: Double) {
+        view.transition(to: viewController, delay: delay)
     }
 
+}
+
+
+struct ViewControllerHostView: ViewBuilder {
+    let viewController: UIViewController
+    var body: View {
+        ContainerView()
+            .onAppearOnce { context in
+                context.transition(to: viewController)
+            }
+    }
 }

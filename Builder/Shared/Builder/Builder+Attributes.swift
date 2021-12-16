@@ -17,9 +17,6 @@ public class ViewBuilderAttributes {
     var onAppearOnceHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
     var onDisappearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
 
-    // used when attempting to embed a viewcontroller view before subview is actually added
-    var transitionViewController: UIViewController?
-
 }
 
 extension ViewBuilderAttributes {
@@ -28,10 +25,6 @@ extension ViewBuilderAttributes {
         if view.window == nil {
             onDisappearHandler?(ViewBuilderContext(view: view))
         } else if let vc = view.parentViewController, let nc = vc.navigationController, nc.topViewController == vc {
-            if let transitionViewController = transitionViewController {
-                view.transition(to: transitionViewController)
-                self.transitionViewController = nil
-            }
             if let handler = onAppearOnceHandler {
                 handler(ViewBuilderContext(view: view))
                 onAppearOnceHandler = nil

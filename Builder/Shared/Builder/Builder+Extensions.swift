@@ -32,7 +32,7 @@ extension UIView {
         existingSubviews.forEach { $0.removeFromSuperview() }
     }
 
-    public func transition(to page: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, delay: Double = 0.2) {
+    public func transition(to view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, delay: Double = 0.2) {
         func cleanup(_ oldViews: [UIView]) {
             oldViews.forEach { oldView in
                 let oldViewController = oldView.next as? UIViewController
@@ -41,7 +41,7 @@ extension UIView {
                 oldViewController?.removeFromParent()
             }
         }
-        let newView = page.build()
+        let newView = view.build()
         if subviews.isEmpty {
             embed(newView, padding: padding, safeArea: safeArea)
             return
@@ -63,15 +63,14 @@ extension UIView {
         }
     }
 
-    public func transition(to viewController: UIViewController, padding: UIEdgeInsets? = nil) {
+    public func transition(to viewController: UIViewController, delay: Double = 0.2) {
         if let parentViewController = self.parentViewController {
             parentViewController.addChild(viewController)
-            transition(to: viewController.view, padding: padding, delay: 0)
+            transition(to: viewController.view, delay: 0)
             viewController.didMove(toParent: parentViewController)
         } else {
-            let attributes = builderAttributes()
-            attributes?.transitionViewController = viewController
-            attributes?.insets = padding
+            // if parentViewController isn't avaialble punt and let ViewControllerHostView do the job when it's installed later on
+            transition(to: ViewControllerHostView(viewController: viewController), delay: delay)
         }
     }
 

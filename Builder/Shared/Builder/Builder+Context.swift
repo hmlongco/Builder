@@ -21,8 +21,7 @@ public protocol ViewBuilderContextValueProvider: ViewBuilderContextProvider {
 extension ViewBuilderContextProvider {
     
     public var viewController: UIViewController? {
-        let firstViewController = sequence(first: view, next: { $0.next }).first(where: { $0 is UIViewController })
-        return firstViewController as? UIViewController
+        view.parentViewController
     }
     
     public var navigationController: UINavigationController? {
@@ -45,21 +44,20 @@ extension ViewBuilderContextProvider {
         viewController?.push(vc, configure: configure)
     }
 
+    public func transition(to view: View, delay: Double = 0.2) {
+        self.view.transition(to: view, delay: delay)
+    }
+
+    public func transition(to viewController: UIViewController, delay: Double = 0.2) {
+        view.transition(to: viewController, delay: delay)
+    }
+
     public func endEditing() {
         view.rootView().endEditing(true)
     }
-    
+
     public var disposeBag: DisposeBag {
         view.rxDisposeBag
-    }
-
-    public func transition(to page: View, position: UIView.EmbedPosition = .fill, padding: UIEdgeInsets? = nil,
-                           safeArea: Bool = false, delay: Double = 0.2) {
-        view.transition(to: page, padding: padding, safeArea: safeArea, delay: delay)
-    }
-
-    public func transition(to viewController: UIViewController, padding: UIEdgeInsets? = nil) {
-        view.transition(to: viewController, padding: padding)
     }
 
 }

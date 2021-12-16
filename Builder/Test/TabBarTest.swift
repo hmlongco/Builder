@@ -30,13 +30,48 @@ class CustomTabBarViewController: UIViewController {
             ContainerView()
                 .insets(top: 40, left: 0, bottom: 0, right: 0)
                 .onReceive($selectedTab) { context in
-                    let vc = UIViewController(CustomTestView(tab: context.value))
-                    context.transition(to: vc)
-//                    let view = CustomTestView(tab: context.value)
-//                    context.transition(to: view, delay: 0)
+                    // testing to see if events are firing correctly when view is added and removed
+                    let vc = EventTestViewController(CustomTestView(tab: context.value))
+                    // testing host view
+                    let host = ViewControllerHostView(viewController: vc)
+                    context.transition(to: host)
                 }
             CustomTabBarView(selectedTab: $selectedTab, tabs: tabs)
         }
+    }
+
+}
+
+class EventTestViewController: UIViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Event Test"
+        print("TEST - viewDidLoad")
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("TEST - viewWillAppear")
+
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("TEST - viewDidAppear")
+
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("TEST - viewWillDisappear")
+
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("TEST - viewDidDisappear")
+
     }
 
 }
