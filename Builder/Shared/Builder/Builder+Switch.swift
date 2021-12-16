@@ -6,13 +6,14 @@
 //
 
 import UIKit
-
+import RxSwift
 
 // Custom builder fot UILabel
 public struct SwitchView: ModifiableView {
     
     public let modifiableView: UISwitch = Modified(UISwitch()) {
         $0.onTintColor = ViewBuilderEnvironment.defaultButtonColor
+        $0.contentHuggingPriority(.required, for: .horizontal)
     }
     
     // lifecycle
@@ -45,6 +46,7 @@ extension ModifiableView where Base: UISwitch {
             let relay = binding.asRelay()
             switchView.rxDisposeBag.insert(
                 relay
+                    .observe(on: ConcurrentMainScheduler.instance)
                     .subscribe(onNext: { [weak switchView] value in
                         if let view = switchView, view.isOn != value {
                             view.isOn = value

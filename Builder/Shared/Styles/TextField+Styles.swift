@@ -7,3 +7,15 @@
 
 import UIKit
 
+struct StyleStandardMetaTextField: BuilderStyle {
+    public func apply(to view: MetaTextField.Base) {
+        ViewModifier(view)
+            .autocorrectionType(.no)
+            .height(34)
+            .with {
+                $0.bottomLineColor = .standardAccentColor
+                $0.selectedBottomLineColor = .standardAccentColor
+            }
+    }
+}
+

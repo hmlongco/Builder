@@ -7,11 +7,15 @@
 
 import UIKit
 
+extension UIColor {
+    static let standardAccentColor = UIColor(red: 1/255, green: 50/255, blue: 159/255, alpha: 1)
+}
+
 struct StyleLabelAccentTitle: BuilderStyle {
     public func apply(to view: LabelView.Base) {
         ViewModifier(view)
             .font(.footnote)
-            .color(UIColor(red: 1/255, green: 50/255, blue: 159/255, alpha: 1))
+            .color(.standardAccentColor)
             .with {
                 $0.text = $0.text?.uppercased()
             }

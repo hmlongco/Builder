@@ -107,6 +107,7 @@ extension ModifiableView where Base: UITextField {
             let relay = binding.asRelay()
             textField.rxDisposeBag.insert(
                 relay
+                    .observe(on: ConcurrentMainScheduler.instance)
                     .subscribe(onNext: { [weak textField] text in
                         if let textField = textField, textField.text != text {
                             textField.text = text
@@ -128,6 +129,7 @@ extension ModifiableView where Base: UITextField {
             let relay = binding.asRelay()
             textField.rxDisposeBag.insert(
                 relay
+                    .observe(on: ConcurrentMainScheduler.instance)
                     .subscribe(onNext: { [weak textField] text in
                         if let textField = textField, textField.text != text {
                             textField.text = text
@@ -151,6 +153,7 @@ extension ModifiableView where Base: UITextField {
     public func onChange(_ handler: @escaping (_ context: ViewBuilderValueContext<UITextField, String?>) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
             $0.rx.controlEvent(.editingChanged)
+                .observe(on: MainScheduler.instance)
                 .subscribe(onNext: { [unowned modifiableView] () in
                     handler(ViewBuilderValueContext(view: modifiableView, value: modifiableView.text))
                 })
@@ -162,6 +165,7 @@ extension ModifiableView where Base: UITextField {
     public func onEditingDidEnd(_ handler: @escaping (_ context: ViewBuilderValueContext<UITextField, String?>) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
             $0.rx.controlEvent([.editingDidEnd])
+                .observe(on: MainScheduler.instance)
                 .subscribe(onNext: { [unowned modifiableView] () in
                     handler(ViewBuilderValueContext(view: modifiableView, value: modifiableView.text))
                 })
@@ -173,6 +177,7 @@ extension ModifiableView where Base: UITextField {
     public func onEditingDidEndOnExit(_ handler: @escaping (_ context: ViewBuilderValueContext<UITextField, String?>) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
             $0.rx.controlEvent([.editingDidEndOnExit])
+                .observe(on: MainScheduler.instance)
                 .subscribe(onNext: { [unowned modifiableView] () in
                     handler(ViewBuilderValueContext(view: modifiableView, value: modifiableView.text))
                 })

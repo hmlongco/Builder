@@ -49,6 +49,7 @@ extension ModifiableView where Base: BuilderInternalTextField {
         ViewModifier(modifiableView) {
             binding.asObservable()
                 .skip(1)
+                .observe(on: ConcurrentMainScheduler.instance)
                 .map { $0 ?? "" }
                 .bind(to: $0.errorText)
                 .disposed(by: $0.rxDisposeBag)

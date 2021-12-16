@@ -28,12 +28,14 @@ extension ModifiableView {
                 $0.heightAnchor
                     .constraint(equalToConstant: height)
                     .priority(UILayoutPriority(rawValue: 999))
+                    .identifier("height")
                     .activate()
             }
             if let width = width {
                 $0.widthAnchor
                     .constraint(equalToConstant: width)
                     .priority(UILayoutPriority(rawValue: 999))
+                    .identifier("width")
                     .activate()
             }
         }
@@ -41,20 +43,42 @@ extension ModifiableView {
 
     @discardableResult
     public func height(_ height: CGFloat) -> ViewModifier<Base> {
+        self.height(height, priority: UILayoutPriority(999))
+    }
+
+    @discardableResult
+    public func height(_ height: CGFloat, priority: Float) -> ViewModifier<Base> {
+        self.height(height, priority: UILayoutPriority(priority))
+    }
+
+    @discardableResult
+    public func height(_ height: CGFloat, priority: UILayoutPriority) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
             $0.heightAnchor
                 .constraint(equalToConstant: height)
-                .priority(UILayoutPriority(rawValue: 999))
+                .priority(priority)
+                .identifier("height")
                 .activate()
         }
     }
 
     @discardableResult
     public func width(_ width: CGFloat) -> ViewModifier<Base> {
+        self.width(width, priority: UILayoutPriority(999))
+    }
+
+    @discardableResult
+    public func width(_ width: CGFloat, priority: Float) -> ViewModifier<Base> {
+        self.width(width, priority: UILayoutPriority(priority))
+    }
+
+    @discardableResult
+    public func width(_ width: CGFloat, priority: UILayoutPriority) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
             $0.widthAnchor
                 .constraint(equalToConstant: width)
-                .priority(UILayoutPriority(rawValue: 999))
+                .priority(priority)
+                .identifier("width")
                 .activate()
         }
     }
@@ -62,7 +86,7 @@ extension ModifiableView {
 }
 
 extension UIView {
-    
+
     public enum EmbedPosition: Int, CaseIterable {
         case fill
         case top
@@ -94,9 +118,9 @@ extension UIView {
 
     public func addConstrainedSubview(_ view: UIView, position: EmbedPosition, padding: UIEdgeInsets, safeArea: Bool = false) {
         view.translatesAutoresizingMaskIntoConstraints = false
-        
+
         addSubview(view)
-        
+
         let guides: UIViewAnchoring = safeArea ? safeAreaLayoutGuide : self
 
         if [EmbedPosition.center, .centerLeft, .centerRight].contains(position) {
@@ -137,7 +161,7 @@ extension UIView {
                     .priority(.defaultHigh)
                     .activate()
             }
-            
+
             // right
             if [EmbedPosition.fill, .right, .top, .bottom, .topRight, .centerRight, .bottomRight].contains(position) {
                 view.rightAnchor.constraint(equalTo: guides.rightAnchor, constant: -padding.right)
@@ -155,7 +179,7 @@ extension UIView {
     public func addSubviewWithConstraints(_ view: View, _ padding: UIEdgeInsets?, _ safeArea: Bool) {
         addConstrainedSubview(view.build(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
     }
-    
+
 }
 
 extension ModifiableView {
@@ -169,7 +193,7 @@ extension ModifiableView {
 
 }
 
-fileprivate protocol UIViewAnchoring {
+private protocol UIViewAnchoring {
     var leadingAnchor: NSLayoutXAxisAnchor { get }
     var trailingAnchor: NSLayoutXAxisAnchor { get }
     var leftAnchor: NSLayoutXAxisAnchor { get }
@@ -189,6 +213,11 @@ extension NSLayoutConstraint {
     @discardableResult
     public func activate(_ isActive: Bool = true) -> Self {
         self.isActive = isActive
+        return self
+    }
+    @discardableResult
+    public func identifier(_ identifier: String?) -> Self {
+        self.identifier = identifier
         return self
     }
     @discardableResult

@@ -22,6 +22,10 @@
 		4C2D812025E408B300E2EBD7 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D811F25E408B300E2EBD7 /* RxSwift */; };
 		4C2D812425E408B300E2EBD7 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D812325E408B300E2EBD7 /* RxRelay */; };
 		4C2D812625E408B300E2EBD7 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D812525E408B300E2EBD7 /* RxCocoa */; };
+		4C3BF53E2764134700E9EA68 /* ContactFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3BF53D2764134700E9EA68 /* ContactFormViewController.swift */; };
+		4C3BF5402764136400E9EA68 /* ContactFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3BF53F2764136400E9EA68 /* ContactFormViewModel.swift */; };
+		4C3BF5422766962D00E9EA68 /* FormField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3BF5412766962D00E9EA68 /* FormField.swift */; };
+		4C3BF544276696B000E9EA68 /* FormFieldManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3BF543276696B000E9EA68 /* FormFieldManager.swift */; };
 		4C3D9C2D27556081007CE720 /* Builder+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3D9C2C27556081007CE720 /* Builder+Styles.swift */; };
 		4C40B2B226E2E07100598D9E /* Builder+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40B2B126E2E07100598D9E /* Builder+Constraints.swift */; };
 		4C40B2B426E4212700598D9E /* Builder+Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40B2B326E4212700598D9E /* Builder+Context.swift */; };
@@ -47,6 +51,8 @@
 		4C65866725ED30800073003C /* StandardLoadingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C65866625ED30800073003C /* StandardLoadingPage.swift */; };
 		4C65866C25ED30A20073003C /* StandardEmptyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C65866B25ED30A20073003C /* StandardEmptyPage.swift */; };
 		4C65867325ED32150073003C /* StandardErrorPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C65866525ED30280073003C /* StandardErrorPage.swift */; };
+		4C7C3FCF276A503300F697BA /* FABMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7C3FCE276A503300F697BA /* FABMenuView.swift */; };
+		4C7C3FD1276A527E00F697BA /* TabBarTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7C3FD0276A527E00F697BA /* TabBarTest.swift */; };
 		4C8221C626DC458A00BDD349 /* MainUsersTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8221C526DC458A00BDD349 /* MainUsersTableView.swift */; };
 		4C878EDF25C38C8A004D7216 /* UserImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C878EDE25C38C8A004D7216 /* UserImageCache.swift */; };
 		4C8B50AE275FA656004FFC15 /* MaxWidthTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50A8275FA656004FFC15 /* MaxWidthTextField.swift */; };
@@ -145,6 +151,10 @@
 		4C288FBA25B612F0004D54AC /* MOCK.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MOCK.xcconfig; sourceTree = "<group>"; };
 		4C2A0D79268F65C800BF86ED /* Builder+With.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+With.swift"; sourceTree = "<group>"; };
 		4C2A0D7B268F916D00BF86ED /* Builder+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+TableView.swift"; sourceTree = "<group>"; };
+		4C3BF53D2764134700E9EA68 /* ContactFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFormViewController.swift; sourceTree = "<group>"; };
+		4C3BF53F2764136400E9EA68 /* ContactFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFormViewModel.swift; sourceTree = "<group>"; };
+		4C3BF5412766962D00E9EA68 /* FormField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormField.swift; sourceTree = "<group>"; };
+		4C3BF543276696B000E9EA68 /* FormFieldManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormFieldManager.swift; sourceTree = "<group>"; };
 		4C3D9C2C27556081007CE720 /* Builder+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+Styles.swift"; sourceTree = "<group>"; };
 		4C40B2B126E2E07100598D9E /* Builder+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+Constraints.swift"; sourceTree = "<group>"; };
 		4C40B2B326E4212700598D9E /* Builder+Context.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builder+Context.swift"; sourceTree = "<group>"; };
@@ -170,6 +180,8 @@
 		4C65866525ED30280073003C /* StandardErrorPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardErrorPage.swift; sourceTree = "<group>"; };
 		4C65866625ED30800073003C /* StandardLoadingPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardLoadingPage.swift; sourceTree = "<group>"; };
 		4C65866B25ED30A20073003C /* StandardEmptyPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardEmptyPage.swift; sourceTree = "<group>"; };
+		4C7C3FCE276A503300F697BA /* FABMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FABMenuView.swift; sourceTree = "<group>"; };
+		4C7C3FD0276A527E00F697BA /* TabBarTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarTest.swift; sourceTree = "<group>"; };
 		4C8221C526DC458A00BDD349 /* MainUsersTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainUsersTableView.swift; sourceTree = "<group>"; };
 		4C878EDE25C38C8A004D7216 /* UserImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCache.swift; sourceTree = "<group>"; };
 		4C8B50A8275FA656004FFC15 /* MaxWidthTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaxWidthTextField.swift; sourceTree = "<group>"; };
@@ -295,6 +307,18 @@
 				4C288FBA25B612F0004D54AC /* MOCK.xcconfig */,
 			);
 			path = Configuration;
+			sourceTree = "<group>";
+		};
+		4C3BF53C2764131200E9EA68 /* ContactForm */ = {
+			isa = PBXGroup;
+			children = (
+				4C3BF53D2764134700E9EA68 /* ContactFormViewController.swift */,
+				4C3BF53F2764136400E9EA68 /* ContactFormViewModel.swift */,
+				4C3BF5412766962D00E9EA68 /* FormField.swift */,
+				4C3BF543276696B000E9EA68 /* FormFieldManager.swift */,
+				4C7C3FCE276A503300F697BA /* FABMenuView.swift */,
+			);
+			path = ContactForm;
 			sourceTree = "<group>";
 		};
 		4C65863225E98B0A0073003C /* Core */ = {
@@ -428,6 +452,7 @@
 			isa = PBXGroup;
 			children = (
 				4CA19EE4273E0C4700EE7433 /* Menu */,
+				4C3BF53C2764131200E9EA68 /* ContactForm */,
 				4CF9644A274B094F00C0824C /* Login */,
 				4C9CC3F325B4F854002BE06D /* Main */,
 				4CD0524625B7AE190099B277 /* Details */,
@@ -540,6 +565,7 @@
 			children = (
 				4CA19EE2273E0B5D00EE7433 /* TestViewController.swift */,
 				4C4AD771275189E000EF12C6 /* TestViews.swift */,
+				4C7C3FD0276A527E00F697BA /* TabBarTest.swift */,
 			);
 			path = Test;
 			sourceTree = "<group>";
@@ -770,7 +796,9 @@
 				4C9CC3CD25B4F2D4002BE06D /* Builder+Container.swift in Sources */,
 				4C147A8E25B55C7E000DC2FC /* APIError.swift in Sources */,
 				4C9E511D270661D600795D2F /* MockURLProtocol.swift in Sources */,
+				4C3BF5402764136400E9EA68 /* ContactFormViewModel.swift in Sources */,
 				4C9CC36525B4F078002BE06D /* AppDelegate.swift in Sources */,
+				4C3BF5422766962D00E9EA68 /* FormField.swift in Sources */,
 				4CBC04CF26FBFDC600BFD8E4 /* ClientSessionManagerInterceptor.swift in Sources */,
 				4C1F921A26E94C140075A5F4 /* LabelView+Styles.swift in Sources */,
 				4C03878C2724A7C8002DD382 /* Builder+Variable.swift in Sources */,
@@ -793,6 +821,7 @@
 				4C65866125ED23040073003C /* MainUsersStackView.swift in Sources */,
 				4C4AD7742753FAAB00EF12C6 /* Builder+Attributes.swift in Sources */,
 				4CF96452274BE76500C0824C /* LoginViewModel.swift in Sources */,
+				4C3BF53E2764134700E9EA68 /* ContactFormViewController.swift in Sources */,
 				4CA19EE6273E0C8C00EE7433 /* MenuViewController.swift in Sources */,
 				4CF9644E274B0B1600C0824C /* Builder+TextField.swift in Sources */,
 				4C9CC36725B4F078002BE06D /* SceneDelegate.swift in Sources */,
@@ -802,6 +831,7 @@
 				4C65864925E9CB8D0073003C /* SessionLoggingInterceptorr.swift in Sources */,
 				4C8B50B3275FA656004FFC15 /* NextAccessoryView.swift in Sources */,
 				4C65864825E9CB8D0073003C /* StandardHeadersInterceptor.swift in Sources */,
+				4C3BF544276696B000E9EA68 /* FormFieldManager.swift in Sources */,
 				4CF96450274BE2CB00C0824C /* DLSCardView.swift in Sources */,
 				4C9E51232708AB4200795D2F /* MockDelayInterceptor.swift in Sources */,
 				4C249B1825C5CEE500EAA1E9 /* _Details+Injection.swift in Sources */,
@@ -809,9 +839,11 @@
 				4C9CC3DF25B4F2DF002BE06D /* ClientSessionManager.swift in Sources */,
 				4C8B50AF275FA656004FFC15 /* CurrencyTextField.swift in Sources */,
 				4C9CC3DC25B4F2DF002BE06D /* ClientRequestBuilder+RxSwift.swift in Sources */,
+				4C7C3FCF276A503300F697BA /* FABMenuView.swift in Sources */,
 				4C65867325ED32150073003C /* StandardErrorPage.swift in Sources */,
 				4C9CC3DA25B4F2DF002BE06D /* ClientRequestBuilder.swift in Sources */,
 				4C9CC3CC25B4F2D4002BE06D /* Builder+ViewController.swift in Sources */,
+				4C7C3FD1276A527E00F697BA /* TabBarTest.swift in Sources */,
 				4C9CC3C125B4F2D4002BE06D /* Builder+Switch.swift in Sources */,
 				4C9CC3CE25B4F2D4002BE06D /* Builder+Stack.swift in Sources */,
 				4C65866C25ED30A20073003C /* StandardEmptyPage.swift in Sources */,

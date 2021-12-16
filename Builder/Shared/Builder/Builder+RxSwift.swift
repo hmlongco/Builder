@@ -38,7 +38,7 @@ extension ViewModifier {
     public init<B:RxBinding, T>(_ view: Base, binding: B, handler: @escaping (_ view: Base, _ value: T) -> Void) where B.T == T {
         self.modifiableView = view
         binding.asObservable()
-            .observe(on: MainScheduler.instance)
+            .observe(on: ConcurrentMainScheduler.instance)
             .subscribe(onNext: { [weak view] value in
                 if let view = view {
                     handler(view, value)
@@ -50,7 +50,7 @@ extension ViewModifier {
     public init<B:RxBinding, T:Equatable>(_ view: Base, binding: B, keyPath: ReferenceWritableKeyPath<Base, T>) where B.T == T {
         self.modifiableView = view
         binding.asObservable()
-            .observe(on: MainScheduler.instance)
+            .observe(on: ConcurrentMainScheduler.instance)
             .subscribe(onNext: { [weak view] value in
                 if let view = view, view[keyPath: keyPath] != value {
                     view[keyPath: keyPath] = value
@@ -67,7 +67,7 @@ extension ModifiableView {
     public func bind<B:RxBinding, T>(keyPath: ReferenceWritableKeyPath<Base, T>, binding: B) -> ViewModifier<Base> where B.T == T {
         ViewModifier(modifiableView) {
             binding.asObservable()
-                .observe(on: MainScheduler.instance)
+                .observe(on: ConcurrentMainScheduler.instance)
                 .subscribe(onNext: { [weak modifiableView] value in
                     modifiableView?[keyPath: keyPath] = value
                 })
@@ -80,8 +80,7 @@ extension ModifiableView {
         -> ViewModifier<Base> where B.T == T {
             ViewModifier(modifiableView) {
                 binding.asObservable()
-                    .observe(on: MainScheduler.instance)
-                    .debug()
+                    .observe(on: ConcurrentMainScheduler.instance)
                     .subscribe(onNext: { [weak modifiableView] value in
                         if let view = modifiableView {
                             handler(ViewBuilderValueContext(view: view, value: value))

@@ -31,13 +31,13 @@ class MainViewController: UIViewController {
                 case .initial:
                     self.viewModel.load()
                 case .loading:
-                    self.transtion(to: StandardLoadingPage())
+                    self.transition(to: StandardLoadingPage())
                 case .loaded(let users):
-                    self.transtion(to: MainUsersTableView(users: users).reference(&self.mainView))
+                    self.transition(to: MainUsersTableView(users: users).reference(&self.mainView))
                 case .empty(let message):
-                    self.transtion(to: StandardEmptyPage(message: message))
+                    self.transition(to: StandardEmptyPage(message: message))
                 case .error(let error):
-                    self.transtion(to: StandardErrorPage(error: error))
+                    self.transition(to: StandardErrorPage(error: error))
                 }
             })
             .disposed(by: disposeBag)

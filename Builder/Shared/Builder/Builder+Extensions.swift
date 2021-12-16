@@ -32,21 +32,46 @@ extension UIView {
         existingSubviews.forEach { $0.removeFromSuperview() }
     }
 
-    public func transtion(to page: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, delay: Double = 0.2) {
+    public func transition(to page: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, delay: Double = 0.2) {
+        func cleanup(_ oldViews: [UIView]) {
+            oldViews.forEach { oldView in
+                let oldViewController = oldView.next as? UIViewController
+                oldViewController?.willMove(toParent: nil)
+                oldView.removeFromSuperview()
+                oldViewController?.removeFromParent()
+            }
+        }
         let newView = page.build()
         if subviews.isEmpty {
             embed(newView, padding: padding, safeArea: safeArea)
             return
         }
         let oldViews = subviews
-        newView.alpha = 0.0
-        embed(newView, padding: padding, safeArea: safeArea)
-        UIView.animate(withDuration: delay) {
-            newView.alpha = 1.0
-        } completion: { completed in
-            if completed {
-                oldViews.forEach { $0.removeFromSuperview() }
+        if delay > 0 {
+            newView.alpha = 0.0
+            embed(newView, padding: padding, safeArea: safeArea)
+            UIView.animate(withDuration: delay) {
+                newView.alpha = 1.0
+            } completion: { completed in
+                if completed {
+                    cleanup(oldViews)
+                }
             }
+        } else {
+            embed(newView, padding: padding, safeArea: safeArea)
+            cleanup(oldViews)
+        }
+    }
+
+    public func transition(to viewController: UIViewController, padding: UIEdgeInsets? = nil) {
+        if let parentViewController = self.parentViewController {
+            parentViewController.addChild(viewController)
+            transition(to: viewController.view, padding: padding, delay: 0)
+            viewController.didMove(toParent: parentViewController)
+        } else {
+            let attributes = builderAttributes()
+            attributes?.transitionViewController = viewController
+            attributes?.insets = padding
         }
     }
 
@@ -59,6 +84,11 @@ extension UIView {
     }
 }
 
+extension UIResponder {
+    public var parentViewController: UIViewController? {
+        return next as? UIViewController ?? next?.parentViewController
+    }
+}
 
 extension UIView {
 

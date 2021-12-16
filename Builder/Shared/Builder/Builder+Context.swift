@@ -53,6 +53,15 @@ extension ViewBuilderContextProvider {
         view.rxDisposeBag
     }
 
+    public func transition(to page: View, position: UIView.EmbedPosition = .fill, padding: UIEdgeInsets? = nil,
+                           safeArea: Bool = false, delay: Double = 0.2) {
+        view.transition(to: page, padding: padding, safeArea: safeArea, delay: delay)
+    }
+
+    public func transition(to viewController: UIViewController, padding: UIEdgeInsets? = nil) {
+        view.transition(to: viewController, padding: padding)
+    }
+
 }
 
 // simple extensions to make context calls shorter

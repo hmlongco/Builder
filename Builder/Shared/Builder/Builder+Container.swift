@@ -69,13 +69,7 @@ public class BuilderInternalContainerView: UIView, ViewBuilderEventHandling {
     }
 
     override public func didMoveToWindow() {
-        guard let attributes = optionalBuilderAttributes() else { return }
-        // Note didMoveToWindow may be called more than once
-        if window == nil {
-            attributes.onDisappearHandler?(ViewBuilderContext(view: self))
-        } else if let vc = context.viewController, let nc = vc.navigationController, nc.topViewController == vc {
-            attributes.onAppearHandler?(ViewBuilderContext(view: self))
-        }
+        optionalBuilderAttributes()?.commonDidMoveToWindow(self)
     }
 
 }
