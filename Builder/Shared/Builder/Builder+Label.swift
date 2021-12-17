@@ -90,13 +90,18 @@ extension ModifiableView where Base: UILabel {
 }
 
 
-extension LabelView {
-    
+extension ModifiableView where Base: UILabel {
+
     @discardableResult
     public func color<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == UIColor {
         ViewModifier(modifiableView, binding: binding, keyPath: \.textColor)
     }
-    
+
+    @discardableResult
+    public func color<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == UIColor? {
+        ViewModifier(modifiableView, binding: binding, keyPath: \.textColor)
+    }
+
     @discardableResult
     public func text<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == String {
         ViewModifier(modifiableView, binding: binding) { $0.text = $1 } // binding non-optional to optional
