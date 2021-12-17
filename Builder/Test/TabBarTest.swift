@@ -33,7 +33,8 @@ class CustomTabBarViewController: UIViewController {
                     // testing to see if events are firing correctly when view is added and removed
                     let vc = EventTestViewController(CustomTestView(tab: context.value))
                     // testing host view
-                    let host = ViewControllerHostView(viewController: vc)
+                    let host = ViewControllerHostView(vc)
+                    // testing transition code
                     context.transition(to: host)
                 }
             CustomTabBarView(selectedTab: $selectedTab, tabs: tabs)
@@ -44,33 +45,39 @@ class CustomTabBarViewController: UIViewController {
 
 class EventTestViewController: UIViewController {
 
+    let id = UUID()
+
+    deinit {
+        print("TEST - deinit - \(id)")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Event Test"
-        print("TEST - viewDidLoad")
+        print("TEST - viewDidLoad - \(id)")
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("TEST - viewWillAppear")
+        print("TEST - viewWillAppear - \(id)")
 
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("TEST - viewDidAppear")
+        print("TEST - viewDidAppear - \(id)")
 
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("TEST - viewWillDisappear")
+        print("TEST - viewWillDisappear - \(id)")
 
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print("TEST - viewDidDisappear")
+        print("TEST - viewDidDisappear - \(id)")
 
     }
 
@@ -81,12 +88,28 @@ private struct CustomTestView: ViewBuilder {
     var body: View {
         VerticalScrollView {
             VStackView {
-                ForEach(30) { _ in
+                ForEach(30) { row in
                     LabelView("Tab \(tab+1) is selected.")
+                        .onTapGesture { context in
+                            context.push(CustomDetailsView(title: "Details for tab \(tab+1), row \(row+1)"))
+                        }
                 }
                 SpacerView()
             }
             .padding(20)
+        }
+    }
+}
+
+private struct CustomDetailsView: ViewBuilder {
+    let title: String
+    var body: View {
+        VStackView {
+            LabelView(title)
+        }
+        .alignment(.center)
+        .onAppearOnce { context in
+            context.viewController?.navigationItem.title = "Details"
         }
     }
 }
@@ -103,7 +126,7 @@ struct CustomTabBarView: ViewBuilder {
                     ForEach(tabs.count) { index in
                         LabelView(tabs[index])
                             .alignment(.center)
-                            .color(.white)
+                            .color(bind: tabTextColor(index))
                             .contentHuggingPriority(.defaultLow, for: .horizontal)
                             .contentHuggingPriority(.defaultLow, for: .vertical)
                             .onTapGesture { context in
@@ -120,9 +143,9 @@ struct CustomTabBarView: ViewBuilder {
             HStackView {
                 ForEach(tabs.count) { index in
                     ContainerView()
-                        .height(4)
+                        .height(7)
                         .roundedCorners(radius: 4, corners: [.layerMinXMinYCorner, .layerMaxXMaxYCorner])
-                        .bind(keyPath: \.backgroundColor, binding: $selectedTab.asObservable().map { $0 == index ? .red : .clear })
+                        .bind(keyPath: \.backgroundColor, binding: tabIndicatorColor(index))
                 }
             }
             .padding(top: 0, left: 4, bottom: 0, right: 4)
@@ -130,7 +153,19 @@ struct CustomTabBarView: ViewBuilder {
             .position(.bottom)
         }
         .position(.top)
-        .height(42)
+        .height(43, priority: .required)
+    }
+
+    func tabIndicatorColor(_ index: Int) -> Observable<UIColor?> {
+        $selectedTab
+            .asObservable()
+            .map { $0 == index ? .red : .clear }
+    }
+
+    func tabTextColor(_ index: Int) -> Observable<UIColor?> {
+        $selectedTab
+            .asObservable()
+            .map { $0 == index ? .white : .lightGray }
     }
 
 }

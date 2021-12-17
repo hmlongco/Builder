@@ -33,14 +33,6 @@ extension UIView {
     }
 
     public func transition(to view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false, delay: Double = 0.2) {
-        func cleanup(_ oldViews: [UIView]) {
-            oldViews.forEach { oldView in
-                let oldViewController = oldView.next as? UIViewController
-                oldViewController?.willMove(toParent: nil)
-                oldView.removeFromSuperview()
-                oldViewController?.removeFromParent()
-            }
-        }
         let newView = view.build()
         if subviews.isEmpty {
             embed(newView, padding: padding, safeArea: safeArea)
@@ -54,24 +46,17 @@ extension UIView {
                 newView.alpha = 1.0
             } completion: { completed in
                 if completed {
-                    cleanup(oldViews)
+                    oldViews.forEach { $0.removeFromSuperview() }
                 }
             }
         } else {
             embed(newView, padding: padding, safeArea: safeArea)
-            cleanup(oldViews)
+            oldViews.forEach { $0.removeFromSuperview() }
         }
     }
 
     public func transition(to viewController: UIViewController, delay: Double = 0.2) {
-        if let parentViewController = self.parentViewController {
-            parentViewController.addChild(viewController)
-            transition(to: viewController.view, delay: 0)
-            viewController.didMove(toParent: parentViewController)
-        } else {
-            // if parentViewController isn't avaialble punt and let ViewControllerHostView do the job when it's installed later on
-            transition(to: ViewControllerHostView(viewController: viewController), delay: delay)
-        }
+        transition(to: ViewControllerHostView(viewController), delay: delay)
     }
 
     // deprecated version
