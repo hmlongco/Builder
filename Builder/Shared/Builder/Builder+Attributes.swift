@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 public class ViewBuilderAttributes {
 
     var position: UIView.EmbedPosition?
@@ -67,7 +66,7 @@ extension ModifiableView where Base: ViewBuilderEventHandling {
 
     @discardableResult
     public func onAppearOnce(_ handler: @escaping (_ context: ViewBuilderContext<UIView>) -> Void) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) { $0.builderAttributes()?.onAppearHandler = handler }
+        ViewModifier(modifiableView) { $0.builderAttributes()?.onAppearOnceHandler = handler }
     }
 
     @discardableResult
