@@ -33,11 +33,7 @@ struct FABMenuView: ViewBuilder {
                     .backgroundColor(.red)
                     .position(.topCenter)
                     .onTapGesture { context in
-                        //                        UIView.animate(withDuration: 1.5) {
                         showFABMenu.toggle()
-                        //                        } completion: { _ in
-                        //                            //
-                        //                        }
                     }
             }
             .position(.bottomCenter)
@@ -51,7 +47,7 @@ struct FABMenuView: ViewBuilder {
                     // close area
                     ZStackView {
                         ContainerView()
-                            .backgroundColor(.blue)
+                            .backgroundColor(.black)
                             .position(.bottom)
                             .height(25)
 
@@ -84,20 +80,13 @@ struct FABMenuView: ViewBuilder {
                         .padding(20)
                         .spacing(0)
                     }
-                    .backgroundColor(.blue)
+                    .backgroundColor(.black)
                     .position(.bottom)
                 }
                 .spacing(0)
             }
             .backgroundColor(UIColor(white: 0.5, alpha: 0.3))
             .width(UIScreen.main.bounds.width)
-            //            .onReceive($showFABMenu.asObservable(), handler: { context in
-            //                UIView.animate(withDuration: 0.2) {
-            //                    context.view.isHidden = !context.value
-            //                } completion: { _ in
-            //                    //
-            //                }
-            //            })
             .hidden(bind: $showFABMenu.asObservable().map { !$0 })
             .onTapGesture { context in
                 showFABMenu.toggle()

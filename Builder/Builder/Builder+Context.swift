@@ -52,8 +52,14 @@ extension ViewBuilderContextProvider {
         view.transition(to: viewController, delay: delay)
     }
 
+}
+
+// some utilility operations
+
+extension ViewBuilderContextProvider {
+
     public func endEditing() {
-        view.rootView().endEditing(true)
+        view.rootview.firstSubview(where: { $0.isFirstResponder })?.resignFirstResponder()
     }
 
     public var disposeBag: DisposeBag {

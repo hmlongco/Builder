@@ -58,6 +58,7 @@ class Dismissible<ResultType> {
         doAction()
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     private func doAction() {
         guard let vc = viewController else { return }
         switch action {

@@ -104,80 +104,83 @@ extension UIView {
         case bottomRight
     }
 
-    public func embed(_ view: UIView, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
-        self.addConstrainedSubview(view, position: .fill, padding: padding ?? .zero, safeArea: safeArea)
-    }
-
     public func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         self.addConstrainedSubview(view.build(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
     }
 
-    public func embed(in view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
-        view.build().addConstrainedSubview(self, position: .fill, padding: padding ?? .zero, safeArea: safeArea)
-    }
-
     public func addConstrainedSubview(_ view: UIView, position: EmbedPosition, padding: UIEdgeInsets, safeArea: Bool = false) {
         view.translatesAutoresizingMaskIntoConstraints = false
-
         addSubview(view)
+        addVerticalConstraints(view, position: position, padding: padding, safeArea: safeArea)
+        addHorizontalConstraints(view, position: position, padding: padding, safeArea: safeArea)
+    }
 
+    private func addVerticalConstraints(_ view: UIView, position: EmbedPosition, padding: UIEdgeInsets, safeArea: Bool) {
         let guides: UIViewAnchoring = safeArea ? safeAreaLayoutGuide : self
 
         if [EmbedPosition.center, .centerLeft, .centerRight].contains(position) {
             view.centerYAnchor.constraint(equalTo: guides.centerYAnchor)
+                .identifier("centerY")
                 .activate()
         } else {
             // top
             if [EmbedPosition.fill, .top, .left, .right, .topLeft, .topCenter, .topRight].contains(position) {
                 view.topAnchor.constraint(equalTo: guides.topAnchor, constant: padding.top)
+                    .identifier("top")
                     .activate()
             } else {
                 view.topAnchor.constraint(lessThanOrEqualTo: guides.topAnchor, constant: padding.top)
                     .priority(.defaultHigh)
+                    .identifier("top")
                     .activate()
             }
 
             // bottom
             if [EmbedPosition.fill, .bottom, .left, .right, .bottomLeft, .bottomCenter, .bottomRight].contains(position) {
                 view.bottomAnchor.constraint(equalTo: guides.bottomAnchor, constant: -padding.bottom)
+                    .identifier("bottom")
                     .activate()
             } else {
                 view.bottomAnchor.constraint(greaterThanOrEqualTo: guides.bottomAnchor, constant: -padding.bottom)
                     .priority(.defaultHigh)
+                    .identifier("bottom")
                     .activate()
             }
         }
+    }
+
+    private func addHorizontalConstraints(_ view: UIView, position: EmbedPosition, padding: UIEdgeInsets, safeArea: Bool = false) {
+        let guides: UIViewAnchoring = safeArea ? safeAreaLayoutGuide : self
 
         if [EmbedPosition.center, .topCenter, .bottomCenter].contains(position) {
             view.centerXAnchor.constraint(equalTo: guides.centerXAnchor)
+                .identifier("centerX")
                 .activate()
         } else {
             // left
             if [EmbedPosition.fill, .left, .top, .bottom, .topLeft, .centerLeft, .bottomLeft].contains(position) {
                 view.leftAnchor.constraint(equalTo: guides.leftAnchor, constant: padding.left)
+                    .identifier("left")
                     .activate()
             } else {
                 view.leftAnchor.constraint(lessThanOrEqualTo: guides.leftAnchor, constant: padding.left)
                     .priority(.defaultHigh)
+                    .identifier("left")
                     .activate()
             }
 
             // right
             if [EmbedPosition.fill, .right, .top, .bottom, .topRight, .centerRight, .bottomRight].contains(position) {
                 view.rightAnchor.constraint(equalTo: guides.rightAnchor, constant: -padding.right)
+                    .identifier("right")
                     .activate()
             } else {
                 view.rightAnchor.constraint(greaterThanOrEqualTo: guides.rightAnchor, constant: -padding.right)
                     .priority(.defaultHigh)
+                    .identifier("right")
                     .activate()
             }
         }
-
-    }
-
-    // deprecated
-    public func addSubviewWithConstraints(_ view: View, _ padding: UIEdgeInsets?, _ safeArea: Bool) {
-        addConstrainedSubview(view.build(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
     }
 
 }

@@ -150,39 +150,36 @@ extension ModifiableView where Base: UITextField {
 extension ModifiableView where Base: UITextField {
 
     @discardableResult
-    public func onChange(_ handler: @escaping (_ context: ViewBuilderValueContext<UITextField, String?>) -> Void) -> ViewModifier<Base> {
+    public func onControlEvent(_ event: UIControl.Event,
+                               handler: @escaping (_ context: ViewBuilderValueContext<UITextField, String?>) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView) {
-            $0.rx.controlEvent(.editingChanged)
+            $0.rx.controlEvent([event])
                 .observe(on: MainScheduler.instance)
                 .subscribe(onNext: { [unowned modifiableView] () in
                     handler(ViewBuilderValueContext(view: modifiableView, value: modifiableView.text))
                 })
                 .disposed(by: $0.rxDisposeBag)
         }
+    }
+
+    @discardableResult
+    public func onChange(_ handler: @escaping (_ context: ViewBuilderValueContext<UITextField, String?>) -> Void) -> ViewModifier<Base> {
+        onControlEvent(.editingChanged, handler: handler)
+    }
+
+    @discardableResult
+    public func onEditingDidBegin(_ handler: @escaping (_ context: ViewBuilderValueContext<UITextField, String?>) -> Void) -> ViewModifier<Base> {
+        onControlEvent(.editingDidBegin, handler: handler)
     }
 
     @discardableResult
     public func onEditingDidEnd(_ handler: @escaping (_ context: ViewBuilderValueContext<UITextField, String?>) -> Void) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) {
-            $0.rx.controlEvent([.editingDidEnd])
-                .observe(on: MainScheduler.instance)
-                .subscribe(onNext: { [unowned modifiableView] () in
-                    handler(ViewBuilderValueContext(view: modifiableView, value: modifiableView.text))
-                })
-                .disposed(by: $0.rxDisposeBag)
-        }
+        onControlEvent(.editingDidEnd, handler: handler)
     }
 
     @discardableResult
     public func onEditingDidEndOnExit(_ handler: @escaping (_ context: ViewBuilderValueContext<UITextField, String?>) -> Void) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) {
-            $0.rx.controlEvent([.editingDidEndOnExit])
-                .observe(on: MainScheduler.instance)
-                .subscribe(onNext: { [unowned modifiableView] () in
-                    handler(ViewBuilderValueContext(view: modifiableView, value: modifiableView.text))
-                })
-                .disposed(by: $0.rxDisposeBag)
-        }
+        onControlEvent(.editingDidEndOnExit, handler: handler)
     }
 
 }

@@ -38,6 +38,7 @@ class CustomTabBarViewController: UIViewController {
                     context.transition(to: host)
                 }
             CustomTabBarView(selectedTab: $selectedTab, tabs: tabs)
+                .position(.top)
         }
     }
 
@@ -119,41 +120,38 @@ struct CustomTabBarView: ViewBuilder {
     @Variable var selectedTab: Int
     let tabs: [String]
 
-    var body: View {
-        ZStackView {
-            ContainerView {
-                HStackView {
-                    ForEach(tabs.count) { index in
-                        LabelView(tabs[index])
-                            .alignment(.center)
-                            .color(bind: tabTextColor(index))
-                            .contentHuggingPriority(.defaultLow, for: .horizontal)
-                            .contentHuggingPriority(.defaultLow, for: .vertical)
-                            .onTapGesture { context in
-                                selectedTab = index
-                            }
-                    }
-                }
-                .distribution(.fillEqually)
-            }
-            .backgroundColor(.black)
-            .position(.top)
-            .height(40)
+    let HEIGHT: CGFloat = 44
+    let INDICATOR_HEIGHT: CGFloat = 12
 
-            HStackView {
-                ForEach(tabs.count) { index in
+    var body: View {
+        HStackView {
+            ForEach(tabs.count) { index in
+                ZStackView {
+                    ButtonView(tabs[index])
+                        .identifier("TAB-\(tabs[index])")
+                        .color(.white)
+                        .backgroundColor(.black)
+                        .contentHuggingPriority(.defaultLow, for: .horizontal)
+                        .contentHuggingPriority(.defaultLow, for: .vertical)
+                        .selected(bind: $selectedTab.asObservable().map { $0 == index })
+                        .position(.top)
+                        .height(HEIGHT)
+                        .onTapGesture { context in
+                            selectedTab = index
+                        }
+
                     ContainerView()
-                        .height(7)
-                        .roundedCorners(radius: 4, corners: [.layerMinXMinYCorner, .layerMaxXMaxYCorner])
+                        .roundedCorners(radius: INDICATOR_HEIGHT / 2, corners: [.layerMinXMinYCorner, .layerMaxXMaxYCorner])
                         .bind(keyPath: \.backgroundColor, binding: tabIndicatorColor(index))
+                        .height(INDICATOR_HEIGHT)
+                        .insets(top: 0, left: 4, bottom: 0, right: 4)
+                        .position(.bottom)
                 }
             }
-            .padding(top: 0, left: 4, bottom: 0, right: 4)
-            .distribution(.fillEqually)
-            .position(.bottom)
         }
-        .position(.top)
-        .height(43, priority: .required)
+        .distribution(.fillEqually)
+        .spacing(0)
+        .height(HEIGHT + (INDICATOR_HEIGHT / 2))
     }
 
     func tabIndicatorColor(_ index: Int) -> Observable<UIColor?> {
@@ -162,10 +160,66 @@ struct CustomTabBarView: ViewBuilder {
             .map { $0 == index ? .red : .clear }
     }
 
-    func tabTextColor(_ index: Int) -> Observable<UIColor?> {
+}
+
+struct AnnimatingTabBarView: ViewBuilder {
+
+    @Variable var selectedTab: Int
+    let tabs: [String]
+
+    let HEIGHT: CGFloat = 44
+    let INDICATOR_HEIGHT: CGFloat = 12
+
+    var body: View {
+        ZStackView {
+            HStackView {
+                ForEach(tabs.count) { index in
+                    ContainerView {
+                        LabelView(tabs[index])
+                            .alignment(.center)
+                            .color(.white)
+                            .contentHuggingPriority(.defaultLow, for: .horizontal)
+                            .contentHuggingPriority(.defaultLow, for: .vertical)
+                            .padding(h: 10, v: 0)
+                            .onTapGesture { context in
+                                selectedTab = index
+                                guard let container = context.find("tabContainer"), let underline = context.find("tabIdentifier") else { return }
+                                let rect = context.view.convert(context.view.frame, to: container)
+                                let left = underline.superview?.constraints
+                                    .first(where: { ($0.firstItem as? UIView) === underline && $0.identifier == "left" })
+                                underline.constraints.first(where: { $0.identifier == "width" })?.constant = rect.size.width - 8
+                                UIView.animate(withDuration: 0.2) {
+                                    left?.constant = rect.origin.x + 4
+                                    underline.superview?.layoutIfNeeded()
+                                }
+
+                            }
+                    }
+                    .backgroundColor(.black)
+                }
+            }
+            .identifier("tabContainer")
+            .distribution(.fillEqually)
+            .spacing(0)
+            .position(.top)
+            .height(HEIGHT)
+
+            ContainerView()
+                .identifier("tabIdentifier")
+                .roundedCorners(radius: INDICATOR_HEIGHT / 2, corners: [.layerMinXMinYCorner, .layerMaxXMaxYCorner])
+                .backgroundColor(.red)
+                .height(INDICATOR_HEIGHT)
+                .insets(top: 0, left: 4, bottom: 0, right: 4)
+                .position(.bottomLeft)
+                .width(100)
+        }
+        .height(HEIGHT + (INDICATOR_HEIGHT / 2))
+    }
+
+    func tabIndicatorColor(_ index: Int) -> Observable<UIColor?> {
         $selectedTab
             .asObservable()
-            .map { $0 == index ? .white : .lightGray }
+            .map { $0 == index ? .red : .clear }
     }
 
 }

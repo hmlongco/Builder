@@ -13,7 +13,7 @@ import RxSwift
 public struct ImageView: ModifiableView {
     
     public let modifiableView = Modified(UIImageView())
-    
+
     // lifecycle
     public init(_ image: UIImage?) {
         modifiableView.image = image

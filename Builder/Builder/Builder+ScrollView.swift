@@ -17,11 +17,15 @@ public struct ScrollView: ModifiableView {
 
     public init(_ view: View?, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         guard let view = view else { return }
-        modifiableView.embed(view, padding: padding, safeArea: safeArea)
+        modifiableView.views = [view]
+        modifiableView.padding = padding ?? .zero
+        modifiableView.safeArea = safeArea
     }
 
     public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewResultBuilder _ builder: () -> ViewConvertable) {
-        builder().asViews().forEach { modifiableView.embed($0, padding: padding, safeArea: safeArea) }
+        modifiableView.views = builder()
+        modifiableView.padding = padding ?? .zero
+        modifiableView.safeArea = safeArea
     }
 
 }
@@ -77,7 +81,9 @@ public struct VerticalScrollView: ModifiableView {
     }
 
     public init(padding: UIEdgeInsets? = nil, safeArea: Bool = false, @ViewResultBuilder _ builder: () -> ViewConvertable) {
-        builder().asViews().forEach { modifiableView.embed($0, padding: padding, safeArea: safeArea) }
+        modifiableView.views = builder()
+        modifiableView.padding = padding ?? .zero
+        modifiableView.safeArea = safeArea
     }
 
 }
@@ -86,12 +92,28 @@ public class BuilderInternalScrollView: UIScrollView, UIScrollViewDelegate {
 
     public var scrollViewDidScrollHandler: ((_ context: ViewBuilderContext<UIScrollView>) -> Void)?
 
+    fileprivate var views: ViewConvertable?
+    fileprivate var padding: UIEdgeInsets = .zero
+    fileprivate var position: EmbedPosition = .fill
+    fileprivate var safeArea: Bool = false
+
     @objc public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollViewDidScrollHandler?(ViewBuilderContext(view: self))
     }
 
     override public func didMoveToWindow() {
         optionalBuilderAttributes()?.commonDidMoveToWindow(self)
+    }
+
+    override public func didMoveToSuperview() {
+        views?.asViews().forEach {
+            let view = $0.build()
+            let attributes = view.optionalBuilderAttributes()
+            let position = attributes?.position ?? position
+            let padding = attributes?.insets ?? padding
+            addConstrainedSubview(view, position: position, padding: padding, safeArea: safeArea)
+        }
+        super.didMoveToSuperview()
     }
 
 }

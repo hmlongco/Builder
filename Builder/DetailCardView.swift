@@ -21,7 +21,7 @@ struct DetailCardView: ViewBuilder {
         DLSCardView {
             VStackView {
                 DetailPhotoView(photo: viewModel.photo(), name: viewModel.fullname)
-                    .height(250)
+
                 VStackView {
                     NameValueView(name: "Address", value: viewModel.street)
                     NameValueView(name: "", value: viewModel.cityStateZip)
@@ -55,6 +55,7 @@ struct DetailPhotoView: ViewBuilder {
             ImageView(photo)
                 .contentMode(.scaleAspectFill)
                 .clipsToBounds(true)
+                .height(300)
             LabelView(name)
                 .alignment(.right)
                 .font(.title2)

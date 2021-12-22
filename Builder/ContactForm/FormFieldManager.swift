@@ -72,6 +72,9 @@ extension MetaTextField {
             .placeholder(manager.placeholder(for: id))
             .error(bind: manager.error(for: id))
             .returnKeyType(.next)
+            .onEditingDidBegin({ context in
+                context.view.scrollIntoView()
+            })
             .onEditingDidEndOnExit { [weak manager] context in
                 if let id = manager?.nextID(from: id), let field = context.find(id), field.canBecomeFirstResponder {
                     field.becomeFirstResponder()

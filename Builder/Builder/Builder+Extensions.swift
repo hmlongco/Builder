@@ -28,7 +28,7 @@ extension UIView {
 
     public func reset(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
         let existingSubviews = subviews
-        addSubviewWithConstraints(view.build(), padding, safeArea)
+        addConstrainedSubview(view.build(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
         existingSubviews.forEach { $0.removeFromSuperview() }
     }
 
@@ -62,15 +62,9 @@ extension UIView {
     // deprecated version
     @discardableResult
     public func embedModified<V:UIView>(_ view: V, padding: UIEdgeInsets? = nil, safeArea: Bool = false, _ modifier: (_ view: V) -> Void) -> V {
-        addSubviewWithConstraints(view, padding, safeArea)
+        addConstrainedSubview(view, position: .fill, padding: padding ?? .zero, safeArea: safeArea)
         modifier(view)
         return view
-    }
-}
-
-extension UIResponder {
-    public var parentViewController: UIViewController? {
-        return next as? UIViewController ?? next?.parentViewController
     }
 }
 
@@ -78,57 +72,74 @@ extension UIView {
 
     // goes to top of view chain, then initiates full search of view tree
     public func find<K:RawRepresentable>(_ key: K) -> UIView? where K.RawValue == Int {
-        recursiveFind(key.rawValue, keyPath: \.tag, in: rootView())
+        rootview.firstSubview(where: { $0.tag == key.rawValue })
     }
     public func find<K:RawRepresentable>(_ key: K) -> UIView? where K.RawValue == String {
-        recursiveFind(key.rawValue, keyPath: \.accessibilityIdentifier, in: rootView())
+        rootview.firstSubview(where: { $0.accessibilityIdentifier == key.rawValue })
     }
 
     // searches down the tree looking for identifier
     public func find<K:RawRepresentable>(subview key: K) -> UIView? where K.RawValue == Int {
-        recursiveFind(key.rawValue, keyPath: \.tag, in: self)
+        firstSubview(where: { $0.tag == key.rawValue })
     }
     public func find<K:RawRepresentable>(subview key: K) -> UIView? where K.RawValue == String {
-        recursiveFind(key.rawValue, keyPath: \.accessibilityIdentifier, in: self)
+        firstSubview(where: { $0.accessibilityIdentifier == key.rawValue })
     }
 
     // searches up the tree looking for identifier in superview path
     public func find<K:RawRepresentable>(superview key: K) -> UIView? where K.RawValue == Int {
-        superviewFind(key.rawValue, keyPath: \.tag)
+        firstSuperview(where: { $0.tag == key.rawValue })
     }
     public func find<K:RawRepresentable>(superview key: K) -> UIView? where K.RawValue == String {
-        superviewFind(key.rawValue, keyPath: \.accessibilityIdentifier)
+        firstSuperview(where: { $0.accessibilityIdentifier == key.rawValue })
     }
 
-    internal func rootView() -> UIView {
-        var root = self.superview ?? self
-        while let view = root.superview { root = view}
-        return root
-    }
+}
 
-    internal func recursiveFind<T:Equatable>(_ key: T, keyPath: KeyPath<UIView, T>, in view: UIView) -> UIView? {
-        if view[keyPath: keyPath] == key {
-            return view
+extension UIView {
+
+    public func scrollIntoView() {
+        guard let scrollview = firstSuperview(where: { $0 is UIScrollView }) as? UIScrollView else {
+            return
         }
-        for child in view.subviews {
-            if let foundView = recursiveFind(key, keyPath: keyPath, in: child) {
-                return foundView
+        let visible = convert(frame, to: scrollview)
+        UIViewPropertyAnimator(duration: 0.1, curve: .linear) {
+            scrollview.scrollRectToVisible(visible, animated: false)
+        }.startAnimation()
+    }
+
+}
+
+extension UIView {
+
+    public func firstSubview(where predicate: (_ view: UIView) -> Bool) -> UIView? {
+        for child in subviews {
+            if predicate(child) {
+                return child
+            } else if let found = child.firstSubview(where: predicate){
+                return found
             }
         }
         return nil
     }
 
-    internal func superviewFind<T:Equatable>(_ key: T, keyPath: KeyPath<UIView, T>) -> UIView? {
-        var parent: UIView? = self
-        while let view = parent {
-            if view[keyPath: keyPath] == key {
-                return view
-            }
-            parent = view.superview
+    public func firstSuperview(where predicate: (_ view: UIView) -> Bool) -> UIView? {
+        if let parent = superview {
+            return predicate(parent) ? parent : parent.firstSuperview(where: predicate)
         }
         return nil
     }
 
+    public var rootview: UIView {
+        firstSuperview(where: { $0.superview == nil }) ?? self
+    }
+
+}
+
+extension UIResponder {
+    public var parentViewController: UIViewController? {
+        return next as? UIViewController ?? next?.parentViewController
+    }
 }
 
 extension Int: RawRepresentable {

@@ -21,7 +21,8 @@ class MenuViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.embed(MenuTableView())
 
-        push(CustomTabBarViewController())
+//        push(CustomTabBarViewController())
+        push(ScrollingTabBarViewController())
     }
 
 }

@@ -9,7 +9,6 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-
 @propertyWrapper public struct Variable<T> {
     
     private var relay: BehaviorRelay<T>
@@ -46,11 +45,6 @@ extension Variable where T:Equatable {
             .subscribe { observer($0) }
     }
 
-//    public func onChange(_ bag: DisposeBag, _ observer: @escaping (_ value: T) -> ()) {
-//        onChange(observer)
-//            .disposed(by: bag)
-//    }
-
 }
 
 extension Variable: RxBinding {
@@ -75,7 +69,6 @@ extension Variable: RxBidirectionalBinding {
     }
     
 }
-
 
 //struct A: ViewBuilder {
 //    @Variable var name = "Michael"

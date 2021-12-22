@@ -66,6 +66,7 @@
 		4C8B50B9275FAB94004FFC15 /* UITextField+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50B8275FAB94004FFC15 /* UITextField+Styles.swift */; };
 		4C8B50BB275FAC93004FFC15 /* MetaTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50BA275FAC93004FFC15 /* MetaTextField.swift */; };
 		4C8B50BD275FED84004FFC15 /* TextField+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B50BC275FED84004FFC15 /* TextField+Styles.swift */; };
+		4C915525276D2CA3009EBA64 /* ScrollingTabBarTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C915524276D2CA3009EBA64 /* ScrollingTabBarTest.swift */; };
 		4C9CC36525B4F078002BE06D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC36425B4F078002BE06D /* AppDelegate.swift */; };
 		4C9CC36725B4F078002BE06D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC36625B4F078002BE06D /* SceneDelegate.swift */; };
 		4C9CC36925B4F078002BE06D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CC36825B4F078002BE06D /* MainViewController.swift */; };
@@ -195,6 +196,7 @@
 		4C8B50B8275FAB94004FFC15 /* UITextField+Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+Styles.swift"; sourceTree = "<group>"; };
 		4C8B50BA275FAC93004FFC15 /* MetaTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaTextField.swift; sourceTree = "<group>"; };
 		4C8B50BC275FED84004FFC15 /* TextField+Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TextField+Styles.swift"; sourceTree = "<group>"; };
+		4C915524276D2CA3009EBA64 /* ScrollingTabBarTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingTabBarTest.swift; sourceTree = "<group>"; };
 		4C9CC36125B4F078002BE06D /* Builder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Builder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C9CC36425B4F078002BE06D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C9CC36625B4F078002BE06D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 				4C1F921526E820670075A5F4 /* README.md */,
 				4C288FB825B6129D004D54AC /* Configuration */,
 				4C9CC3B025B4F26E002BE06D /* Application */,
+				4C9CC3B225B4F2D4002BE06D /* Builder */,
 				4C9CC3EA25B4F618002BE06D /* Models */,
 				4C9CC3AC25B4F246002BE06D /* Resources */,
 				4CD0522825B544180099B277 /* Services */,
@@ -466,7 +469,6 @@
 		4C9CC3B125B4F29A002BE06D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				4C9CC3B225B4F2D4002BE06D /* Builder */,
 				4C9CC3E425B4F47C002BE06D /* Extensions */,
 				4C8B50A7275FA61C004FFC15 /* Fields */,
 				4C9CC3D225B4F2DF002BE06D /* Networking */,
@@ -566,6 +568,7 @@
 				4CA19EE2273E0B5D00EE7433 /* TestViewController.swift */,
 				4C4AD771275189E000EF12C6 /* TestViews.swift */,
 				4C7C3FD0276A527E00F697BA /* TabBarTest.swift */,
+				4C915524276D2CA3009EBA64 /* ScrollingTabBarTest.swift */,
 			);
 			path = Test;
 			sourceTree = "<group>";
@@ -769,6 +772,7 @@
 				4C9CC3FE25B5099D002BE06D /* UserService.swift in Sources */,
 				4C8B50B0275FA656004FFC15 /* TextFieldBehaviorAggregator.swift in Sources */,
 				4CC5D7A2270D1A80003137BD /* TestServices.swift in Sources */,
+				4C915525276D2CA3009EBA64 /* ScrollingTabBarTest.swift in Sources */,
 				4CF1A64326B399D800E26446 /* Functions+Extensions.swift in Sources */,
 				4C9CC3C225B4F2D4002BE06D /* Builder+ScrollView.swift in Sources */,
 				4C47033226CB17EE006B6DEC /* Builder+Padding.swift in Sources */,
