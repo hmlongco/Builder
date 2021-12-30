@@ -8,3 +8,8 @@
 import Foundation
 import RxSwift
 
+extension RxSwift.ObservableType where Element == Bool {
+    func toggle() -> Observable<Bool> {
+        self.map { !$0 }
+    }
+}
