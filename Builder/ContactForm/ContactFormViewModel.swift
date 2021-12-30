@@ -54,7 +54,7 @@ class ContactFormViewModel: FormFieldManager<ContactFormIDS> {
             FormField(id: ContactFormIDS.zip, value: "80303")
                 .isRequired(),
 
-            FormField(id: ContactFormIDS.email, value: "hmlong@example.com")
+            FormField(id: ContactFormIDS.email, value: "hmlongexample.com")
                 .isRequired()
                 .isEmail(),
 
@@ -69,6 +69,10 @@ class ContactFormViewModel: FormFieldManager<ContactFormIDS> {
             FormField(id: ContactFormIDS.agree, value: false)
                 .isRequired()
         ]
+
+        print("INITIAL DISABLE")
+        states[ContactFormIDS.email.rawValue] = .disabled
+        states[ContactFormIDS.alternateEmail.rawValue] = .disabled
     }
 
     override func placeholder(for id: ContactFormIDS) -> String {
@@ -89,7 +93,7 @@ class ContactFormViewModel: FormFieldManager<ContactFormIDS> {
    }
 
     override func validate() {
-        super.validate()
+        super.validate() // default behavior
         error = errors.isEmpty ? nil : "Please correct the following errors..."
     }
 

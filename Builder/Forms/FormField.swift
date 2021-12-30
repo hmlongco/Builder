@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import UIKit
 
 
 protocol AnyFormField {
@@ -14,7 +15,6 @@ protocol AnyFormField {
     func value<T>() -> T?
     func validates() -> String?
 }
-
 
 struct FormField<Value>: AnyFormField {
 

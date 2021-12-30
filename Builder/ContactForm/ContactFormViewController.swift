@@ -23,9 +23,22 @@ class ContactFormViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Contact Form"
+
         viewModel.configure()
+
         view.backgroundColor = .secondarySystemBackground
         view.embed(content())
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Toggle", style: .plain)
+            .onTap({ [unowned self] item in
+                print("TOGGLING")
+                self.viewModel.error = nil
+                self.viewModel.errors = [:]
+                let email = ContactFormIDS.email.rawValue
+                self.viewModel.states[email] = self.viewModel.states[email] == .disabled ? .enabled : .disabled
+                let alt = ContactFormIDS.alternateEmail.rawValue
+                self.viewModel.states[alt] = self.viewModel.states[alt] == .disabled ? .enabled : .disabled
+            })
     }
 
     func content() -> View {
@@ -57,6 +70,12 @@ class ContactFormViewController: UIViewController {
                 .spacing(20)
                 .padding(20)
             }
+            .identifier("scrollview")
+            .onReceive(self.viewModel.hasErrors().filter { $0 }, handler: { context in
+                UIView.animate(withDuration: 0.2) {
+                    context.view.contentOffset = .zero
+                }
+            })
             .automaticallyAdjustForKeyboard()
             .hideKeyboardOnBackgroundTap()
         }
@@ -134,10 +153,12 @@ private struct EmailSection: ViewBuilder {
                 MetaTextField(manager: viewModel, id: .email)
                     .style(StyleStandardMetaTextField())
                     .maxWidth(250)
+                    .enabled(bind: viewModel.state(.enabled, for: ContactFormIDS.email) )
 
                 MetaTextField(manager: viewModel, id: .alternateEmail)
                     .style(StyleStandardMetaTextField())
                     .maxWidth(250)
+                    .enabled(bind: viewModel.state(.enabled, for: ContactFormIDS.alternateEmail) )
             }
         }
     }

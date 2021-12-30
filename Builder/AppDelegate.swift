@@ -13,9 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     override init() {
         super.init()
-        
-//        _ = TestVariable().test()
-                
+                        
         ViewBuilderEnvironment.defaultLabelFont = UIFont.preferredFont(forTextStyle: .body)
     }
     

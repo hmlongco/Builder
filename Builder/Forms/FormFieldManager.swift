@@ -8,10 +8,17 @@
 import Foundation
 import RxSwift
 
+enum FormFieldState {
+    case enabled
+    case disabled
+    case hidden
+}
+
 class FormFieldManager<IDS:RawRepresentable> where IDS.RawValue == String {
 
     @Variable var fields: [AnyFormField] = []
     @Variable var errors: [String:String] = [:]
+    @Variable var states: [String:FormFieldState] = [:]
 
     @inlinable
     func field(for id: IDS) -> AnyFormField? {
@@ -39,12 +46,38 @@ class FormFieldManager<IDS:RawRepresentable> where IDS.RawValue == String {
             .map { $0[id.rawValue] }
     }
 
+    func hasErrors() -> Observable<Bool> {
+        $errors.asObservable()
+            .skip(1)
+            .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+            .map { !$0.isEmpty }
+    }
+
     var isValid: Bool {
         errors.isEmpty
     }
 
+    func state(for id: IDS) -> Observable<FormFieldState> {
+        $states.asObservable()
+            .map { $0[id.rawValue] ?? .enabled }
+            .distinctUntilChanged()
+    }
+
+    func state(_ state: FormFieldState, for id: IDS) -> Observable<Bool> {
+        self.state(for: id)
+            .map { $0 == state }
+    }
+
     func validate() {
+        validate(fields, filtering: [.disabled, .hidden])
+    }
+
+    func validate(_ fields: [AnyFormField], filtering states: [FormFieldState]) {
         errors = fields
+            .compactMap { (field) -> AnyFormField? in
+                let state = self.states[field.id] ?? .enabled
+                return states.contains(state) ? nil : field
+            }
             .reduce(into: [:]) { errors, field in
                 if let error = field.validates() {
                     errors[field.id] = error
@@ -72,10 +105,10 @@ extension MetaTextField {
             .placeholder(manager.placeholder(for: id))
             .error(bind: manager.error(for: id))
             .returnKeyType(.next)
-            .onEditingDidBegin({ context in
+            .onControlEvent(.editingDidBegin) { context in
                 context.view.scrollIntoView()
-            })
-            .onEditingDidEndOnExit { [weak manager] context in
+            }
+            .onControlEvent(.editingDidEndOnExit) { [weak manager] context in
                 if let id = manager?.nextID(from: id), let field = context.find(id), field.canBecomeFirstResponder {
                     field.becomeFirstResponder()
                 }
