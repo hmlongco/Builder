@@ -47,5 +47,10 @@ extension ModifiableView where Base: UIImageView {
     public func image<Binding:RxBinding>(bind binding: Binding) -> ViewModifier<Base> where Binding.T == UIImage? {
         ViewModifier(modifiableView, binding: binding) { $0.image = $1 }
     }
+    
+    @discardableResult
+    public func tintColor(_ color: UIColor) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.tintColor, value: color)
+    }
 
 }
