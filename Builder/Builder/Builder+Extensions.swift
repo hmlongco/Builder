@@ -112,6 +112,10 @@ extension UIView {
 
 extension UIView {
 
+    public func firstSubview<Subview:UIView>(ofType subviewType: Subview.Type) -> Subview? {
+        return firstSubview(where: { type(of: $0) == subviewType.self }) as? Subview
+    }
+
     public func firstSubview(where predicate: (_ view: UIView) -> Bool) -> UIView? {
         for child in subviews {
             if predicate(child) {
@@ -121,6 +125,10 @@ extension UIView {
             }
         }
         return nil
+    }
+
+    public func firstSuperview<Subview>(ofType subviewType: Subview.Type) -> Subview? {
+        return firstSuperview(where: { type(of: $0) == subviewType.self }) as? Subview
     }
 
     public func firstSuperview(where predicate: (_ view: UIView) -> Bool) -> UIView? {

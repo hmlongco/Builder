@@ -9,7 +9,6 @@
 import UIKit
 import RxSwift
 
-
 public struct ImageView: ModifiableView {
     
     public let modifiableView = Modified(UIImageView())
@@ -17,6 +16,14 @@ public struct ImageView: ModifiableView {
     // lifecycle
     public init(_ image: UIImage?) {
         modifiableView.image = image
+    }
+
+    public init(named name: String) {
+        modifiableView.image = UIImage(named: name)
+    }
+
+    public init(systemName name: String) {
+        modifiableView.image = UIImage(systemName: name)
     }
 
     public init<Binding:RxBinding>(_ image: Binding) where Binding.T == UIImage {
@@ -36,6 +43,16 @@ public struct ImageView: ModifiableView {
 
 
 // Custom UIImageView modifiers
+
+extension ModifiableView where Base: UIImageView {
+
+    @discardableResult
+    public func tintColor(_ color: UIColor?) -> ViewModifier<Base> {
+        ViewModifier(modifiableView, keyPath: \.tintColor, value: color)
+    }
+
+}
+
 extension ModifiableView where Base: UIImageView {
 
     @discardableResult

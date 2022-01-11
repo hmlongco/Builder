@@ -11,61 +11,216 @@ import Resolver
 
 class CornerCardViewController: UIViewController {
 
+    @Variable var searchText: String? = ""
+
+    let disposeBag = DisposeBag()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         view.embed(content())
+
+        print(UITraitCollection.current.userInterfaceStyle == .light ? "Light Mode" : "Dark Mode")
+
+        $searchText.asObservable()
+            .subscribe { text in
+                print(text)
+            }
+            .disposed(by: disposeBag)
 
     }
         
     func content() -> View {
         VerticalScrollView {
             VStackView {
-                ZStackView {
-                    CustomCornerBackgroundView()
-                    VStackView {
-                        LabelView("Test card view...")
-                            .alpha(0.9)
-                        SpacerView()
+                DLSSearchBarView(text: $searchText)
+
+                VStackView {
+
+                    CustomCardView(text: "Selected card view...")
+
+                    ContainerView {
+                        VStackView {
+                            LabelView("Disabled card view...")
+                                .alpha(0.9)
+                                .alpha(0.9)
+                            LabelView("This is a description")
+                                .color(.secondaryLabel)
+                                .font(.footnote)
+                            SpacerView()
+                        }
+                        .spacing(4)
+                        .padding(h: 8, v: 16)
                     }
-                    .padding(20)
+                    .height(100)
+                    .addCustomCornerViews()
+                    .onTapGesture({ context in
+                        context.view.isCustomCornerViewEnabled.toggle()
+                    })
+
+                    CustomCardView(text: "Normal card view...")
+
+                    CustomCardView(text: "Normal card view...")
+
                 }
-                    .height(200)
+                .spacing(16)
+                .padding(30)
             }
-            .spacing(16)
-            .padding(30)
         }
         .backgroundColor(.systemBackground)
     }
 
 }
 
-class CustomCornerBackgroundView: UIView, CustomCornerPathProvider {
+struct DLSSearchBarView: ViewBuilder {
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        common()
+    @Variable var text: String?
+
+    var body: View {
+        With(UISearchBar()) {
+            $0.placeholder = "Search"
+            $0.tintColor = .gray
+            $0.barTintColor = .black
+            $0.barStyle = .black
+            $0.showsCancelButton = false
+            $0.returnKeyType = .search
+            $0.setImage(UIImage(named: "search-template"), for: .search, state: .normal)
+            $0.setImage(UIImage(named: "close"), for: .clear, state: .normal)
+            if let textField = $0.getTextField() {
+                ViewModifier(textField).text(bidirectionalBind: $text)
+                textField.backgroundColor = .white
+            }
+        }
     }
 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        common()
+}
+
+
+private extension UISearchBar {
+
+    func getTextField() -> UITextField? {
+        if #available(iOS 13.0, *) {
+            return self.searchTextField
+        } else {
+            return subviews.first(where: { type(of: $0) == UITextField.self }) as? UITextField
+        }
     }
 
-    func common() {
-        let shadow = CustomCornerShadowView(frame: self.bounds)
-        shadow.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        addSubview(shadow)
-        let content = CustomCornerContentView(frame: self.bounds)
-        content.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        addSubview(content)
+}
+
+
+
+
+
+
+
+struct CustomCardView: ViewBuilder {
+    let text: String
+    var body: View {
+        CustomCornerCardView {
+            VStackView {
+                LabelView(text)
+                    .alpha(0.9)
+                LabelView("This is a description")
+                    .color(.secondaryLabel)
+                    .font(.footnote)
+                SpacerView()
+            }
+            .spacing(4)
+        }
+        .height(100)
+        .onTapGesture({ context in
+            (context.view as? ContainerView.Base)?.isCustomCornerViewSelected.toggle()
+        })
+    }
+}
+
+struct CustomCornerCardView: ViewBuilder {
+    let content: () -> View
+    init(_ content: @escaping () -> View) {
+        self.content = content
+    }
+    var body: View {
+        ContainerView {
+            content()
+        }
+        .addCustomCornerViews()
+        .padding(h: 8, v: 16)
+    }
+}
+
+
+extension ModifiableView where Base: BuilderInternalContainerView {
+    public func addCustomCornerViews() -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { $0.addCustomCornerViews() }
+    }
+}
+
+extension BuilderInternalContainerView: CustomCornerViewHosting {
+
+}
+
+protocol CustomCornerViewHosting: UIView {
+
+    var isCustomCornerViewEnabled: Bool { get set }
+    var isCustomCornerViewSelected: Bool { get set }
+
+    func addCustomCornerViews()
+
+}
+
+extension CustomCornerViewHosting {
+
+    var isCustomCornerViewEnabled: Bool {
+        get {
+            guard let contentView = firstSubview(ofType: CustomCornerContentView.self) else { return false }
+            return contentView.isEnabled
+        }
+        set {
+            guard let contentView = firstSubview(ofType: CustomCornerContentView.self) else { return }
+            alpha = newValue ? 1.0 : 0.5
+            contentView.isEnabled = newValue
+        }
+    }
+
+    var isCustomCornerViewSelected: Bool {
+        get {
+            guard let contentView = firstSubview(ofType: CustomCornerContentView.self) else { return false }
+            return contentView.isSelected
+        }
+        set {
+            guard let contentView = firstSubview(ofType: CustomCornerContentView.self) else { return }
+            contentView.isSelected = newValue
+        }
+    }
+
+    func addCustomCornerViews() {
+        let contentView = CustomCornerContentView(frame: self.bounds)
+        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        insertSubview(contentView, at: 0)
+        let shadowView = CustomCornerShadowView(frame: self.bounds)
+        shadowView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        insertSubview(shadowView, at: 0)
     }
 
 }
 
 private class CustomCornerContentView: UIView, CustomCornerPathProvider {
 
-    var lastRect = CGRect.zero
+    var isEnabled: Bool = true {
+        didSet {
+            backgroundColor = isEnabled ? .secondarySystemBackground : .systemBackground
+            setNeedsDisplay()
+        }
+    }
+
+    var isSelected: Bool = false {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+
+    var selectedLineWidth: CGFloat = 2.0
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -79,26 +234,29 @@ private class CustomCornerContentView: UIView, CustomCornerPathProvider {
 
     func common() {
         backgroundColor = .secondarySystemBackground
+        clipsToBounds = true
     }
 
     override func draw(_ rect: CGRect) {
-        if rect != lastRect {
-            let path = path(for: rect)
-            let mask = CAShapeLayer()
-            mask.path = path.cgPath
-            layer.mask = mask
-            backgroundColor?.set()
-            path.fill()
-            lastRect = rect
+
+        let lineWidth: CGFloat = isSelected ? self.selectedLineWidth : isEnabled ? 0 : 1
+
+        if lineWidth > 0 {
+            let strokePath = path(for: rect.insetBy(dx: lineWidth / 2, dy: lineWidth / 2))
+            strokePath.lineWidth = lineWidth
+            let strokeColor = isEnabled ? UIColor.blue : UIColor.gray
+            strokeColor.setStroke()
+            strokePath.stroke()
         }
-        super.draw(rect)
+
+        let mask = CAShapeLayer()
+        mask.path = path(for: rect).cgPath
+        layer.mask = mask
     }
 
 }
 
 private class CustomCornerShadowView: UIView, CustomCornerPathProvider {
-
-    var lastRect = CGRect.zero
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -111,25 +269,21 @@ private class CustomCornerShadowView: UIView, CustomCornerPathProvider {
     }
 
     func common() {
+        clipsToBounds = false
         layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 2, height: 2)
+        layer.shadowOffset = CGSize(width: 0, height: 2)
         layer.shadowRadius = 2.0
         layer.shadowOpacity = 0.25
     }
 
     override func draw(_ rect: CGRect) {
-        if rect != lastRect {
-            let path = path(for: rect)
-            layer.shadowPath = path.cgPath
-            lastRect = rect
-        }
-        super.draw(rect)
+        layer.shadowPath = path(for: rect).cgPath
     }
 
 }
 
 
-private protocol CustomCornerPathProvider{
+private protocol CustomCornerPathProvider: UIView {
     func path(for rect: CGRect) -> UIBezierPath
 }
 
@@ -137,7 +291,7 @@ private protocol CustomCornerPathProvider{
 private extension CustomCornerPathProvider {
     func path(for rect: CGRect) -> UIBezierPath {
         let largeRadius = CGFloat(16)
-        let smallRadius = CGFloat(2)
+        let smallRadius = CGFloat(3)
 
         let minX = rect.origin.x
         let minY = rect.origin.y
@@ -145,6 +299,7 @@ private extension CustomCornerPathProvider {
         let maxY = minY + rect.size.height
 
         let path = UIBezierPath()
+        path.lineCapStyle = .round
         // start
         path.move(to: CGPoint(x: minX + largeRadius, y: minY))
         // top line
@@ -171,7 +326,7 @@ private extension CustomCornerPathProvider {
         path.addLine(to: CGPoint(x: minX - smallRadius, y: maxY))
         // bottom left cornet
         path.addArc(
-            withCenter: CGPoint(x: minX - smallRadius, y: maxY - smallRadius),
+            withCenter: CGPoint(x: minX + smallRadius, y: maxY - smallRadius),
             radius: smallRadius,
             startAngle: CGFloat(Double.pi / 2),
             endAngle: CGFloat(Double.pi),
@@ -191,4 +346,23 @@ private extension CustomCornerPathProvider {
 
         return path
     }
+
+}
+
+class CustomCornerBackgroundView: UIView, CustomCornerViewHosting {
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        common()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        common()
+    }
+
+    func common() {
+        addCustomCornerViews()
+    }
+
 }

@@ -9,7 +9,7 @@ import Foundation
 
 @discardableResult
 @inlinable
-public func with<T>(_ value: T, _ configuration: ((_ value: T) -> Void)) -> T {
+public func with<T:AnyObject>(_ value: T, _ configuration: ((_ value: T) -> Void)) -> T {
     configuration(value)
     return value
 }

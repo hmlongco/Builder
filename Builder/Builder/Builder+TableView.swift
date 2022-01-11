@@ -130,6 +130,19 @@ class BuilderInternalTableViewCell: UITableViewCell {
 
 }
 
+struct TableViewHeaderFooterView: ModifiableView {
+
+    let modifiableView = Modified(UITableViewHeaderFooterView()) {
+        $0.translatesAutoresizingMaskIntoConstraints = true
+        $0.frame = CGRect(x: 0, y: 0, width: 200, height: 100)
+    }
+
+    public init(@ViewResultBuilder _ builder: () -> [ViewConvertable] ) {
+        modifiableView.embed(builder().asViews())
+    }
+
+}
+
 extension ModifiableView where Base: BuilderInternalTableViewCell {
 
     @discardableResult

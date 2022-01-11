@@ -9,7 +9,7 @@ import UIKit
 
 struct StyleButtonFilled: BuilderStyle {
     public func apply(to view: ButtonView.Base) {
-        ViewModifier(view)
+        With(view)
             .cornerRadius(8)
             .color(.white)
             .backgroundColor(.blue, for: .normal)

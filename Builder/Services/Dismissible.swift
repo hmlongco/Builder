@@ -92,118 +92,118 @@ class Dismissible<ResultType> {
 
 }
 
-struct Account {
-    let id = UUID().uuidString
-}
-
-class MasterViewController: UIViewController {
-
-    func accountDetails(_ account: Account) {
-        let sb = UIStoryboard(name: "main", bundle: .main)
-        let nc = sb.instantiateViewController(identifier: "details")
-        if let nc = nc as? UINavigationController,
-           let vc = nc.topViewController as? DetailsVC {
-            vc.account = account
-            vc.callback = {
-                self.update(account: $0)
-            }
-        }
-        navigationController?.present(nc, animated: true)
-    }
-    
-    func accountDetailsSBI(_ account: Account) {
-        let vc = UIStoryboard.instantiate("details", storyboard: "main") { (vc: DetailsVC) in
-            vc.account = account
-            vc.callback = {
-                self.update(account: $0)
-            }
-        }
-        navigationController?.present(vc, animated: true)
-    }
-    
-    func accountDetailsNEW(_ account: Account) {
-        present("details", storyboard: "main") { (vc: DetailsVC) in
-            vc.account = account
-            vc.callback = {
-                self.update(account: $0)
-            }
-         }
-    }
-    
-    
-    
-    //
-    
-    func accountDetailsWTH(_ account: Account) {
-        let vc = with(DetailsVC()) {
-            $0.account = account
-            $0.callback = {
-                self.update(account: $0)
-            }
-        }
-        navigationController?.present(vc, animated: true)
-    }
-    
-    func accountDetailsPRE(_ account: Account) {
-        present(DetailsVC()) {
-            $0.account = account
-            $0.callback = {
-                self.update(account: $0)
-            }
-        }
-    }
-    
-    func update(account: Account) {
-        
-    }
-    
-}
-
-extension MasterViewController {
-
-    func editAccountNicknameDismissible(_ account: Account) {
-        present("edit", storyboard: "main") { (vc: DetailsVC2) in
-            vc.account = account
-            vc.dismissible
-                .onReturn { (account) in
-                    print(account)
-                }
-                .onDismiss {
-                    print("cancelled")
-                }
-        }
-    }
-    
-}
-
-class DetailsVC: UIViewController {
-    
-    var account: Account!
-    var callback: ((_ account: Account) -> Void)!
-
-    @IBAction func onSubmit(_ sender: Any) {
-        callback(account)
-        dismiss(animated: true)
-    }
-
-    @IBAction func onCancel(_ sender: Any) {
-        dismiss(animated: true)
-    }
-
-}
-
-class DetailsVC2: UIViewController {
-    
-    var account: Account!
-    
-    lazy var dismissible = Dismissible<Account>(self)
-
-    @IBAction func onSubmit(_ sender: Any) {
-        dismissible.dismiss(returning: account)
-    }
-
-    @IBAction func onCancel(_ sender: Any) {
-        dismissible.dismiss()
-    }
-
-}
+//struct Account {
+//    let id = UUID().uuidString
+//}
+//
+//class MasterViewController: UIViewController {
+//
+//    func accountDetails(_ account: Account) {
+//        let sb = UIStoryboard(name: "main", bundle: .main)
+//        let nc = sb.instantiateViewController(identifier: "details")
+//        if let nc = nc as? UINavigationController,
+//           let vc = nc.topViewController as? DetailsVC {
+//            vc.account = account
+//            vc.callback = {
+//                self.update(account: $0)
+//            }
+//        }
+//        navigationController?.present(nc, animated: true)
+//    }
+//
+//    func accountDetailsSBI(_ account: Account) {
+//        let vc = UIStoryboard.instantiate("details", storyboard: "main") { (vc: DetailsVC) in
+//            vc.account = account
+//            vc.callback = {
+//                self.update(account: $0)
+//            }
+//        }
+//        navigationController?.present(vc, animated: true)
+//    }
+//
+//    func accountDetailsNEW(_ account: Account) {
+//        present("details", storyboard: "main") { (vc: DetailsVC) in
+//            vc.account = account
+//            vc.callback = {
+//                self.update(account: $0)
+//            }
+//         }
+//    }
+//
+//
+//
+//    //
+//
+//    func accountDetailsWTH(_ account: Account) {
+//        let vc = with(DetailsVC()) {
+//            $0.account = account
+//            $0.callback = {
+//                self.update(account: $0)
+//            }
+//        }
+//        navigationController?.present(vc, animated: true)
+//    }
+//
+//    func accountDetailsPRE(_ account: Account) {
+//        present(DetailsVC()) {
+//            $0.account = account
+//            $0.callback = {
+//                self.update(account: $0)
+//            }
+//        }
+//    }
+//
+//    func update(account: Account) {
+//
+//    }
+//
+//}
+//
+//extension MasterViewController {
+//
+//    func editAccountNicknameDismissible(_ account: Account) {
+//        present("edit", storyboard: "main") { (vc: DetailsVC2) in
+//            vc.account = account
+//            vc.dismissible
+//                .onReturn { (account) in
+//                    print(account)
+//                }
+//                .onDismiss {
+//                    print("cancelled")
+//                }
+//        }
+//    }
+//
+//}
+//
+//class DetailsVC: UIViewController {
+//
+//    var account: Account!
+//    var callback: ((_ account: Account) -> Void)!
+//
+//    @IBAction func onSubmit(_ sender: Any) {
+//        callback(account)
+//        dismiss(animated: true)
+//    }
+//
+//    @IBAction func onCancel(_ sender: Any) {
+//        dismiss(animated: true)
+//    }
+//
+//}
+//
+//class DetailsVC2: UIViewController {
+//
+//    var account: Account!
+//
+//    lazy var dismissible = Dismissible<Account>(self)
+//
+//    @IBAction func onSubmit(_ sender: Any) {
+//        dismissible.dismiss(returning: account)
+//    }
+//
+//    @IBAction func onCancel(_ sender: Any) {
+//        dismissible.dismiss()
+//    }
+//
+//}

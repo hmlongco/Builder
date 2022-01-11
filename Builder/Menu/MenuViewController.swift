@@ -21,9 +21,8 @@ class MenuViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.embed(MenuTableView())
 
-        push(CornerCardViewController())
-//        push(CustomTabBarViewController())
-//        push(ScrollingTabBarViewController())
+        let vc = GeneralTestViewController()
+        navigationController?.pushViewController(vc, animated: false)
     }
 
 }

@@ -1,9 +1,5 @@
 //
 //  UITextField+Styles.swift
-//  Arvest
-//
-//  Created by Jason Hanson on 3/9/17.
-//  Copyright (c) 2017 Client Resources Inc. All rights reserved.
 //
 
 import Foundation
@@ -15,6 +11,7 @@ private var errorColorAssociationKey: UInt8 = 2
 
 // Custom UIAppearance properties
 extension UITextField {
+
     override open var accessibilityValue: String? {
         get { return self.text }
         set { super.accessibilityValue = newValue }
@@ -59,5 +56,6 @@ extension UITextField {
             objc_setAssociatedObject(self, &errorColorAssociationKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
             setNeedsDisplay()
         }
+
     }
 }

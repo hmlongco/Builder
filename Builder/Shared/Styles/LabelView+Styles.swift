@@ -13,7 +13,7 @@ extension UIColor {
 
 struct StyleLabelAccentTitle: BuilderStyle {
     public func apply(to view: LabelView.Base) {
-        ViewModifier(view)
+        With(view)
             .font(.footnote)
             .color(.standardAccentColor)
             .with {
@@ -24,7 +24,7 @@ struct StyleLabelAccentTitle: BuilderStyle {
 
 struct StyleLabelFootnote: BuilderStyle {
     public func apply(to view: LabelView.Base) {
-        ViewModifier(view)
+        With(view)
             .font(.footnote)
             .color(.secondaryLabel)
             .numberOfLines(0)

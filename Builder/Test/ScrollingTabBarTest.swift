@@ -31,7 +31,7 @@ class ScrollingTabBarViewController: UIViewController {
     func content() -> View {
         ZStackView {
             ContainerView()
-                .insets(top: 40, left: 0, bottom: 0, right: 0)
+                .margins(top: 40, left: 0, bottom: 0, right: 0)
                 .onReceive($selectedTab) { context in
                     context.transition(to: CustomTestView(tab: context.value))
                 }
@@ -112,7 +112,7 @@ struct ScrollingTabBarView: ViewBuilder {
                                 .roundedCorners(radius: INDICATOR_HEIGHT / 2, corners: [.layerMinXMinYCorner, .layerMaxXMaxYCorner])
                                 .bind(keyPath: \.backgroundColor, binding: tabIndicatorColor(index))
                                 .height(INDICATOR_HEIGHT)
-                                .insets(top: 0, left: 4, bottom: 0, right: 4)
+                                .margins(top: 0, left: 4, bottom: 0, right: 4)
                                 .position(.bottom)
                         }
 

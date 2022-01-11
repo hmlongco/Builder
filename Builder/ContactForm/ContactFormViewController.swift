@@ -202,7 +202,7 @@ struct IconCardView: ViewBuilder {
         ContainerView {
             ContainerView {
                 HStackView {
-                    ImageView(UIImage(systemName: icon))
+                    ImageView(systemName: icon)
                         .contentMode(.center)
                         .tintColor(.label)
                         .frame(height: 34, width: 20)

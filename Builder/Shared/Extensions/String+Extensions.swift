@@ -1,8 +1,6 @@
 //
-//  String+Arvest.swift
-//  Arvest
+//  String+Extensions.swift
 //
-//  Created by Jason Hanson on 3/13/17.
 //  Copyright (c) 2017 Client Resources Inc. All rights reserved.
 //
 

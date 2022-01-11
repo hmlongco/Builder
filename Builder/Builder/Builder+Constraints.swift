@@ -105,12 +105,33 @@ extension UIView {
     }
 
     public func embed(_ view: View, padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
-        self.addConstrainedSubview(view.build(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
+        addConstrainedSubview(view.build(), position: .fill, padding: padding ?? .zero, safeArea: safeArea)
+    }
+
+    public func embed(_ views: [View], padding: UIEdgeInsets? = nil, safeArea: Bool = false) {
+        views.forEach { self.addConstrainedSubview($0.build(), position: .fill, padding: padding ?? .zero, safeArea: safeArea) }
     }
 
     public func addConstrainedSubview(_ view: UIView, position: EmbedPosition, padding: UIEdgeInsets, safeArea: Bool = false) {
         view.translatesAutoresizingMaskIntoConstraints = false
         addSubview(view)
+        addConstraints(view, position: position, padding: padding, safeArea: safeArea)
+    }
+
+    public func insertConstrainedSubview(_ view: UIView, at index: Int, position: EmbedPosition, padding: UIEdgeInsets, safeArea: Bool = false) {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        insertSubview(view, at: index)
+        addConstraints(view, position: position, padding: padding, safeArea: safeArea)
+    }
+
+    // all embedding and inserts flow here...
+
+    private func addConstraints(_ view: UIView, position: EmbedPosition, padding: UIEdgeInsets, safeArea: Bool) {
+        // check for builder overrides
+        let attributes = view.optionalBuilderAttributes()
+        let position = attributes?.position ?? position
+        let padding = attributes?.insets ?? padding
+        let safeArea = attributes?.safeArea ?? safeArea
         addVerticalConstraints(view, position: position, padding: padding, safeArea: safeArea)
         addHorizontalConstraints(view, position: position, padding: padding, safeArea: safeArea)
     }
@@ -180,17 +201,6 @@ extension UIView {
                     .identifier("right")
                     .activate()
             }
-        }
-    }
-
-}
-
-extension ModifiableView {
-
-    @discardableResult
-    public func position(_ position: UIView.EmbedPosition) -> ViewModifier<Base> {
-        ViewModifier(modifiableView) {
-            $0.builderAttributes()?.position = position
         }
     }
 

@@ -106,13 +106,7 @@ public class BuilderInternalScrollView: UIScrollView, UIScrollViewDelegate {
     }
 
     override public func didMoveToSuperview() {
-        views?.asViews().forEach {
-            let view = $0.build()
-            let attributes = view.optionalBuilderAttributes()
-            let position = attributes?.position ?? position
-            let padding = attributes?.insets ?? padding
-            addConstrainedSubview(view, position: position, padding: padding, safeArea: safeArea)
-        }
+        embed(views?.asViews() ?? [], padding: padding, safeArea: safeArea)
         super.didMoveToSuperview()
     }
 

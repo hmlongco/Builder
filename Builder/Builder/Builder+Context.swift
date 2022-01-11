@@ -33,7 +33,8 @@ extension ViewBuilderContextProvider {
     }
     
     public func present<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
-        viewController?.present(vc, configure: configure)
+        configure?(vc)
+        navigationController?.present(vc, animated: true)
     }
 
     public func push(_ view: View, animated: Bool = true) {
@@ -41,7 +42,8 @@ extension ViewBuilderContextProvider {
     }
 
     public func push<VC:UIViewController>(_ vc: VC, configure: ((_ vc: VC) -> Void)? = nil) {
-        viewController?.push(vc, configure: configure)
+        configure?(vc)
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     public func transition(to view: View, delay: Double = 0.2) {

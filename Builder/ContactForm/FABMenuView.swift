@@ -25,7 +25,7 @@ struct FABMenuView: ViewBuilder {
             content()
 
             ContainerView {
-                ImageView(UIImage(systemName: "plus"))
+                ImageView(systemName: "plus")
                     .tintColor(.white)
                     .contentMode(.center)
                     .frame(height: 50, width: 50)
@@ -51,7 +51,7 @@ struct FABMenuView: ViewBuilder {
                             .position(.bottom)
                             .height(25)
 
-                        ImageView(UIImage(systemName: "xmark"))
+                        ImageView(systemName: "xmark")
                             .tintColor(.white)
                             .contentMode(.center)
                             .frame(height: 50, width: 50)

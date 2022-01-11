@@ -9,7 +9,7 @@ import UIKit
 
 struct StyleStandardMetaTextField: BuilderStyle {
     public func apply(to view: MetaTextField.Base) {
-        ViewModifier(view)
+        With(view)
             .autocorrectionType(.no)
             .height(34)
             .with {

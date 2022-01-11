@@ -11,12 +11,54 @@ public class ViewBuilderAttributes {
 
     var position: UIView.EmbedPosition?
     var insets: UIEdgeInsets?
+    var safeArea: Bool?
 
     var onAppearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
     var onAppearOnceHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
     var onDisappearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
 
 }
+
+// following attributes only apply when view is embedded within a ContainerView, ScrollView, ZStackView, or using when UIView.embed(view)
+
+extension ModifiableView {
+
+    @discardableResult
+    public func margins(_ value: CGFloat) -> ViewModifier<Base> {
+        margins(insets: UIEdgeInsets(top: value, left: value, bottom: value, right: value))
+    }
+
+    @discardableResult
+    public func margins(h: CGFloat, v: CGFloat) -> ViewModifier<Base> {
+        margins(insets: UIEdgeInsets(top: v, left: h, bottom: v, right: h))
+    }
+
+    @discardableResult
+    public func margins(top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) -> ViewModifier<Base> {
+        margins(insets: UIEdgeInsets(top: top, left: left, bottom: bottom, right: right))
+    }
+
+    @discardableResult
+    public func margins(insets: UIEdgeInsets) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { $0.builderAttributes()?.insets = insets }
+    }
+
+    @discardableResult
+    public func position(_ position: UIView.EmbedPosition) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.builderAttributes()?.position = position
+        }
+    }
+
+    @discardableResult
+    public func safeArea(_ safeArea: Bool) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.builderAttributes()?.safeArea = safeArea
+        }
+    }
+
+}
+
 
 extension ViewBuilderAttributes {
 
