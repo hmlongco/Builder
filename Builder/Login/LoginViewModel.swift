@@ -18,15 +18,21 @@ class LoginViewModel {
     @Variable var password: String? = ""
     @Variable var passwordError: String? = nil
 
+    @Variable var status: String? = nil
     @Variable var error: String? = nil
 
     init() {
-
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            self.status = "This is a system status message that should be shown to the user."
+        }
     }
 
     func login() {
         usernameError = (username?.isEmpty ?? true) ? "Required" : nil
         passwordError = (password?.isEmpty ?? true) ? "Required" : nil
+
+        let showError = usernameError != nil || passwordError != nil
+        error = showError ? "This is an error message that should be shown to the user." : nil
     }
 
 }

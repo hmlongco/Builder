@@ -17,7 +17,7 @@ class CornerCardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemGroupedBackground
         view.embed(content())
 
         print(UITraitCollection.current.userInterfaceStyle == .light ? "Light Mode" : "Dark Mode")
@@ -67,7 +67,6 @@ class CornerCardViewController: UIViewController {
                 .padding(30)
             }
         }
-        .backgroundColor(.systemBackground)
     }
 
 }
@@ -198,9 +197,15 @@ extension CustomCornerViewHosting {
         let contentView = CustomCornerContentView(frame: self.bounds)
         contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         insertSubview(contentView, at: 0)
+
         let shadowView = CustomCornerShadowView(frame: self.bounds)
         shadowView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         insertSubview(shadowView, at: 0)
+
+        backgroundColor = .systemGroupedBackground
+        isOpaque = true
+        clearsContextBeforeDrawing = true
+        clipsToBounds = false
     }
 
 }
@@ -209,7 +214,7 @@ private class CustomCornerContentView: UIView, CustomCornerPathProvider {
 
     var isEnabled: Bool = true {
         didSet {
-            backgroundColor = isEnabled ? .secondarySystemBackground : .systemBackground
+            backgroundColor = isEnabled ? .secondarySystemGroupedBackground : .systemGroupedBackground
             setNeedsDisplay()
         }
     }
@@ -233,14 +238,22 @@ private class CustomCornerContentView: UIView, CustomCornerPathProvider {
     }
 
     func common() {
-        backgroundColor = .secondarySystemBackground
-        clipsToBounds = true
+        backgroundColor = .secondarySystemGroupedBackground
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        let mask = CAShapeLayer()
+        mask.path = path(for: bounds).cgPath
+        layer.mask = mask
+        layer.masksToBounds = false
     }
 
     override func draw(_ rect: CGRect) {
+        super.draw(rect)
 
         let lineWidth: CGFloat = isSelected ? self.selectedLineWidth : isEnabled ? 0 : 1
-
         if lineWidth > 0 {
             let strokePath = path(for: rect.insetBy(dx: lineWidth / 2, dy: lineWidth / 2))
             strokePath.lineWidth = lineWidth
@@ -248,15 +261,13 @@ private class CustomCornerContentView: UIView, CustomCornerPathProvider {
             strokeColor.setStroke()
             strokePath.stroke()
         }
-
-        let mask = CAShapeLayer()
-        mask.path = path(for: rect).cgPath
-        layer.mask = mask
     }
 
 }
 
 private class CustomCornerShadowView: UIView, CustomCornerPathProvider {
+
+    var lastRect: CGRect = .zero
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -270,14 +281,18 @@ private class CustomCornerShadowView: UIView, CustomCornerPathProvider {
 
     func common() {
         clipsToBounds = false
+        layer.shouldRasterize = true
+        layer.rasterizationScale = UIScreen.main.scale
+        layer.masksToBounds = false
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 2)
         layer.shadowRadius = 2.0
         layer.shadowOpacity = 0.25
     }
 
-    override func draw(_ rect: CGRect) {
-        layer.shadowPath = path(for: rect).cgPath
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.shadowPath = path(for: bounds).cgPath
     }
 
 }

@@ -22,6 +22,7 @@ public struct ImageView: ModifiableView {
         modifiableView.image = UIImage(named: name)
     }
 
+    @available(iOS 13, *)
     public init(systemName name: String) {
         modifiableView.image = UIImage(systemName: name)
     }

@@ -53,17 +53,16 @@ class ContactFormViewController: UIViewController {
                     PhoneSection(viewModel: self.viewModel)
                     LegalSection(viewModel: self.viewModel)
 
-                    ButtonView("Save")
-                        .style(StyleButtonFilled())
-                        .onTap { [unowned self] context in
-                            UIView.animate(withDuration: 0.2, animations: {
-                                self.viewModel.validate()
-                            }, completion: { _ in
-                                if self.viewModel.isValid {
-                                    self.dismissible.dismiss()
-                                }
-                            })
-                        }
+                    ButtonView("Save") { [unowned self] context in
+                        UIView.animate(withDuration: 0.2, animations: {
+                            self.viewModel.validate()
+                        }, completion: { _ in
+                            if self.viewModel.isValid {
+                                self.dismissible.dismiss()
+                            }
+                        })
+                    }
+                    .style(StyleButtonFilled())
 
                     SpacerView()
                 }

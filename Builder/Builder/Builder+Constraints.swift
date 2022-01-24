@@ -63,6 +63,28 @@ extension ModifiableView {
     }
 
     @discardableResult
+    public func height(min height: CGFloat, priority: UILayoutPriority = UILayoutPriority(rawValue: 999)) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.heightAnchor
+                .constraint(greaterThanOrEqualToConstant: height)
+                .priority(priority)
+                .identifier("height")
+                .activate()
+        }
+    }
+
+    @discardableResult
+    public func height(max height: CGFloat, priority: UILayoutPriority = UILayoutPriority(rawValue: 999)) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.heightAnchor
+                .constraint(lessThanOrEqualToConstant: height)
+                .priority(priority)
+                .identifier("height")
+                .activate()
+        }
+    }
+
+    @discardableResult
     public func width(_ width: CGFloat) -> ViewModifier<Base> {
         self.width(width, priority: UILayoutPriority(999))
     }
@@ -79,6 +101,28 @@ extension ModifiableView {
                 .constraint(equalToConstant: width)
                 .priority(priority)
                 .identifier("width")
+                .activate()
+        }
+    }
+
+    @discardableResult
+    public func width(min width: CGFloat, priority: UILayoutPriority = UILayoutPriority(rawValue: 999)) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.widthAnchor
+                .constraint(greaterThanOrEqualToConstant: width)
+                .priority(priority)
+                .identifier("minwidth")
+                .activate()
+        }
+    }
+
+    @discardableResult
+    public func width(max width: CGFloat, priority: UILayoutPriority = UILayoutPriority(rawValue: 999)) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.widthAnchor
+                .constraint(lessThanOrEqualToConstant: width)
+                .priority(priority)
+                .identifier("maxwidth")
                 .activate()
         }
     }

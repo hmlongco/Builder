@@ -21,7 +21,9 @@ class MenuViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.embed(MenuTableView())
 
-        let vc = GeneralTestViewController()
+//        let vc = GeneralTestViewController()
+        let vc = CornerCardViewController()
+//        let vc = LoginViewController()
         navigationController?.pushViewController(vc, animated: false)
     }
 

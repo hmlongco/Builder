@@ -12,7 +12,7 @@ import RxSwift
 
 fileprivate enum IDS: String {
     case dlscard
-    case logo
+    case logoBlock
 }
 
 
@@ -25,6 +25,8 @@ class LoginViewController: UIViewController {
         title = ""
         view.backgroundColor = .secondarySystemBackground
         view.embed(LoginView(viewModel: viewModel))
+
+        navigationItem.hidesBackButton = true
 
         let test1 = view.find(subview: "dlscard")!
         print(test1)
@@ -46,27 +48,67 @@ struct LoginView: ViewBuilder {
             ImageView(UIImage(named: "vector2"))
 
             VerticalScrollView {
-                ZStackView {
+                VStackView {
                     ContainerView {
-                        LabelView("Login Demo")
-                            .accessibilityIdentifier(IDS.logo)
-                            .alignment(.center)
-                            .font(.headline)
-                            .color(.white)
-                            .position(.top)
-                            .height(50)
-                    }
-                    .translatesAutoresizingMaskIntoConstraints(false)
-                    .backgroundColor(.black)
-                    .position(.top)
-                    .height(200)
+                        VStackView {
+                            LabelView(viewModel.$status)
+                                .alignment(.center)
+                                .font(.body)
+                                .color(.white)
+                                .numberOfLines(0)
+                                .hidden(true)
+                                .onReceive(viewModel.$status.asObservable().skip(1), handler: { context in
+                                    UIView.animate(withDuration: 0.2) {
+                                        context.view.isHidden = false
+                                    }
+                                })
 
-                    VStackView {
+                            LabelView("Login Demo")
+                                .alignment(.center)
+                                .font(.headline)
+                                .color(.white)
+                        }
+                        .accessibilityIdentifier(IDS.logoBlock)
+                        .spacing(20)
+                    }
+                    .padding(20)
+                    .backgroundColor(.black)
+
+                    ZStackView {
+                        ContainerView()
+                            .height(100)
+                            .position(.top)
+                            .backgroundColor(.black)
+
                         DLSCardView {
                             VStackView {
+                                LabelView("Welcome")
+                                    .alignment(.center)
+                                    .font(.headline)
+                                    .color(.label)
+
+                                ContainerView {
+                                    LabelView(viewModel.$error.asObservable().compactMap({ $0 }))
+                                        .alignment(.center)
+                                        .font(.headline)
+                                        .color(.white)
+                                        .numberOfLines(0)
+                                }
+                                .backgroundColor(.red)
+                                .cornerRadius(2)
+                                .padding(8)
+                                .hidden(true)
+                                .onReceive(viewModel.$error.asObservable().skip(1), handler: { context in
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                                        UIView.animate(withDuration: 0.2) {
+                                            context.view.isHidden = context.value == nil
+                                        }
+                                    }
+                                })
+
                                 VStackView {
                                     TextField(viewModel.$username)
-                                        .placeholder("Username")
+                                        .placeholder("Login ID")
                                         .set(keyPath: \.borderStyle, value: .roundedRect) // properties w/o dedicated builder
                                         .set(keyPath: \.textContentType, value: .username) // properties w/o dedicated builder
                                         .tag(456) // testing identifiers
@@ -93,36 +135,33 @@ struct LoginView: ViewBuilder {
                                 .spacing(2)
 
                                 VStackView {
-                                    ButtonView("Login")
-                                        .style(StyleButtonFilled())
-                                        .onTap { [weak viewModel] _ in
-                                            UIView.animate(withDuration: 0.3) {
-                                                viewModel?.login()
-                                            }
-                                        }
+                                    ButtonView("Login") {  [weak viewModel] _ in
+                                        viewModel?.login()
+                                    }
+                                    .style(StyleButtonFilled())
 
-                                    ButtonView("Login Help")
-                                        .onTap { context in
-                                            print(context.view.find(superview: "dlscard")!) // testing identifiers
-                                            print(context.view.find(456)!) // testing identifiers
-                                        }
+                                    ButtonView("Enroll / Login Help") { context in
+                                        print(context.view.find(superview: "dlscard")!) // testing identifiers
+                                        print(context.view.find(456)!) // testing identifiers
+                                    }
                                 }
                                 .spacing(6)
 
                             }
+                            .padding(top: 30, left: 40, bottom: 16, right: 40)
                             .spacing(20)
-                            .padding(top: 30, left: 20, bottom: 20, right: 20)
                         }
+                        .margins(top: 0, left: 8, bottom: 20, right: 8)
                         .accessibilityIdentifier(IDS.dlscard) // testing identifiers
 
-                        ContainerView()
-                            .height(600)
-
-                        SpacerView()
                     }
-                    .padding(top: 100, left: 20, bottom: 20, right: 20)
-                    .spacing(50)
+
+                    ContainerView()
+                        .height(600)
+
+                    SpacerView()
                 }
+                .spacing(0)
 
             }
             .backgroundColor(.clear)
@@ -131,10 +170,10 @@ struct LoginView: ViewBuilder {
                 let y = context.view.contentOffset.y
                 if y > 50 {
                     context.viewController?.navigationItem.title = "Login Demo"
-                    context.find(IDS.logo)?.alpha = 0
+                    context.find(IDS.logoBlock)?.alpha = 0
                 } else {
                     context.viewController?.navigationItem.title = ""
-                    context.find(IDS.logo)?.alpha = 1 - ((y * 2) / 100)
+                    context.find(IDS.logoBlock)?.alpha = 1 - ((y * 2) / 100)
                 }
             }
         }

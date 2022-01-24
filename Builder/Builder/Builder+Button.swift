@@ -25,12 +25,10 @@ public struct ButtonView: ModifiableView {
         modifiableView.setTitle(title, for: .normal)
     }
     
-    // deprecated
-    public init(_ title: String? = nil, configuration: (_ view: Base) -> Void) {
+    public init(_ title: String? = nil, action: @escaping (_ context: ViewBuilderContext<UIButton>) -> Void) {
         modifiableView.setTitle(title, for: .normal)
-        configuration(modifiableView)
+        onTap(action)
     }
-
 }
 
 
