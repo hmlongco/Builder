@@ -115,7 +115,7 @@ extension ModifiableView where Base: UILabel {
 }
 
 
-public class BuilderInternalUILabel: UILabel {
+public class BuilderInternalUILabel: UILabel, ViewBuilderEventHandling {
 
     var labelMargins: UIEdgeInsets = .zero
     
@@ -144,6 +144,10 @@ public class BuilderInternalUILabel: UILabel {
         let ctr = super.textRect(forBounds: tr, limitedToNumberOfLines: 0)
         // that line of code MUST be LAST in this function, NOT first
         return ctr
+    }
+
+    override public func didMoveToWindow() {
+        optionalBuilderAttributes()?.commonDidMoveToWindow(self)
     }
 
 }
