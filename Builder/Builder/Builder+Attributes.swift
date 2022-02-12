@@ -13,6 +13,8 @@ public class ViewBuilderAttributes {
     var insets: UIEdgeInsets?
     var safeArea: Bool?
 
+    var customConstraints: ((_ view: UIView) -> Void)?
+
     var onAppearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
     var onAppearOnceHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
     var onDisappearHandler: ((_ context: ViewBuilderContext<UIView>) -> Void)?
@@ -22,6 +24,13 @@ public class ViewBuilderAttributes {
 // following attributes only apply when view is embedded within a ContainerView, ScrollView, ZStackView, or using when UIView.embed(view)
 
 extension ModifiableView {
+
+    @discardableResult
+    public func customConstraints(_ constraints: @escaping (_ view: UIView) -> Void) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) {
+            $0.builderAttributes()?.customConstraints = constraints
+        }
+    }
 
     @discardableResult
     public func margins(_ value: CGFloat) -> ViewModifier<Base> {
@@ -58,7 +67,6 @@ extension ModifiableView {
     }
 
 }
-
 
 extension ViewBuilderAttributes {
 
@@ -117,4 +125,3 @@ extension ModifiableView where Base: ViewBuilderEventHandling {
     }
 
 }
-

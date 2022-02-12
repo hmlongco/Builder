@@ -173,11 +173,15 @@ extension UIView {
     private func addConstraints(_ view: UIView, position: EmbedPosition, padding: UIEdgeInsets, safeArea: Bool) {
         // check for builder overrides
         let attributes = view.optionalBuilderAttributes()
-        let position = attributes?.position ?? position
-        let padding = attributes?.insets ?? padding
-        let safeArea = attributes?.safeArea ?? safeArea
-        addVerticalConstraints(view, position: position, padding: padding, safeArea: safeArea)
-        addHorizontalConstraints(view, position: position, padding: padding, safeArea: safeArea)
+        if let constraints = attributes?.customConstraints {
+            constraints(view)
+        } else {
+            let position = attributes?.position ?? position
+            let padding = attributes?.insets ?? padding
+            let safeArea = attributes?.safeArea ?? safeArea
+            addVerticalConstraints(view, position: position, padding: padding, safeArea: safeArea)
+            addHorizontalConstraints(view, position: position, padding: padding, safeArea: safeArea)
+        }
     }
 
     private func addVerticalConstraints(_ view: UIView, position: EmbedPosition, padding: UIEdgeInsets, safeArea: Bool) {
