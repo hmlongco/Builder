@@ -96,6 +96,9 @@ public struct ViewModifier<Base:UIView>: ModifiableView {
     public init(_ view: Base) {
         self.modifiableView = view
     }
+    public init(_ view: View) where Base == UIView {
+        self.modifiableView = view.build()
+    }
     public init(_ view: Base, modifier: (_ view: Base) -> Void) {
         self.modifiableView = view
         modifier(view)
