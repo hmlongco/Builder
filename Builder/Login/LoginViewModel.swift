@@ -8,10 +8,18 @@
 import Foundation
 import Resolver
 import RxSwift
+import SwiftUI
 
 
 class LoginViewModel {
 
+    enum State {
+        case loading
+        case loaded
+    }
+
+    @Variable var state: State = .loading
+    
     @Variable var username: String? = "michael"
     @Variable var usernameError: String? = nil
 
@@ -33,6 +41,10 @@ class LoginViewModel {
 
         let showError = usernameError != nil || passwordError != nil
         error = showError ? "This is an error message that should be shown to the user." : nil
+    }
+
+    func load() {
+        state = .loaded
     }
 
 }

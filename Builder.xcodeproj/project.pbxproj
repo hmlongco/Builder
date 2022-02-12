@@ -20,7 +20,6 @@
 		4C249B6825C656AF00EAA1E9 /* Builder+ZStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C249B6725C656AF00EAA1E9 /* Builder+ZStack.swift */; };
 		4C2A0D7A268F65C800BF86ED /* Builder+With.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2A0D79268F65C800BF86ED /* Builder+With.swift */; };
 		4C2A0D7C268F916D00BF86ED /* Builder+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2A0D7B268F916D00BF86ED /* Builder+TableView.swift */; };
-		4C2D811A25E4087B00E2EBD7 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D811925E4087B00E2EBD7 /* Resolver */; };
 		4C2D812025E408B300E2EBD7 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D811F25E408B300E2EBD7 /* RxSwift */; };
 		4C2D812425E408B300E2EBD7 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D812325E408B300E2EBD7 /* RxRelay */; };
 		4C2D812625E408B300E2EBD7 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D812525E408B300E2EBD7 /* RxCocoa */; };
@@ -39,6 +38,7 @@
 		4C4AD772275189E000EF12C6 /* TestViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4AD771275189E000EF12C6 /* TestViews.swift */; };
 		4C4AD7742753FAAB00EF12C6 /* Builder+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4AD7732753FAAB00EF12C6 /* Builder+Attributes.swift */; };
 		4C4AD77627542E5300EF12C6 /* Builder+Gestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4AD77527542E5300EF12C6 /* Builder+Gestures.swift */; };
+		4C572E6427AEDBF600948734 /* Resolver-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 4C572E6327AEDBF600948734 /* Resolver-Static */; };
 		4C57859225CA2958005D42BB /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C57859125CA2958005D42BB /* DetailViewController.swift */; };
 		4C57859725CAEA60005D42BB /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C57859625CAEA60005D42BB /* Rx+Extensions.swift */; };
 		4C5FF94225E4189100E929A4 /* XCTTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FF94125E4189100E929A4 /* XCTTest+Extensions.swift */; };
@@ -267,8 +267,8 @@
 			files = (
 				4C2D812425E408B300E2EBD7 /* RxRelay in Frameworks */,
 				4C2D812025E408B300E2EBD7 /* RxSwift in Frameworks */,
+				4C572E6427AEDBF600948734 /* Resolver-Static in Frameworks */,
 				4C2D812625E408B300E2EBD7 /* RxCocoa in Frameworks */,
-				4C2D811A25E4087B00E2EBD7 /* Resolver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -646,10 +646,10 @@
 			);
 			name = Builder;
 			packageProductDependencies = (
-				4C2D811925E4087B00E2EBD7 /* Resolver */,
 				4C2D811F25E408B300E2EBD7 /* RxSwift */,
 				4C2D812325E408B300E2EBD7 /* RxRelay */,
 				4C2D812525E408B300E2EBD7 /* RxCocoa */,
+				4C572E6327AEDBF600948734 /* Resolver-Static */,
 			);
 			productName = Builder;
 			productReference = 4C9CC36125B4F078002BE06D /* Builder.app */;
@@ -725,8 +725,8 @@
 			);
 			mainGroup = 4C9CC35825B4F078002BE06D;
 			packageReferences = (
-				4C2D811825E4087B00E2EBD7 /* XCRemoteSwiftPackageReference "Resolver" */,
 				4C2D811E25E408B300E2EBD7 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				4C572E6227AEDBF600948734 /* XCRemoteSwiftPackageReference "Resolver" */,
 			);
 			productRefGroup = 4C9CC36225B4F078002BE06D /* Products */;
 			projectDirPath = "";
@@ -1483,14 +1483,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4C2D811825E4087B00E2EBD7 /* XCRemoteSwiftPackageReference "Resolver" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/hmlongco/Resolver.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.4.0;
-			};
-		};
 		4C2D811E25E408B300E2EBD7 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -1499,14 +1491,17 @@
 				minimumVersion = 6.1.0;
 			};
 		};
+		4C572E6227AEDBF600948734 /* XCRemoteSwiftPackageReference "Resolver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hmlongco/Resolver.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4C2D811925E4087B00E2EBD7 /* Resolver */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4C2D811825E4087B00E2EBD7 /* XCRemoteSwiftPackageReference "Resolver" */;
-			productName = Resolver;
-		};
 		4C2D811F25E408B300E2EBD7 /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4C2D811E25E408B300E2EBD7 /* XCRemoteSwiftPackageReference "RxSwift" */;
@@ -1521,6 +1516,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4C2D811E25E408B300E2EBD7 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
+		};
+		4C572E6327AEDBF600948734 /* Resolver-Static */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4C572E6227AEDBF600948734 /* XCRemoteSwiftPackageReference "Resolver" */;
+			productName = "Resolver-Static";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

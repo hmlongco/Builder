@@ -22,9 +22,9 @@ class MenuViewController: UIViewController {
         view.embed(MenuTableView())
 
 //        let vc = GeneralTestViewController()
-        let vc = CornerCardViewController()
+//        let vc = CornerCardViewController()
 //        let vc = LoginViewController()
-        navigationController?.pushViewController(vc, animated: false)
+//        navigationController?.pushViewController(vc, animated: false)
     }
 
 }
