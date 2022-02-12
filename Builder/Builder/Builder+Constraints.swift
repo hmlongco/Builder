@@ -68,7 +68,7 @@ extension ModifiableView {
             $0.heightAnchor
                 .constraint(greaterThanOrEqualToConstant: height)
                 .priority(priority)
-                .identifier("height")
+                .identifier("minheight")
                 .activate()
         }
     }
@@ -79,7 +79,7 @@ extension ModifiableView {
             $0.heightAnchor
                 .constraint(lessThanOrEqualToConstant: height)
                 .priority(priority)
-                .identifier("height")
+                .identifier("maxheight")
                 .activate()
         }
     }
@@ -131,7 +131,7 @@ extension ModifiableView {
 
 extension UIView {
 
-    public enum EmbedPosition: Int, CaseIterable {
+    public enum EmbedPosition {
         case fill
         case top
         case topLeft
@@ -280,6 +280,11 @@ extension NSLayoutConstraint {
     @discardableResult
     public func priority(_ priority: UILayoutPriority) -> Self {
         self.priority = priority
+        return self
+    }
+    @discardableResult
+    public func priority(_ priority: Float) -> Self {
+        self.priority = UILayoutPriority(rawValue: priority)
         return self
     }
 }

@@ -16,7 +16,7 @@ public struct ButtonView: ModifiableView {
     public let modifiableView = Modified(UIButton()) {
         $0.setTitleColor(ViewBuilderEnvironment.defaultButtonColor ?? $0.tintColor, for: .normal)
         $0.titleLabel?.font = ViewBuilderEnvironment.defaultButtonFont ?? .preferredFont(forTextStyle: .headline)
-        $0.setContentHuggingPriority(.required, for: .horizontal)
+        $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         $0.setContentCompressionResistancePriority(.required, for: .vertical)
     }
     
