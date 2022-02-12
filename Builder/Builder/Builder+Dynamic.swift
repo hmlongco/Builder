@@ -71,3 +71,61 @@ public class DynamicItemViewBuilder<Item>: AnyIndexableViewBuilder {
     }
 
 }
+
+public class DynamicObservableViewBuilder<Value>: AnyIndexableViewBuilder {
+
+    public var count: Int { view == nil ? 0 : 1 }
+    public var updated: Observable<Void>?
+
+    private var view: View?
+    private var disposeBag = DisposeBag()
+
+    public init(_ observable: Observable<Value>, builder: @escaping (_ value: Value) -> View) {
+        self.updated = observable
+            .do(onNext: { [weak self] value in
+                self?.view = builder(value)
+            })
+            .map { _ in () }
+    }
+
+    public func view(at index: Int) -> View? {
+        guard index == 0 else { return nil }
+        return view
+    }
+
+    public func asViews() -> [View] {
+        guard let view = view else { return [] }
+        return [view]
+    }
+
+}
+
+public class DynamicValueViewBuilder<Value>: AnyIndexableViewBuilder {
+
+    public var value: Value {
+        didSet {
+            updatePublisher.onNext(())
+        }
+    }
+
+    public var count: Int = 1
+    public var updated: Observable<Void>? { updatePublisher }
+
+    private let updatePublisher = PublishSubject<Void>()
+    private let builder: (_ value: Value) -> View
+
+    public init(_ value: Value, builder: @escaping (_ value: Value) -> View) {
+        self.value = value
+        self.builder = builder
+    }
+
+    public func view(at index: Int) -> View? {
+        guard index == 0 else { return nil }
+        return builder(value)
+    }
+
+    public func asViews() -> [View] {
+        return [builder(value)]
+    }
+
+}

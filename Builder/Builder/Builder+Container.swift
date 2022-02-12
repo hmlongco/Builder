@@ -26,6 +26,20 @@ public struct ContainerView: ModifiableView {
 
 }
 
+typealias DynamicContainerView = ContainerView
+
+extension DynamicContainerView {
+    public init<Value, Binding:RxBinding>(_ binding: Binding, @ViewResultBuilder _ builder: @escaping (_ value: Value) -> ViewConvertable)
+    where Binding.T == Value {
+        binding.asObservable()
+            .subscribe(onNext: { [weak modifiableView] value in
+                modifiableView?.transition(to: builder(value))
+            })
+            .disposed(by: modifiableView.rxDisposeBag)
+    }
+
+}
+
 extension ModifiableView where Base: BuilderInternalContainerView {
 
     @discardableResult
@@ -55,6 +69,14 @@ public class BuilderInternalContainerView: UIView, ViewBuilderEventHandling {
     convenience public init(@ViewResultBuilder _ builder: () -> ViewConvertable) {
         self.init(frame: .zero)
         self.views = builder()
+    }
+
+    public func transition(to views: ViewConvertable?) {
+        if superview == nil {
+            self.views = views
+        } else if let view = views?.asViews().first {
+            transition(to: view)
+        }
     }
 
     override public func didMoveToSuperview() {
