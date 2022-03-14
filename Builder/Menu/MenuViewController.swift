@@ -21,6 +21,7 @@ class MenuViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.embed(MenuTableView())
 
+//        let vc = CustomTabBarViewController()
 //        let vc = GeneralTestViewController()
 //        let vc = CornerCardViewController()
 //        let vc = LoginViewController()

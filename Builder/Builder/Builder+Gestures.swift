@@ -78,11 +78,11 @@ extension ModifiableView {
     }
 
     @discardableResult
-    func hideKeyboardOnBackgroundTap() -> ViewModifier<Base> {
+    func hideKeyboardOnBackgroundTap(cancelsTouchesInView: Bool = true) -> ViewModifier<Base> {
         ViewModifier(modifiableView) { view in
             let gesture = UITapGestureRecognizer()
             gesture.numberOfTapsRequired = 1
-            gesture.cancelsTouchesInView = false
+            gesture.cancelsTouchesInView = cancelsTouchesInView
             view.addGestureRecognizer(gesture)
             gesture.rx.event
                 .asControlEvent()

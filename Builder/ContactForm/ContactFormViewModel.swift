@@ -26,6 +26,11 @@ class ContactFormViewModel: FormFieldManager<ContactFormIDS> {
 
     @Variable var error: String? = nil
 
+    var hideEmailNotRequired: Observable<Bool> {
+        Observable.zip(state(.enabled, for: .email), state(.enabled, for: .alternateEmail))
+            .map { $0 || $1 }
+    }
+
     var termsTextColor: Observable<UIColor> {
         error(for: .agree)
             .map { $0 == nil ? .label : .red }
@@ -70,9 +75,9 @@ class ContactFormViewModel: FormFieldManager<ContactFormIDS> {
                 .isRequired()
         ]
 
-        print("INITIAL DISABLE")
-        states[ContactFormIDS.email.rawValue] = .disabled
-        states[ContactFormIDS.alternateEmail.rawValue] = .disabled
+//        print("INITIAL DISABLE")
+//        states[ContactFormIDS.email.rawValue] = .disabled
+//        states[ContactFormIDS.alternateEmail.rawValue] = .disabled
     }
 
     override func placeholder(for id: ContactFormIDS) -> String {

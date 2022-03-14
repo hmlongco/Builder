@@ -103,7 +103,7 @@ extension UIView {
             return
         }
         let visible = convert(frame, to: scrollview)
-        UIViewPropertyAnimator(duration: 0.1, curve: .linear) {
+        UIViewPropertyAnimator(duration: 0.2, curve: .linear) {
             scrollview.scrollRectToVisible(visible, animated: false)
         }.startAnimation()
     }
@@ -140,6 +140,42 @@ extension UIView {
 
     public var rootview: UIView {
         firstSuperview(where: { $0.superview == nil }) ?? self
+    }
+
+}
+
+extension UIView {
+
+    func addHighlightOverlay(animated: Bool = true, removeAfter delay: TimeInterval? = nil) {
+        let overlay = UIView(frame: self.bounds)
+        overlay.backgroundColor = .label
+        overlay.alpha = animated ? 0.0 : 0.15
+        overlay.tag = 999
+        addSubview(overlay)
+        if animated {
+            UIView.animate(withDuration: 0.1) {
+                overlay.alpha = 0.15
+            }
+        }
+        if let delay = delay {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                if animated {
+                    UIView.animate(withDuration: 0.1) {
+                        overlay.alpha = 0.15
+                    } completion: { _ in
+                        overlay.removeFromSuperview()
+                    }
+                } else {
+                    overlay.removeFromSuperview()
+                }
+            }
+        }
+    }
+
+    func removeHighlightOverlay(animated: Bool = true) {
+        if let overlay = find(subview: 999) {
+            overlay.removeFromSuperview()
+        }
     }
 
 }

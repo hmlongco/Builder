@@ -42,16 +42,23 @@ extension ModifiableView where Base: BuilderInternalScrollView {
                 })
                 .disposed(by: $0.rxDisposeBag)
 
-            NotificationCenter.default.rx.notification(UIResponder.keyboardWillChangeFrameNotification, object: nil)
+            NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification, object: nil)
                 .subscribe(onNext: { [unowned modifiableView] notification in
                     guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
 
                     let keyboardScreenEndFrame = keyboardValue.cgRectValue
                     let keyboardViewEndFrame = modifiableView.convert(keyboardScreenEndFrame, from: modifiableView.window)
                     let bottom = keyboardViewEndFrame.height - modifiableView.safeAreaInsets.bottom
+                    let oldInsets = modifiableView.contentInset
 
                     modifiableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: bottom, right: 0)
                     modifiableView.scrollIndicatorInsets = modifiableView.contentInset
+
+                    if oldInsets.bottom == 0, let textfield = modifiableView.firstSubview(where: { $0 is UITextField && $0.isFirstResponder }) {
+                        DispatchQueue.main.async {
+                            textfield.scrollIntoView()
+                        }
+                    }
                 })
                 .disposed(by: $0.rxDisposeBag)
         }

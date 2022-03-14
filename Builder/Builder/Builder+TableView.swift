@@ -17,8 +17,21 @@ struct TableView: ModifiableView {
 
     let modifiableView = BuilderInternalTableView()
     
+    public init() {
+
+    }
+
     public init(_ builder: AnyIndexableViewBuilder) {
         modifiableView.set(builder)
+    }
+
+}
+
+extension ModifiableView where Base: BuilderInternalTableView {
+
+    @discardableResult
+    func source(_ builder: AnyIndexableViewBuilder) -> ViewModifier<Base> {
+        ViewModifier(modifiableView) { $0.set(builder) }
     }
 
 }
@@ -125,8 +138,24 @@ struct TableViewCell: ModifiableView {
 }
 
 class BuilderInternalTableViewCell: UITableViewCell {
-    
+
+    var highlighting = true
     var selectionHandler: ((_ tableView: TableView.CellContext) -> Bool)?
+
+    private var currentHighlightState: Bool = false
+
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        guard highlighting else { return }
+        switch (highlighted, currentHighlightState) {
+        case (true, false):
+            addHighlightOverlay(animated: animated)
+        case (false, true):
+            removeHighlightOverlay(animated: animated)
+        default:
+            break // do nothing
+        }
+        currentHighlightState = highlighted
+    }
 
 }
 

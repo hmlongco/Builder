@@ -68,13 +68,8 @@ struct LoginView: ViewBuilder {
                                     }
                                 })
 
-                            LabelView("Login Demo")
-                                .alignment(.center)
-                                .font(.headline)
-                                .color(.white)
-
-                            testView
-                                .identifier("TEST")
+                            demoLabel
+                                .identifier("LABEL")
                         }
                         .accessibilityIdentifier(IDS.logoBlock)
                         .spacing(20)
@@ -116,6 +111,8 @@ struct LoginView: ViewBuilder {
 
             }
             .backgroundColor(.clear)
+            .automaticallyAdjustForKeyboard()
+            .hideKeyboardOnBackgroundTap()
             .bounces(false)
             .onDidScroll { context in
                 let y = context.view.contentOffset.y
@@ -130,8 +127,10 @@ struct LoginView: ViewBuilder {
         }
     }
 
-    var testView: some ModifiableView {
-        LabelView("Test")
+    var demoLabel: some ModifiableView {
+        LabelView("Login Demo")
+            .alignment(.center)
+            .font(.headline)
             .color(.white)
     }
 

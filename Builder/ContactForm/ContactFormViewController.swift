@@ -63,6 +63,7 @@ class ContactFormViewController: UIViewController {
                         })
                     }
                     .style(StyleButtonFilled())
+                    .enabled(bind: self.viewModel.variable(for: .agree).asObservable())
 
                     SpacerView()
                 }
@@ -158,6 +159,10 @@ private struct EmailSection: ViewBuilder {
                     .style(StyleStandardMetaTextField())
                     .maxWidth(250)
                     .enabled(bind: viewModel.state(.enabled, for: ContactFormIDS.alternateEmail) )
+
+                LabelView("Email addresses not required for this user.")
+                    .style(StyleLabelFootnote())
+                    .hidden(bind: viewModel.hideEmailNotRequired)
             }
         }
     }
