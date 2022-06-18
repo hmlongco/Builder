@@ -117,6 +117,12 @@ In many cases, however, some strategically placed UIView extensions do a lot of 
 ```swift
     anotherview.insertSubview(DetailCardView(), at: 0)
 ```
+Finally, converting a view into a UIView is such a common operation that there's a callAsFunction shorcut. Just call a generated `View` as a function.
+```swift
+    let view = getHeaderViewForTable()
+    tableView.tableHeaderView = view()
+```
+
 
 ### Composition
 
