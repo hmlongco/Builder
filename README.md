@@ -1,4 +1,4 @@
-# Builder User Interface Library
+# Builder: A Declarative UIKit Library
 
 ## Overview
 
@@ -32,9 +32,11 @@ With SwiftUI and Combine available, why use Builder and RxSwift? Well, I guess t
 
 And if I were using SwiftUI in a production app I'd probably consider **iOS 14** to be the minimum version suitable for application development. And even then there are some critical components that require iOS 15!
 
+Note to mention the minor fact that SwiftUI is still in flux. With the beta relase of iOS 16 Apple has shown that even fundamental SwiftUI constructs like `NavigationView` can and will be deprecated. Are you ready to make iOS 16 your minimum required version of iOS?
+
 Same for using Combine. Builder could be accomplished using Combine... but that too would have tied me to iOS 13/14 as the minimum version... which is what I was trying to avoid in the first place.
 
-Hence the problem. There aren't too many developers who can drop support for earlier versions of iOS in their applications and go iOS 14 or 15 only. Which in turn means that most of us wouldn't see any of the benefits of doing declarative, reactive programming for another couple of **years**. 
+Hence the problem. There aren't too many developers who can drop support for earlier versions of iOS in their applications and go iOS 14 or 15 or 16 only. Which in turn means that most of us wouldn't see any of the benefits of doing declarative, reactive programming for another couple of **years**. 
 
 That's simply too long.
 
@@ -52,7 +54,7 @@ There are other "cross-platform" frameworks out there, but I'm an iOS Swift deve
 
 #### RxSwiftWidgets
 
-Builder wasn't my first attempt at a SwiftUI-like library. I created [RxSwiftWidgets](https://github.com/hmlongco/RxSwiftWidgets) almost immediately after SwiftUI was announced, but was frustrated by several issues inherent in its implementation.
+Builder wasn't my first attempt at a SwiftUI-like library. I created [RxSwiftWidgets](https://github.com/hmlongco/RxSwiftWidgets) almost immediately after SwiftUI was announced, but was frustrated by several issues inherent in my initial implementation.
 
 I started over with Builder to see if I could do better. (Spoiler alert: I could.)
 
