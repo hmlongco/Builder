@@ -22,8 +22,6 @@ Declarative programming using Builder eliminates the need for Interface Builder 
 
 Like SwiftUI, the goal behind Builder is to eliminate much of the hassle behind creating and developing user interfaces. 
 
-This includes eliminating a lot of the tedious work required to manually setup the majority of constraints needed for AutoLayout. 
-
 But unlike SwiftUI, with Builder you also have the power to reach under the hood at any point in time and directly work with the generated views and interface elements and tweak them to your hearts content.
 
 ### Why Builder?
@@ -175,7 +173,9 @@ struct NameValueView: ViewBuilder {
 ```
 `HStackView` and `LabelView` are elemental Builder views that directly generate the corresponding `UIStackView` and `UILabelViews` for us. 
 
-And again, as with SwiftUI, Builder is somewhat opinionated as to how those views should be presented. Quite a few view options are "baked in" such that we dont have to continually set the things we're going to need over and over and over again. (Like repeatingly setting `translatesAutoresizingMaskIntoConstraints` to false on each and every manually constructed view. Been there, done that.)
+Note that this approach eliminates a lot of the tedious work usually required to manually setup constraints for AutoLayout. 
+
+Also note that, as with SwiftUI, Builder is somewhat opinionated as to how those views should be presented. Quite a few view options are "baked in" such that we dont have to continually set the things we're going to need over and over and over again. (Like repeatingly setting `translatesAutoresizingMaskIntoConstraints` to false on each and every manually constructed view. Been there, done that.)
 
 ### Table Views
 
@@ -339,7 +339,7 @@ Note that this project will probably switch to using [Factory](https://github.co
 
 The project includes a `BuilderDemo` app that includes a lot of the actual code I used to test Builder while it was under developmemt.
 
-This includes the main "Menu" screen, a User list that displays user detail cards like the one shown above,  a data-entry form, and more.
+This includes the main "Menu" screen, a User list that displays user detail cards like the one shown above, a data-entry form, and more.
 
 Just open and run `BuilderDemo.xcodeproj` located in the BuilderDemo folder.
 
@@ -359,7 +359,7 @@ Currently Builder requires Xcode 13.4 as a minimum.
 
 Builder is available under the MIT license. See the LICENSE file for more info.
 
-Just remember tha that Builder is first and foremost an example and exploration of how to accomplish SwiftUI-like declarative interfaces in UIKit. Note that Builder is provided *as is* and that ongoing support for this project may be limited.
+Just remember tha that Builder is first and foremost an example and exploration of how to accomplish SwiftUI-like declarative interfaces in UIKit. Note that Builder is provided *as is* and that ongoing support and documentation for this project may be limited.
 
 I firmly believe SwiftUI *is the future* for development on iOS, iPadOS macOS, tvOS, and watchOS.
 
