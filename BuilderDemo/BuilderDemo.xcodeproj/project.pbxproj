@@ -209,6 +209,7 @@
 		4C60E453285E8CFF00EC87A0 /* UserImageCacheSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCacheSpec.swift; sourceTree = "<group>"; };
 		4C60E454285E8CFF00EC87A0 /* XCTTest+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTTest+Extensions.swift"; sourceTree = "<group>"; };
 		4C60E455285E8CFF00EC87A0 /* Resolver+XCTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Resolver+XCTest.swift"; sourceTree = "<group>"; };
+		4C60E463285E984700EC87A0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -293,6 +294,7 @@
 		4C60E37F285E4AF500EC87A0 /* BuilderDemoTests */ = {
 			isa = PBXGroup;
 			children = (
+				4C60E463285E984700EC87A0 /* README.md */,
 				4C60E380285E4AF500EC87A0 /* BuilderDemoTests.swift */,
 				4C60E451285E8CFF00EC87A0 /* MainViewModelSpec.swift */,
 				4C60E455285E8CFF00EC87A0 /* Resolver+XCTest.swift */,
