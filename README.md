@@ -24,40 +24,6 @@ Like SwiftUI, the goal behind Builder is to eliminate much of the hassle behind 
 
 But unlike SwiftUI, with Builder you also have the power to reach under the hood at any point in time and directly work with the generated views and interface elements and tweak them to your hearts content.
 
-### Why Builder?
-
-With SwiftUI and Combine available, why use Builder and RxSwift? Well, I guess the answer to that question actually depends on your definition of *available*.
-
-**The problem is that SwiftUI and Combine both require iOS 13 at a minimum.** No support for iOS 12 or iOS 11. 
-
-And if I were using SwiftUI in a production app I'd probably consider **iOS 14** to be the minimum version suitable for application development. And even then there are some critical components that require iOS 15!
-
-Note to mention the minor fact that SwiftUI is still in flux. With the beta relase of iOS 16 Apple has shown that even fundamental SwiftUI constructs like `NavigationView` can and will be deprecated. Are you ready to make iOS 16 your minimum required version of iOS?
-
-Same for using Combine. Builder could be accomplished using Combine... but that too would have tied me to iOS 13/14 as the minimum version... which is what I was trying to avoid in the first place.
-
-Hence the problem. There aren't too many developers who can drop support for earlier versions of iOS in their applications and go iOS 14 or 15 or 16 only. Which in turn means that most of us wouldn't see any of the benefits of doing declarative, reactive programming for another couple of **years**. 
-
-That's simply too long.
-
-#### CwlViews
-
-There are a few other declarative frameworks out there, the most notable of which is Matt Gallagher's [CwlViews](https://www.cocoawithlove.com/blog/introducing-cwlviews.html).
-
-While CwlViews has some cool and interesting features, it's biggest drawback lies in its implementation of its own reactive framework. I firmly believe in RxSwift and perhaps more to the point, RxSwift has a large and loyal developer base plus tons of available resources, books, and articles devoted to it.
-
-I wanted declarative development *and* I wanted my RxSwift. What can I say? I'm greedy.
-
-#### Flutter, React Native, et. al.
-
-There are other "cross-platform" frameworks out there, but I'm an iOS Swift developer at heart and doing iOS development in Dart or JavaScript simply doesn't interest me.
-
-#### RxSwiftWidgets
-
-Builder wasn't my first attempt at a SwiftUI-like library. I created [RxSwiftWidgets](https://github.com/hmlongco/RxSwiftWidgets) almost immediately after SwiftUI was announced, but was frustrated by several issues inherent in my initial implementation.
-
-I started over with Builder to see if I could do better. (Spoiler alert: I could.)
-
 ### Views and View Builders
 
 In Builder, screens are composed of views that are composed of views that are composed of views. Here's the card view "builder" code that generates the sample shown above.
@@ -104,16 +70,12 @@ In many cases, however, some strategically placed UIView extensions do a lot of 
 ```swift
     anotherview.insertSubview(DetailCardView(), at: 0)
 ```
-Finally, converting a view into a UIView is such a common operation that there's a callAsFunction shorcut. Just call a generated `View` as a function.
-```swift
-    let view = getHeaderViewForTable()
-    tableView.tableHeaderView = view()
-```
-
 
 ### Composition
 
-Like SwiftUI and Flutter, Builder encourages composition. View's can represent entire screens, as shown above; or they can be used to render portions of a screen, as shown in the `LabeledPhotoView` we used in our earlier view. 
+Like SwiftUI, Builder *encourages* composition, an area where many other solutions fall short. 
+
+View's can represent entire screens, as shown above; or they can be used to render portions of a screen, as shown in the `LabeledPhotoView` we used in our earlier view. 
 
 ```swift
 struct LabeledPhotoView: ViewBuilder {
@@ -175,9 +137,9 @@ struct NameValueView: ViewBuilder {
 ```
 `HStackView` and `LabelView` are elemental Builder views that directly generate the corresponding `UIStackView` and `UILabelViews` for us. 
 
-Note that this approach eliminates a lot of the tedious work usually required to manually setup constraints for AutoLayout. 
+Note that, as with SwiftUI, Builder is somewhat opinionated as to how those views should be presented. Quite a few view options are "baked in" such that we dont have to continually set the things we're going to need over and over and over again. (Like repeatingly setting `translatesAutoresizingMaskIntoConstraints` to false on each and every manually constructed view. Been there, done that.)
 
-Also note that, as with SwiftUI, Builder is somewhat opinionated as to how those views should be presented. Quite a few view options are "baked in" such that we dont have to continually set the things we're going to need over and over and over again. (Like repeatingly setting `translatesAutoresizingMaskIntoConstraints` to false on each and every manually constructed view. Been there, done that.)
+Also note that using stacks eliminates a lot of the tedious constraint code usually required when manually creating views and wiring them together for AutoLayout. 
 
 ### Table Views
 
@@ -212,13 +174,17 @@ I've used Builder in several projects to get the benefits of declarative program
 
 ## Using RxSwift for MVVM Data Binding
 
-Using Builder to construct UIKit-based interfaces leads to another question: how do we update our interfaces?
+So we can use Builder to construct a UIKit-based interface. Great!
 
-Unlike SwiftUI which is constantly diffing and comparing views and rebuilding our interfaces accordingly, Builder tends to generate a standard, "static" set of UIViews. This means that we need some way to signal changes to our data and to update our user-interface accordingly.
+But that leads us to another question: Just how do we update our interfaces?
 
-This app uses RxSwift in many places to bind views and view models and view controllers together. We saw this in `DetailPhotoView` example where an observable was passed to the view and "bound" to an ImageView in it's initializer so that it would be updated when the image for that user was eventually loaded.
+Unlike SwiftUI which is constantly diffing and comparing views and rebuilding our interfaces accordingly, In most cases Builder generates a standard, "static" set of UIViews. This means that we need some way to signal changes to our data and to update our user-interface accordingly.
+
+Builder uses RxSwift in many places to bind views and view models and view controllers together. We saw this in `DetailPhotoView` example where an observable was passed to the view and "bound" to an ImageView in it's initializer so that it would be updated when the image for that user was eventually loaded.
 
 Same for LabelViews and its associated text. But we can do more.
+
+A lot more.
 
 ### Minor State Changes
 
@@ -249,7 +215,7 @@ This happens automatically, so we don't have to worry about it. I might also men
 
 ### Major State Changes
 
-Another example from `MainStackViewController` demonstrates how we can subscribe to a Builder `@Variable` and update our interface when the variable state changes. This is similar to `@State` in SwiftUI. 
+Another example from `MainStackViewController` demonstrates how we can subscribe to a Builder `@Variable` and update our interface when the variable state changes. This is similar to the `@State` driven behavior we see in SwiftUI. 
 
 ```swift
     viewModel.$state
@@ -271,9 +237,10 @@ Another example from `MainStackViewController` demonstrates how we can subscribe
         })
         .disposed(by: disposeBag)
 ```
-The code `self.transtion(to: ...)` basically replaces the current view tree with a new one. Since Builder doesn't "diff" the treeview, we're basically manually replicatiing in UIKit what SwiftUI would do for us whenever a major state change occurs.
+The code `self.transtion(to: ...)` basically replaces the current view tree on the view controller with a new one. Since Builder doesn't "diff" the treeview, we're basically manually replicatiing in UIKit what SwiftUI would do for us whenever a major state change occurs.
 
 The view model defines the enumerated state and is updated when load is called. 
+
 ```swift
 class MainViewModel {
     
@@ -310,9 +277,36 @@ class MainViewModel {
 
 }
 ```
-Note the use of `private(set)` on our state variable. This ensures that our view model (and only our view model) can manipulate our state variable. 
+Note the use of `private(set)` on the state variable. This ensures that our view model (and only our view model) can manipulate our state variable. 
 
 *(This is better than exposing a RxSwift BehaviorRelay or PublishSubject over which we'd have no such control.)*
+
+### Variable
+
+The nature of the build mechanism means that we can't do a "pure" RxSwift-style view-triggers-action-triggers-result-triggers-view data flow in our application. Any Observable pased into a view tree must exist *before* the tree is built.
+
+Because of this we're forced to adopt pretty much the same approach used in SwiftUI: Define some variable that we can observe. In SwiftUI we use the `@State` property wrapper but in Builder ours is named `@Variable`.
+
+We use `@Variable` any time we want one of our views to change state whenever the bound value is changed. Bindings in Builder can actually observe any Rx Observable, but Variable is easier to work with in many cases.
+
+Like SwiftUI, we use a dollar-sign whenever we want access to the RxSwift-backed observable. This lets us subscribe to it, as shown above in the Major State Change code, or pass it to one of the binding modifiers as we've also shown.
+
+```swift
+LabelView("Some text")
+    .bind(keyPath: \.backgroundColor, binding: $color)
+```
+Unlike SwiftUI, Variables can be created and used anywhere, in a view, in a view model, or even in a view controller.
+
+You can also subscribe to changes yourself, should you desire.
+```swift
+@Variable var title: String = "Builder Test View"
+
+$title
+    .onChange { value in
+        print(value)
+    }
+    .disposed(by: disposeBag)
+```
 
 ---
 
@@ -334,6 +328,42 @@ Above we're using Resolver's @Injected property wrapper to find and instantiate 
 Injections tie together the master view, detail view, the view models, and the API and data caching layers of the application.
 
 Note that this project will probably switch to using [Factory](https://github.com/hmlongco/Factory) in the near future.
+
+___
+
+## Why Builder?
+
+With SwiftUI and Combine available, why use Builder and RxSwift? Well, I guess the answer to that question actually depends on your definition of *available*.
+
+**The problem is that SwiftUI and Combine both require iOS 13 at a minimum.** No support for iOS 12 or iOS 11. 
+
+And if I were using SwiftUI in a production app I'd probably consider **iOS 14** to be the minimum version suitable for application development. And even then there are some critical components that require iOS 15!
+
+Note to mention the minor fact that SwiftUI is still in flux. With the beta relase of iOS 16 Apple has shown that even fundamental SwiftUI constructs like `NavigationView` can and will be deprecated. Are you ready to make iOS 16 your minimum required version of iOS?
+
+Same for using Combine. Builder could be accomplished using Combine... but that too would have tied me to iOS 13/14 as the minimum version... which is what I was trying to avoid in the first place.
+
+Hence the problem. There aren't too many developers who can drop support for earlier versions of iOS in their applications and go iOS 14 or 15 or 16 only. Which in turn means that most of us wouldn't see any of the benefits of doing declarative, reactive programming for another couple of **years**. 
+
+That's simply too long.
+
+#### CwlViews
+
+There are a few other declarative frameworks out there, the most notable of which is Matt Gallagher's [CwlViews](https://www.cocoawithlove.com/blog/introducing-cwlviews.html).
+
+While CwlViews has some cool and interesting features, it's biggest drawback lies in its implementation of its own reactive framework. I firmly believe in RxSwift and perhaps more to the point, RxSwift has a large and loyal developer base plus tons of available resources, books, and articles devoted to it.
+
+I wanted declarative development *and* I wanted my RxSwift. What can I say? I'm greedy.
+
+#### Flutter, React Native, et. al.
+
+There are other "cross-platform" frameworks out there, but I'm an iOS Swift developer at heart and doing iOS development in Dart or JavaScript simply doesn't interest me.
+
+#### RxSwiftWidgets
+
+Builder wasn't my first attempt at a SwiftUI-like library. I created [RxSwiftWidgets](https://github.com/hmlongco/RxSwiftWidgets) almost immediately after SwiftUI was announced, but was frustrated by several issues inherent in my initial implementation.
+
+I started over with Builder to see if I could do better. I could.
 
 ---
 
