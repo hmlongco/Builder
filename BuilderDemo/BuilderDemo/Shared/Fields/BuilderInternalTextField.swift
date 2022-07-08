@@ -165,16 +165,31 @@ public class BuilderInternalTextField: UITextField, UITextFieldDelegate {
     }
 
     private func buildErrorLabel(with text: String?) {
+        guard let text = text, !text.isEmpty else {
+            accessibilityLabel = nil
+            errorLabel?.removeFromSuperview()
+            errorLabel = nil
+            return
+        }
+        let newFrame = CGRect(x: frame.minX, y: frame.maxY + 1, width: frame.width, height: 15)
         if errorLabel == nil {
-            let newLabel = UILabel(frame: CGRect(x: 0, y: frame.height + 1, width: frame.width, height: 15))
+            let newLabel = UILabel(frame: newFrame)
             newLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
-            newLabel.frame.origin = CGPoint(x: 0, y: frame.height)
-            newLabel.accessibilityIdentifier = "textFieldErrorLabel"
-            addSubview(newLabel)
+            newLabel.textColor = .red
+            newLabel.isAccessibilityElement = false
+            newLabel.translatesAutoresizingMaskIntoConstraints = false
+            superview?.insertSubview(newLabel, aboveSubview: self)
+            newLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+            newLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+            newLabel.topAnchor.constraint(equalTo: self.bottomAnchor, constant: 1).isActive = true
             self.errorLabel = newLabel
-       }
-        errorLabel?.frame.origin = CGPoint(x: 0, y: frame.height)
-        errorLabel?.textColor = .red
+        } else if let labelFrame = errorLabel?.frame, labelFrame != newFrame {
+            errorLabel?.frame = newFrame
+        }
+        if let accessibilityIdentifier = self.accessibilityIdentifier {
+            errorLabel?.accessibilityIdentifier = accessibilityIdentifier + ".error"
+        }
+        accessibilityLabel = "Error: " + text.lowercased()
         errorLabel?.text = text
     }
 

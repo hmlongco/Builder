@@ -43,7 +43,7 @@ class ContactFormViewController: UIViewController {
     }
 
     func content() -> View {
-        FABMenuView(menuItems: menuItems) {
+//        FABMenuView(menuItems: menuItems) {
             VerticalScrollView {
                 VStackView {
                     ErrorSection(viewModel: self.viewModel)
@@ -80,7 +80,7 @@ class ContactFormViewController: UIViewController {
             .automaticallyAdjustForKeyboard()
             .hideKeyboardOnBackgroundTap()
         }
-    }
+//    }
 
 }
 
@@ -110,6 +110,7 @@ private struct NameSection: ViewBuilder {
                     .style(StyleStandardMetaTextField())
                     .maxWidth(50)
             }
+            .spacing(10)
         }
     }
 }
@@ -142,6 +143,7 @@ private struct AddressSection: ViewBuilder {
                 }
                 .distribution(.fillEqually)
             }
+            .spacing(10)
         }
     }
 }
@@ -165,6 +167,7 @@ private struct EmailSection: ViewBuilder {
                     .style(StyleLabelFootnote())
                     .hidden(bind: viewModel.hideEmailNotRequired)
             }
+            .spacing(10)
         }
     }
 }
@@ -215,7 +218,7 @@ struct IconCardView: ViewBuilder {
                     content()
                 }
                 .alignment(.top)
-                .padding(16)
+                .padding(20)
             }
             .cornerRadius(16)
             .clipsToBounds(true)
