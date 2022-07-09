@@ -7,13 +7,13 @@
 
 import UIKit
 import Builder
-import Resolver
+import Factory
 import RxSwift
 import RxCocoa
 
 class DetailViewController: UIViewController {
 
-    @Injected var viewModel: DetailViewModel
+    @Injected(Container.detailViewModel) var viewModel: DetailViewModel
     
     lazy var dismissible = Dismissible<Void>(self)
         

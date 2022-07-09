@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import Resolver
+import Factory
 
-extension Resolver {
-    static func registerDetails() {
-        register { DetailViewModel() }.scope(.shared)
+extension Container {
+    static let detailViewModel = Factory(scope: .shared) {
+        DetailViewModel()
     }
 }

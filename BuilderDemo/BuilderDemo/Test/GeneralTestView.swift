@@ -8,7 +8,7 @@
 import UIKit
 import Builder
 import RxSwift
-import Resolver
+import Factory
 
 class GeneralTestViewController: UIViewController {
 

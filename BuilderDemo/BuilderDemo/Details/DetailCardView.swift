@@ -7,12 +7,12 @@
 
 import UIKit
 import Builder
-import Resolver
+import Factory
 import RxSwift
 
 struct DetailCardView: ViewBuilder {    
 
-    @Injected var viewModel: DetailViewModel
+    @Injected(Container.detailViewModel) var viewModel: DetailViewModel
 
     init(user: User) {
         viewModel.configure(user)

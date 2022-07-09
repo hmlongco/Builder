@@ -110,6 +110,7 @@ private struct NameSection: ViewBuilder {
                     .style(StyleStandardMetaTextField())
                     .maxWidth(50)
             }
+            .padding(top: 0, left: 0, bottom: 8, right: 0)
             .spacing(10)
         }
     }
@@ -142,6 +143,7 @@ private struct AddressSection: ViewBuilder {
                         .maxWidth(5)
                 }
                 .distribution(.fillEqually)
+                .padding(top: 0, left: 0, bottom: 8, right: 0)
             }
             .spacing(10)
         }

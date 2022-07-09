@@ -7,14 +7,14 @@
 
 import UIKit
 import Builder
-import Resolver
+import Factory
 import RxSwift
 import RxCocoa
 
 class MainViewModel {
     
-    @Injected var images: UserImageCache
-    @Injected var service: UserServiceType
+    @Injected(Container.userImageCache) var images: UserImageCache
+    @Injected(Container.userServiceType) var service: UserServiceType
 
     enum State: Equatable {
         case initial

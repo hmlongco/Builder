@@ -7,7 +7,7 @@
 
 import UIKit
 import Builder
-import Resolver
+import Factory
 import RxSwift
 import RxCocoa
 

@@ -73,7 +73,6 @@
 		4C60E431285E4CA900EC87A0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3E1285E4CA900EC87A0 /* LoginViewController.swift */; };
 		4C60E432285E4CA900EC87A0 /* FormFieldManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3E3285E4CA900EC87A0 /* FormFieldManager.swift */; };
 		4C60E433285E4CA900EC87A0 /* FormField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3E4285E4CA900EC87A0 /* FormField.swift */; };
-		4C60E434285E4CA900EC87A0 /* _Application+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3E6285E4CA900EC87A0 /* _Application+Injection.swift */; };
 		4C60E435285E4CA900EC87A0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C60E3E7285E4CA900EC87A0 /* Main.storyboard */; };
 		4C60E436285E4CA900EC87A0 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3E9285E4CA900EC87A0 /* MenuViewController.swift */; };
 		4C60E437285E4CA900EC87A0 /* get.json in Resources */ = {isa = PBXBuildFile; fileRef = 4C60E3EB285E4CA900EC87A0 /* get.json */; };
@@ -88,7 +87,6 @@
 		4C60E440285E4CA900EC87A0 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3F7285E4CA900EC87A0 /* DetailViewModel.swift */; };
 		4C60E441285E4CA900EC87A0 /* _Details+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3F8285E4CA900EC87A0 /* _Details+Injection.swift */; };
 		4C60E443285E4CEC00EC87A0 /* _Main+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E442285E4CEC00EC87A0 /* _Main+Injection.swift */; };
-		4C60E446285E4E2A00EC87A0 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 4C60E445285E4E2A00EC87A0 /* Resolver */; };
 		4C60E449285E4EAB00EC87A0 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4C60E448285E4EAB00EC87A0 /* RxCocoa */; };
 		4C60E44B285E4EAB00EC87A0 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 4C60E44A285E4EAB00EC87A0 /* RxRelay */; };
 		4C60E44D285E4EAB00EC87A0 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4C60E44C285E4EAB00EC87A0 /* RxSwift */; };
@@ -97,7 +95,8 @@
 		4C60E457285E8CFF00EC87A0 /* TestExrtensionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E452285E8CFF00EC87A0 /* TestExrtensionsSpec.swift */; };
 		4C60E458285E8CFF00EC87A0 /* UserImageCacheSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E453285E8CFF00EC87A0 /* UserImageCacheSpec.swift */; };
 		4C60E459285E8CFF00EC87A0 /* XCTTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E454285E8CFF00EC87A0 /* XCTTest+Extensions.swift */; };
-		4C60E45A285E8CFF00EC87A0 /* Resolver+XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E455285E8CFF00EC87A0 /* Resolver+XCTest.swift */; };
+		4C60E45A285E8CFF00EC87A0 /* Factory+XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E455285E8CFF00EC87A0 /* Factory+XCTest.swift */; };
+		4CB198C228791909000922B5 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 4CB198C128791909000922B5 /* Factory */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -189,7 +188,6 @@
 		4C60E3E1285E4CA900EC87A0 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4C60E3E3285E4CA900EC87A0 /* FormFieldManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormFieldManager.swift; sourceTree = "<group>"; };
 		4C60E3E4285E4CA900EC87A0 /* FormField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormField.swift; sourceTree = "<group>"; };
-		4C60E3E6285E4CA900EC87A0 /* _Application+Injection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "_Application+Injection.swift"; sourceTree = "<group>"; };
 		4C60E3E8285E4CA900EC87A0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4C60E3E9285E4CA900EC87A0 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		4C60E3EB285E4CA900EC87A0 /* get.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = get.json; sourceTree = "<group>"; };
@@ -208,7 +206,7 @@
 		4C60E452285E8CFF00EC87A0 /* TestExrtensionsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestExrtensionsSpec.swift; sourceTree = "<group>"; };
 		4C60E453285E8CFF00EC87A0 /* UserImageCacheSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCacheSpec.swift; sourceTree = "<group>"; };
 		4C60E454285E8CFF00EC87A0 /* XCTTest+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTTest+Extensions.swift"; sourceTree = "<group>"; };
-		4C60E455285E8CFF00EC87A0 /* Resolver+XCTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Resolver+XCTest.swift"; sourceTree = "<group>"; };
+		4C60E455285E8CFF00EC87A0 /* Factory+XCTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Factory+XCTest.swift"; sourceTree = "<group>"; };
 		4C60E463285E984700EC87A0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -220,8 +218,8 @@
 				4C60E44B285E4EAB00EC87A0 /* RxRelay in Frameworks */,
 				4C60E449285E4EAB00EC87A0 /* RxCocoa in Frameworks */,
 				4C60E450285E4F5C00EC87A0 /* Builder in Frameworks */,
+				4CB198C228791909000922B5 /* Factory in Frameworks */,
 				4C60E44D285E4EAB00EC87A0 /* RxSwift in Frameworks */,
-				4C60E446285E4E2A00EC87A0 /* Resolver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,7 +295,7 @@
 				4C60E463285E984700EC87A0 /* README.md */,
 				4C60E380285E4AF500EC87A0 /* BuilderDemoTests.swift */,
 				4C60E451285E8CFF00EC87A0 /* MainViewModelSpec.swift */,
-				4C60E455285E8CFF00EC87A0 /* Resolver+XCTest.swift */,
+				4C60E455285E8CFF00EC87A0 /* Factory+XCTest.swift */,
 				4C60E452285E8CFF00EC87A0 /* TestExrtensionsSpec.swift */,
 				4C60E453285E8CFF00EC87A0 /* UserImageCacheSpec.swift */,
 				4C60E454285E8CFF00EC87A0 /* XCTTest+Extensions.swift */,
@@ -495,7 +493,6 @@
 		4C60E3E5285E4CA900EC87A0 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
-				4C60E3E6285E4CA900EC87A0 /* _Application+Injection.swift */,
 				4C60E3E7285E4CA900EC87A0 /* Main.storyboard */,
 				4C60E3E9285E4CA900EC87A0 /* MenuViewController.swift */,
 			);
@@ -565,11 +562,11 @@
 			);
 			name = BuilderDemo;
 			packageProductDependencies = (
-				4C60E445285E4E2A00EC87A0 /* Resolver */,
 				4C60E448285E4EAB00EC87A0 /* RxCocoa */,
 				4C60E44A285E4EAB00EC87A0 /* RxRelay */,
 				4C60E44C285E4EAB00EC87A0 /* RxSwift */,
 				4C60E44F285E4F5C00EC87A0 /* Builder */,
+				4CB198C128791909000922B5 /* Factory */,
 			);
 			productName = BuilderDemo;
 			productReference = 4C60E366285E4AF400EC87A0 /* BuilderDemo.app */;
@@ -644,8 +641,8 @@
 			);
 			mainGroup = 4C60E35D285E4AF400EC87A0;
 			packageReferences = (
-				4C60E444285E4E2A00EC87A0 /* XCRemoteSwiftPackageReference "Resolver" */,
 				4C60E447285E4EAB00EC87A0 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				4CB198C028791909000922B5 /* XCRemoteSwiftPackageReference "Factory" */,
 			);
 			productRefGroup = 4C60E367285E4AF400EC87A0 /* Products */;
 			projectDirPath = "";
@@ -724,7 +721,6 @@
 				4C60E400285E4CA900EC87A0 /* ScrollingTabBarTest.swift in Sources */,
 				4C60E417285E4CA900EC87A0 /* UIColor+Extensions.swift in Sources */,
 				4C60E3FC285E4CA900EC87A0 /* TestServices.swift in Sources */,
-				4C60E434285E4CA900EC87A0 /* _Application+Injection.swift in Sources */,
 				4C60E418285E4CA900EC87A0 /* UIImage+Extensions.swift in Sources */,
 				4C60E3FD285E4CA900EC87A0 /* Dismissible.swift in Sources */,
 				4C60E420285E4CA900EC87A0 /* MaskedTextField.swift in Sources */,
@@ -774,7 +770,7 @@
 			files = (
 				4C60E458285E8CFF00EC87A0 /* UserImageCacheSpec.swift in Sources */,
 				4C60E457285E8CFF00EC87A0 /* TestExrtensionsSpec.swift in Sources */,
-				4C60E45A285E8CFF00EC87A0 /* Resolver+XCTest.swift in Sources */,
+				4C60E45A285E8CFF00EC87A0 /* Factory+XCTest.swift in Sources */,
 				4C60E456285E8CFF00EC87A0 /* MainViewModelSpec.swift in Sources */,
 				4C60E459285E8CFF00EC87A0 /* XCTTest+Extensions.swift in Sources */,
 				4C60E381285E4AF500EC87A0 /* BuilderDemoTests.swift in Sources */,
@@ -876,7 +872,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -931,7 +927,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1011,7 +1007,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9ZVHDWC4WU;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hmlong.BuilderDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1032,7 +1028,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9ZVHDWC4WU;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hmlong.BuilderDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1132,7 +1128,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1183,7 +1179,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9ZVHDWC4WU;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hmlong.BuilderDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1258,7 +1254,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1309,7 +1305,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9ZVHDWC4WU;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hmlong.BuilderDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1389,14 +1385,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4C60E444285E4E2A00EC87A0 /* XCRemoteSwiftPackageReference "Resolver" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/hmlongco/Resolver.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		4C60E447285E4EAB00EC87A0 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -1405,14 +1393,17 @@
 				minimumVersion = 6.5.0;
 			};
 		};
+		4CB198C028791909000922B5 /* XCRemoteSwiftPackageReference "Factory" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hmlongco/Factory.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4C60E445285E4E2A00EC87A0 /* Resolver */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4C60E444285E4E2A00EC87A0 /* XCRemoteSwiftPackageReference "Resolver" */;
-			productName = Resolver;
-		};
 		4C60E448285E4EAB00EC87A0 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4C60E447285E4EAB00EC87A0 /* XCRemoteSwiftPackageReference "RxSwift" */;
@@ -1431,6 +1422,11 @@
 		4C60E44F285E4F5C00EC87A0 /* Builder */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Builder;
+		};
+		4CB198C128791909000922B5 /* Factory */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4CB198C028791909000922B5 /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = Factory;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -7,12 +7,12 @@
 
 import UIKit
 import Builder
-import Resolver
+import Factory
 import RxSwift
 
 class MainStackViewController: UIViewController {
     
-    @Injected var viewModel: MainViewModel
+    @Injected(Container.mainViewModel) var viewModel: MainViewModel
 
     let disposeBag = DisposeBag()
     

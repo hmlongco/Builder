@@ -6,12 +6,12 @@
 //
 
 import UIKit
-import Resolver
+import Factory
 import RxSwift
 
 class UserImageCache {
     
-    @Injected var userService: UserServiceType
+    @Injected(Container.userServiceType) var userService: UserServiceType
 
     func thumbnail(forUser user: User) -> Observable<UIImage?> {
         guard let path = user.picture?.medium else {

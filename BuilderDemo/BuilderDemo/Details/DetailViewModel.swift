@@ -7,12 +7,12 @@
 
 import UIKit
 import Builder
-import Resolver
+import Factory
 import RxSwift
 
 class DetailViewModel {
 
-    @Injected var cache: UserImageCache
+    @Injected(Container.userImageCache) var cache: UserImageCache
     
     @Variable var accepted = false
 

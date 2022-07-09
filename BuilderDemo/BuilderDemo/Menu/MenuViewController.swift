@@ -7,12 +7,8 @@
 
 import UIKit
 import Builder
-import Resolver
+import Factory
 import RxSwift
-
-extension Resolver {
-    static var context: Resolver!
-}
 
 class MenuViewController: UIViewController {
         

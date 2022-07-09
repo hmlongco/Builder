@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import Resolver
+import Factory
 import RxSwift
 import RxCocoa
 
@@ -15,11 +15,12 @@ import RxCocoa
 class MainViewModelSpec: XCTestCase {
     
     override func setUp() {
-        Resolver.resetUnitTestRegistrations()
+        Container.Registrations.push()
+        Container.resetUnitTestRegistrations()
     }
     
     override func tearDown() {
-        Resolver.root = Resolver.main  
+        Container.Registrations.pop()
     }
     
     func testInitialState() throws {
@@ -60,7 +61,7 @@ class MainViewModelSpec: XCTestCase {
     }
     
     func testEmptyState() throws {
-        Resolver.test.register { MockEmptyUserService() as UserServiceType }
+        Container.userServiceType.register { MockEmptyUserService() as UserServiceType }
         
         let vm = MainViewModel()
         var previousState: MainViewModel.State!
@@ -88,7 +89,7 @@ class MainViewModelSpec: XCTestCase {
     }
 
     func testErrorState() throws {
-        Resolver.test.register { MockErrorUserService() as UserServiceType }
+        Container.userServiceType.register { MockErrorUserService() as UserServiceType }
         
         let vm = MainViewModel()
         var previousState: MainViewModel.State!

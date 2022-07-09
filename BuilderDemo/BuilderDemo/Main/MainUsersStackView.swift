@@ -14,7 +14,7 @@
 
 import UIKit
 import Builder
-import Resolver
+import Factory
 import RxSwift
 
 
@@ -43,7 +43,7 @@ struct MainUsersStackView: ViewBuilder {
 
 struct StackCardView: ViewBuilder {
     
-    @Injected var cache: UserImageCache
+    @Injected(Container.userImageCache) var cache: UserImageCache
     
     let user: User
     

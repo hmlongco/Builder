@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Resolver
+import Factory
 import RxSwift
 import RxCocoa
 
@@ -18,7 +18,7 @@ protocol UserServiceType {
 
 struct UserService: UserServiceType {
     
-    @Injected var session: ClientSessionManager
+    @Injected(Container.clientSessionManager) var session: ClientSessionManager
     
     init() {
         session.configure { (interceptor: SSOAuthenticationInterceptor) in

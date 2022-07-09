@@ -14,7 +14,7 @@
 
 import UIKit
 import Builder
-import Resolver
+import Factory
 import RxSwift
 
 
@@ -79,7 +79,7 @@ class UserTableViewCell: BuilderInternalTableViewCell {
 
 struct MainCardView: ViewBuilder {
 
-    @Injected var cache: UserImageCache
+    @Injected(Container.userImageCache) var cache: UserImageCache
     
     let user: User
     

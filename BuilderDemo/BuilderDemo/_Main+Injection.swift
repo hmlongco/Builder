@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import Resolver
+import Factory
 
-extension Resolver {
-    static func registerMain() {
-        register { MainViewModel() }.scope(.shared)
+extension Container {
+    static let mainViewModel = Factory(scope: .shared) {
+        MainViewModel()
     }
 }

@@ -31,7 +31,7 @@ In Builder, screens are composed of views that are composed of views that are co
 ```swift
 struct DetailCardView: ViewBuilder {    
 
-    @Injected var viewModel: DetailViewModel
+    @Injected(Container.detailViewModel) var viewModel
 
     init(user: User) {
         viewModel.configure(user)
@@ -244,8 +244,8 @@ The view model defines the enumerated state and is updated when load is called.
 ```swift
 class MainViewModel {
     
-    @Injected var images: UserImageCache
-    @Injected var service: UserServiceType
+    @Injected(Container.userImageCache) var images
+    @Injected(Container.userServiceType) var service
 
     enum State: Equatable {
         case initial
@@ -310,24 +310,24 @@ $title
 
 ---
 
-## Using Resolver for MVVM
+## Using Factory for MVVM
 
-The application also demonstrates using the [Resolver](https://github.com/hmlongco/Resolver.git) dependency injection system to construct MVVM architectures.
+The application also demonstrates using the [Factory](https://github.com/hmlongco/Factory) dependency injection system to construct MVVM architectures.
 
 ```swift
 class MainViewModel {
     
-    @Injected var service: UserServiceType
-    @Injected var cache: UserImageCache
+    @Injected(Container.userImageCache) var images
+    @Injected(Container.userServiceType) var service
 
     ...
 }
 ```
-Above we're using Resolver's @Injected property wrapper to find and instantiate the dependencies needed for our main view model.
+Above we're using Factory's @Injected property wrapper to find and instantiate the dependencies needed for our main view model.
 
 Injections tie together the master view, detail view, the view models, and the API and data caching layers of the application.
 
-Note that this project will probably switch to using [Factory](https://github.com/hmlongco/Factory) in the near future.
+Note that this project formerly used [Resolver](https://github.com/hmlongco/Resolver.git).
 
 ___
 
@@ -407,3 +407,8 @@ Builder was designed, implemented, documented, and maintained by [Michael Long](
 * Twitter: @hmlco
 
 Michael was also one of Google's [Open Source Peer Reward](https://opensource.googleblog.com/2021/09/announcing-latest-open-source-peer-bonus-winners.html) winners in 2021 for his work on Resolver.
+
+## Additional Resources
+
+* [Factory: A Modern Swift Dependency Injection System](https://github.com/hmlongco/Factory)
+* [RxSwift: A ReactiveX implementation for Swift](https://github.com/ReactiveX/RxSwift)

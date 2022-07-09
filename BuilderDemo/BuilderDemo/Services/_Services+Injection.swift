@@ -6,13 +6,13 @@
 //
 
 import Foundation
-import Resolver
+import Factory
 
-extension Resolver {
-    public static func registerServices() {
-
-        register { UserImageCache() }.scope(.shared)
-        register { UserService() as UserServiceType }
-
+extension Container {
+    static let userImageCache = Factory(scope: .shared) {
+        UserImageCache()
+    }
+    static let userServiceType = Factory<UserServiceType> {
+        UserService()
     }
 }

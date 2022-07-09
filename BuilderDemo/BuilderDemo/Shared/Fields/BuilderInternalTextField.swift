@@ -176,9 +176,10 @@ public class BuilderInternalTextField: UITextField, UITextFieldDelegate {
             let newLabel = UILabel(frame: newFrame)
             newLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
             newLabel.textColor = .red
-            newLabel.isAccessibilityElement = false
+            newLabel.isAccessibilityElement = true
             newLabel.translatesAutoresizingMaskIntoConstraints = false
-            superview?.insertSubview(newLabel, aboveSubview: self)
+            superview?.clipsToBounds = false
+            superview?.insertSubview(newLabel, at: 0)
             newLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
             newLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
             newLabel.topAnchor.constraint(equalTo: self.bottomAnchor, constant: 1).isActive = true
@@ -189,7 +190,8 @@ public class BuilderInternalTextField: UITextField, UITextFieldDelegate {
         if let accessibilityIdentifier = self.accessibilityIdentifier {
             errorLabel?.accessibilityIdentifier = accessibilityIdentifier + ".error"
         }
-        accessibilityLabel = "Error: " + text.lowercased()
+        let name = placeholder ?? "Text field"
+        errorLabel?.accessibilityLabel = name + " error: " + text
         errorLabel?.text = text
     }
 

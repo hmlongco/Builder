@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import Resolver
+import Factory
 import RxSwift
 import RxCocoa
 
@@ -15,11 +15,12 @@ import RxCocoa
 class UserImageCacheSpec: XCTestCase {
     
     override func setUp() {
-        Resolver.resetUnitTestRegistrations()
+        Container.Registrations.push()
+        Container.resetUnitTestRegistrations()
     }
-    
+
     override func tearDown() {
-        Resolver.root = .main
+        Container.Registrations.pop()
     }
 
     func testImageThumbnails() throws {
@@ -51,7 +52,7 @@ class UserImageCacheSpec: XCTestCase {
     }
     
     func testThunbnailError() throws {
-        Resolver.test.register { MockErrorUserService() as UserServiceType }
+        Container.userServiceType.register { MockErrorUserService() as UserServiceType }
 
         let cache = UserImageCache()
         let image1 = cache.thumbnail(forUser: User.mockJQ).asObservable()
