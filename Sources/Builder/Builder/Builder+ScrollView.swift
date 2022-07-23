@@ -74,6 +74,16 @@ extension ModifiableView where Base: BuilderInternalScrollView {
     public func onDidScroll(_ handler: @escaping (_ context: ViewBuilderContext<UIScrollView>) -> Void) -> ViewModifier<Base> {
         ViewModifier(modifiableView) { $0.scrollViewDidScrollHandler = handler }
     }
+  
+    @discardableResult
+    public func showVerticalIndicator(_ show: Bool) -> ViewModifier<Base> {
+      ViewModifier(modifiableView, keyPath: \.showsVerticalScrollIndicator, value: show)
+    }
+
+    @discardableResult
+    public func showHorizontalIndicator(_ show: Bool) -> ViewModifier<Base> {
+      ViewModifier(modifiableView, keyPath: \.showsHorizontalScrollIndicator, value: show)
+    }
 
 }
 
