@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		4C54F8F128B832FD0023EA99 /* LoginCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C54F8F028B832FD0023EA99 /* LoginCardView.swift */; };
+		4C54F8F328B837D80023EA99 /* LoginStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C54F8F228B837D80023EA99 /* LoginStatusView.swift */; };
+		4C54F8F528B838070023EA99 /* LoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C54F8F428B838070023EA99 /* LoadingCardView.swift */; };
+		4C54F8F728B8382F0023EA99 /* NotYetImplementedCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C54F8F628B8382F0023EA99 /* NotYetImplementedCardView.swift */; };
+		4C54F8F928B838A50023EA99 /* LoginErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C54F8F828B838A50023EA99 /* LoginErrorView.swift */; };
 		4C60E36A285E4AF400EC87A0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E369285E4AF400EC87A0 /* AppDelegate.swift */; };
 		4C60E36C285E4AF400EC87A0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E36B285E4AF400EC87A0 /* SceneDelegate.swift */; };
 		4C60E36E285E4AF400EC87A0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E36D285E4AF400EC87A0 /* ViewController.swift */; };
@@ -119,6 +123,10 @@
 
 /* Begin PBXFileReference section */
 		4C54F8F028B832FD0023EA99 /* LoginCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCardView.swift; sourceTree = "<group>"; };
+		4C54F8F228B837D80023EA99 /* LoginStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginStatusView.swift; sourceTree = "<group>"; };
+		4C54F8F428B838070023EA99 /* LoadingCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCardView.swift; sourceTree = "<group>"; };
+		4C54F8F628B8382F0023EA99 /* NotYetImplementedCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotYetImplementedCardView.swift; sourceTree = "<group>"; };
+		4C54F8F828B838A50023EA99 /* LoginErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginErrorView.swift; sourceTree = "<group>"; };
 		4C60E366285E4AF400EC87A0 /* BuilderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuilderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C60E369285E4AF400EC87A0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C60E36B285E4AF400EC87A0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -477,9 +485,13 @@
 		4C60E3DF285E4CA900EC87A0 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				4C54F8F428B838070023EA99 /* LoadingCardView.swift */,
 				4C54F8F028B832FD0023EA99 /* LoginCardView.swift */,
-				4C60E3E0285E4CA900EC87A0 /* LoginViewModel.swift */,
+				4C54F8F828B838A50023EA99 /* LoginErrorView.swift */,
+				4C54F8F228B837D80023EA99 /* LoginStatusView.swift */,
 				4C60E3E1285E4CA900EC87A0 /* LoginViewController.swift */,
+				4C60E3E0285E4CA900EC87A0 /* LoginViewModel.swift */,
+				4C54F8F628B8382F0023EA99 /* NotYetImplementedCardView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -696,6 +708,7 @@
 			files = (
 				4C60E427285E4CA900EC87A0 /* MainStackViewController.swift in Sources */,
 				4C60E3F9285E4CA900EC87A0 /* UserService.swift in Sources */,
+				4C54F8F328B837D80023EA99 /* LoginStatusView.swift in Sources */,
 				4C60E416285E4CA900EC87A0 /* String+Extensions.swift in Sources */,
 				4C60E36E285E4AF400EC87A0 /* ViewController.swift in Sources */,
 				4C60E3FE285E4CA900EC87A0 /* TabBarTest.swift in Sources */,
@@ -714,10 +727,12 @@
 				4C60E441285E4CA900EC87A0 /* _Details+Injection.swift in Sources */,
 				4C60E415285E4CA900EC87A0 /* UIView+Extensions.swift in Sources */,
 				4C60E40B285E4CA900EC87A0 /* ClientRequestBuilder+RxSwift.swift in Sources */,
+				4C54F8F528B838070023EA99 /* LoadingCardView.swift in Sources */,
 				4C60E424285E4CA900EC87A0 /* MaxWidthTextField.swift in Sources */,
 				4C60E409285E4CA900EC87A0 /* URLSessionManager.swift in Sources */,
 				4C60E41A285E4CA900EC87A0 /* Rx+Extensions.swift in Sources */,
 				4C60E412285E4CA900EC87A0 /* StandardHeadersInterceptor.swift in Sources */,
+				4C54F8F728B8382F0023EA99 /* NotYetImplementedCardView.swift in Sources */,
 				4C60E40D285E4CA900EC87A0 /* SessionLoggingInterceptorr.swift in Sources */,
 				4C60E440285E4CA900EC87A0 /* DetailViewModel.swift in Sources */,
 				4C60E405285E4CA900EC87A0 /* ClientRequestBuilder.swift in Sources */,
@@ -732,6 +747,7 @@
 				4C60E425285E4CA900EC87A0 /* MainUsersStackView.swift in Sources */,
 				4C60E43E285E4CA900EC87A0 /* DetailViewController.swift in Sources */,
 				4C60E42B285E4CA900EC87A0 /* MetaTextField.swift in Sources */,
+				4C54F8F928B838A50023EA99 /* LoginErrorView.swift in Sources */,
 				4C60E42A285E4CA900EC87A0 /* User.swift in Sources */,
 				4C60E40C285E4CA900EC87A0 /* ClientRequestBuilder+Combine.swift in Sources */,
 				4C60E43B285E4CA900EC87A0 /* ContactFormViewController.swift in Sources */,

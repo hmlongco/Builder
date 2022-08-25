@@ -40,7 +40,7 @@ struct LoginView: ViewBuilder {
                 VStackView {
                     ContainerView {
                         VStackView {
-                            StatusView(status: viewModel.$status)
+                            LoginStatusView()
 
                             demoLabel
                                 .identifier("LABEL")
@@ -115,49 +115,4 @@ struct LoginView: ViewBuilder {
         parent.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20).isActive = true
     }
 
-}
-
-struct StatusView: ViewBuilder {
-    @Variable var status: String?
-    var body: View {
-        LabelView($status)
-            .alignment(.center)
-            .font(.body)
-            .color(.white)
-            .numberOfLines(0)
-            .hidden(true)
-            .onReceive($status.asObservable().skip(1), handler: { context in
-                UIView.animate(withDuration: 0.2) {
-                    context.view.isHidden = context.value == nil
-                }
-            })
-    }
-}
-
-struct LoadingCardView: ViewBuilder {
-    var body: View {
-        DLSCardView {
-            VStackView {
-                With(UIActivityIndicatorView()) {
-                    $0.startAnimating()
-                }
-            }
-            .padding(16)
-        }
-    }
-}
-
-struct NotYetImplementedCardView: ViewBuilder {
-    var body: View {
-        DLSCardView {
-            VStackView {
-                LabelView("Not yet implemented...")
-                    .alignment(.center)
-                    .font(.headline)
-                    .color(.secondaryLabel)
-            }
-            .padding(16)
-        }
-        .height(150)
-    }
 }

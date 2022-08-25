@@ -11,7 +11,6 @@ import Factory
 import RxSwift
 import SwiftUI
 
-
 class LoginViewModel {
 
     enum State {
@@ -27,14 +26,7 @@ class LoginViewModel {
     @Variable var password: String? = ""
     @Variable var passwordError: String? = nil
 
-    @Variable var status: String? = nil
     @Variable var error: String? = nil
-
-    init() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            self.status = "This is a system status message that should be shown to the user."
-        }
-    }
 
     func login() {
         usernameError = (username?.isEmpty ?? true) ? "Required" : nil
