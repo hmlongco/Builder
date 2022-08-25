@@ -72,7 +72,7 @@ class ContactFormViewModel: FormFieldManager<ContactFormIDS> {
                     $0.stripReturningDigitsOnly().count == 10 ? nil : "Phone number must be 10 digits long"
                 },
 
-            FormField(id: ContactFormIDS.agree, value: false)
+            FormField(id: ContactFormIDS.agree, value: true)
                 .isRequired()
         ]
 

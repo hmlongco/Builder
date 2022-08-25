@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C54F8F128B832FD0023EA99 /* LoginCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C54F8F028B832FD0023EA99 /* LoginCardView.swift */; };
 		4C60E36A285E4AF400EC87A0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E369285E4AF400EC87A0 /* AppDelegate.swift */; };
 		4C60E36C285E4AF400EC87A0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E36B285E4AF400EC87A0 /* SceneDelegate.swift */; };
 		4C60E36E285E4AF400EC87A0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E36D285E4AF400EC87A0 /* ViewController.swift */; };
@@ -117,6 +118,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C54F8F028B832FD0023EA99 /* LoginCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCardView.swift; sourceTree = "<group>"; };
 		4C60E366285E4AF400EC87A0 /* BuilderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuilderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C60E369285E4AF400EC87A0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C60E36B285E4AF400EC87A0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -475,6 +477,7 @@
 		4C60E3DF285E4CA900EC87A0 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				4C54F8F028B832FD0023EA99 /* LoginCardView.swift */,
 				4C60E3E0285E4CA900EC87A0 /* LoginViewModel.swift */,
 				4C60E3E1285E4CA900EC87A0 /* LoginViewController.swift */,
 			);
@@ -696,6 +699,7 @@
 				4C60E416285E4CA900EC87A0 /* String+Extensions.swift in Sources */,
 				4C60E36E285E4AF400EC87A0 /* ViewController.swift in Sources */,
 				4C60E3FE285E4CA900EC87A0 /* TabBarTest.swift in Sources */,
+				4C54F8F128B832FD0023EA99 /* LoginCardView.swift in Sources */,
 				4C60E42C285E4CA900EC87A0 /* StandardErrorPage.swift in Sources */,
 				4C60E413285E4CA900EC87A0 /* _Networking+Injection.swift in Sources */,
 				4C60E436285E4CA900EC87A0 /* MenuViewController.swift in Sources */,
