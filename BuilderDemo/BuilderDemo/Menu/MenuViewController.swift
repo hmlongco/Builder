@@ -18,10 +18,6 @@ class MenuViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.embed(MenuTableView())
 
-//        let vc = CustomTabBarViewController()
-//        let vc = GeneralTestViewController()
-//        let vc = CornerCardViewController()
-//        let vc = LoginViewController()
 //        let vc = ContactFormViewController()
 //        navigationController?.pushViewController(vc, animated: false)
     }

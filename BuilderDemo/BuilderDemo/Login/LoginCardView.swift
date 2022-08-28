@@ -34,7 +34,7 @@ struct LoginCardView: ViewBuilder {
                     LabelView(viewModel.$usernameError)
                         .font(.footnote)
                         .color(.red)
-                        .hidden(bind: viewModel.$usernameError.asObservable().map { $0 == nil })
+                        .hidden(bind: viewModel.hideUsernameError)
                         .padding(h: 8, v: 0)
                 }
                 .spacing(2)
@@ -48,7 +48,7 @@ struct LoginCardView: ViewBuilder {
                     LabelView(viewModel.$passwordError)
                         .font(.footnote)
                         .color(.red)
-                        .hidden(bind: viewModel.$passwordError.asObservable().map { $0 == nil })
+                        .hidden(bind: viewModel.hidePasswordError)
                         .padding(h: 8, v: 0)
                 }
                 .spacing(2)

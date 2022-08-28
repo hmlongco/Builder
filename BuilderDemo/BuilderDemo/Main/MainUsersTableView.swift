@@ -22,13 +22,7 @@ struct MainUsersTableView: ViewBuilder {
     
     let users: [User]
 
-    private let tableView = BuilderInternalTableView()
-    
     var body: View {
-//        VStackView {
-//            LabelView("TEST")
-//                .backgroundColor(.white)
-//                .height(60)
             TableView(DynamicItemViewBuilder(users) { user in
                 TableViewCell {
                     MainCardView(user: user)
@@ -39,10 +33,39 @@ struct MainUsersTableView: ViewBuilder {
                     return false
                 }
             })
-//        }
-//        .spacing(0)
      }
     
+}
+
+struct MainCardView: ViewBuilder {
+
+    @Injected(Container.userImageCache) var cache: UserImageCache
+    
+    let user: User
+    
+    var body: View {
+        HStackView {
+            ImageView(thumbnail())
+                .cornerRadius(25)
+                .frame(height: 50, width: 50)
+            VStackView {
+                LabelView(user.fullname)
+                    .font(.preferredFont(forTextStyle: .body))
+                LabelView(user.email)
+                    .font(.preferredFont(forTextStyle: .footnote))
+                    .color(.secondaryLabel)
+                SpacerView()
+            }
+            .spacing(4)
+        }
+    }
+
+    func thumbnail() -> Observable<UIImage?> {
+        return cache.thumbnailOrPlaceholder(forUser: user)
+            .asObservable()
+            .observe(on: MainScheduler.instance)
+    }
+
 }
 
 class UserTableViewCell: BuilderInternalTableViewCell {
@@ -77,33 +100,3 @@ class UserTableViewCell: BuilderInternalTableViewCell {
 
 }
 
-struct MainCardView: ViewBuilder {
-
-    @Injected(Container.userImageCache) var cache: UserImageCache
-    
-    let user: User
-    
-    var body: View {
-        HStackView {
-            ImageView(thumbnail())
-                .cornerRadius(25)
-                .frame(height: 50, width: 50)
-            VStackView {
-                LabelView(user.fullname)
-                    .font(.preferredFont(forTextStyle: .body))
-                LabelView(user.email)
-                    .font(.preferredFont(forTextStyle: .footnote))
-                    .color(.secondaryLabel)
-                SpacerView()
-            }
-            .spacing(4)
-        }
-    }
-
-    func thumbnail() -> Observable<UIImage?> {
-        return cache.thumbnailOrPlaceholder(forUser: user)
-            .asObservable()
-            .observe(on: MainScheduler.instance)
-    }
-
-}

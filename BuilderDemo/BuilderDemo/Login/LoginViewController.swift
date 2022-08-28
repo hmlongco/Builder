@@ -20,10 +20,23 @@ class LoginViewController: UIViewController {
 
     var viewModel = LoginViewModel()
 
+    private var disposeBag = DisposeBag()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupSubscriptions()
         view.backgroundColor = .secondarySystemBackground
         view.embed(LoginView(viewModel: viewModel))
+    }
+
+    func setupSubscriptions() {
+        disposeBag.insert {
+            viewModel.$done.asObservable()
+                .filter { $0 }
+                .subscribe { [weak self] _ in
+                    self?.navigationController?.popViewController(animated: true)
+                }
+        }
     }
 
 }
@@ -64,9 +77,9 @@ struct LoginView: ViewBuilder {
                                     .height(min: 150)
                             case .loaded:
                                 LoginCardView(viewModel: viewModel)
-                                    .accessibilityIdentifier(IDS.dlscard) // testing identifiers
                             }
                         }
+                        .accessibilityIdentifier(IDS.dlscard) // testing identifiers
                         .customConstraints(layout)
                     }
 

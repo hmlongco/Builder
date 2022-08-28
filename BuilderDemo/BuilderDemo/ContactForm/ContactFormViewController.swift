@@ -43,7 +43,7 @@ class ContactFormViewController: UIViewController {
     }
 
     func content() -> View {
-//        FABMenuView(menuItems: menuItems) {
+        FABMenuView(menuItems: menuItems) {
             VerticalScrollView {
                 VStackView {
                     ErrorSection(viewModel: self.viewModel)
@@ -80,7 +80,7 @@ class ContactFormViewController: UIViewController {
             .automaticallyAdjustForKeyboard()
             .hideKeyboardOnBackgroundTap()
         }
-//    }
+    }
 
 }
 

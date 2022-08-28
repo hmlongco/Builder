@@ -26,7 +26,16 @@ class LoginViewModel {
     @Variable var password: String? = ""
     @Variable var passwordError: String? = nil
 
+    @Variable var done: Bool = false
     @Variable var error: String? = nil
+
+    var hideUsernameError: Observable<Bool> {
+        $usernameError.asObservable().map { $0 == nil }
+    }
+
+    var hidePasswordError: Observable<Bool> {
+        $passwordError.asObservable().map { $0 == nil }
+    }
 
     func login() {
         usernameError = (username?.isEmpty ?? true) ? "Required" : nil
@@ -34,6 +43,13 @@ class LoginViewModel {
 
         let showError = usernameError != nil || passwordError != nil
         error = showError ? "This is an error message that should be shown to the user." : nil
+
+        if error == nil {
+            state = .loading
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.done = true
+            }
+        }
     }
 
     func load() {
