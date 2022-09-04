@@ -1,5 +1,5 @@
 //
-//  ClientSessionManager.swift
+//  BaseSessionManager.swift
 //  ViewBuilder
 //
 //  Created by Michael Long on 10/19/20.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class URLSessionManager: ClientSessionManager {
+class BaseSessionManager: ClientSessionManager {
 
     var base: String
     var session: URLSession

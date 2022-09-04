@@ -36,7 +36,7 @@
 		4C60E406285E4CA900EC87A0 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3AD285E4CA900EC87A0 /* MockURLProtocol.swift */; };
 		4C60E407285E4CA900EC87A0 /* ClientSessionManagerInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3AE285E4CA900EC87A0 /* ClientSessionManagerInterceptor.swift */; };
 		4C60E408285E4CA900EC87A0 /* ClientSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3AF285E4CA900EC87A0 /* ClientSessionManager.swift */; };
-		4C60E409285E4CA900EC87A0 /* URLSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3B0285E4CA900EC87A0 /* URLSessionManager.swift */; };
+		4C60E409285E4CA900EC87A0 /* BaseSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3B0285E4CA900EC87A0 /* BaseSessionManager.swift */; };
 		4C60E40A285E4CA900EC87A0 /* ClientRequestBuilder+Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3B2285E4CA900EC87A0 /* ClientRequestBuilder+Result.swift */; };
 		4C60E40B285E4CA900EC87A0 /* ClientRequestBuilder+RxSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3B3285E4CA900EC87A0 /* ClientRequestBuilder+RxSwift.swift */; };
 		4C60E40C285E4CA900EC87A0 /* ClientRequestBuilder+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E3B4285E4CA900EC87A0 /* ClientRequestBuilder+Combine.swift */; };
@@ -156,7 +156,7 @@
 		4C60E3AD285E4CA900EC87A0 /* MockURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
 		4C60E3AE285E4CA900EC87A0 /* ClientSessionManagerInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientSessionManagerInterceptor.swift; sourceTree = "<group>"; };
 		4C60E3AF285E4CA900EC87A0 /* ClientSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientSessionManager.swift; sourceTree = "<group>"; };
-		4C60E3B0285E4CA900EC87A0 /* URLSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionManager.swift; sourceTree = "<group>"; };
+		4C60E3B0285E4CA900EC87A0 /* BaseSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseSessionManager.swift; sourceTree = "<group>"; };
 		4C60E3B2285E4CA900EC87A0 /* ClientRequestBuilder+Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ClientRequestBuilder+Result.swift"; sourceTree = "<group>"; };
 		4C60E3B3285E4CA900EC87A0 /* ClientRequestBuilder+RxSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ClientRequestBuilder+RxSwift.swift"; sourceTree = "<group>"; };
 		4C60E3B4285E4CA900EC87A0 /* ClientRequestBuilder+Combine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ClientRequestBuilder+Combine.swift"; sourceTree = "<group>"; };
@@ -385,7 +385,7 @@
 				4C60E3AD285E4CA900EC87A0 /* MockURLProtocol.swift */,
 				4C60E3AE285E4CA900EC87A0 /* ClientSessionManagerInterceptor.swift */,
 				4C60E3AF285E4CA900EC87A0 /* ClientSessionManager.swift */,
-				4C60E3B0285E4CA900EC87A0 /* URLSessionManager.swift */,
+				4C60E3B0285E4CA900EC87A0 /* BaseSessionManager.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -729,7 +729,7 @@
 				4C60E40B285E4CA900EC87A0 /* ClientRequestBuilder+RxSwift.swift in Sources */,
 				4C54F8F528B838070023EA99 /* LoadingCardView.swift in Sources */,
 				4C60E424285E4CA900EC87A0 /* MaxWidthTextField.swift in Sources */,
-				4C60E409285E4CA900EC87A0 /* URLSessionManager.swift in Sources */,
+				4C60E409285E4CA900EC87A0 /* BaseSessionManager.swift in Sources */,
 				4C60E41A285E4CA900EC87A0 /* Rx+Extensions.swift in Sources */,
 				4C60E412285E4CA900EC87A0 /* StandardHeadersInterceptor.swift in Sources */,
 				4C54F8F728B8382F0023EA99 /* NotYetImplementedCardView.swift in Sources */,

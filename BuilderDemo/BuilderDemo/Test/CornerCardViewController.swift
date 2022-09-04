@@ -109,11 +109,6 @@ private extension UISearchBar {
 }
 
 
-
-
-
-
-
 struct CustomCardView: ViewBuilder {
     let text: String
     var body: View {

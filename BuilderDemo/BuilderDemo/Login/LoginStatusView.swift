@@ -13,17 +13,17 @@ import RxCocoa
 
 struct LoginStatusView: ViewBuilder {
 
-    @Variable var status: String? = nil
+    @Variable private var status: String? = nil
 
     var body: View {
         LabelView($status)
             .alignment(.center)
             .font(.body)
-            .color(.white)
+            .color(.yellow)
             .numberOfLines(0)
             .hidden(true)
             .onReceive($status.asObservable().skip(1), handler: { context in
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: 0.3) {
                     context.view.isHidden = context.value == nil
                 }
             })

@@ -51,16 +51,14 @@ struct LoginView: ViewBuilder {
 
             VerticalScrollView {
                 VStackView {
-                    ContainerView {
-                        VStackView {
-                            LoginStatusView()
-
-                            demoLabel
-                                .identifier("LABEL")
-                        }
-                        .accessibilityIdentifier(IDS.logoBlock)
-                        .spacing(20)
+                    VStackView {
+                        LoginStatusView()
+                        
+                        demoLabel
+                            .identifier("LABEL")
                     }
+                    .accessibilityIdentifier(IDS.logoBlock)
+                    .spacing(20)
                     .padding(20)
                     .backgroundColor(.black)
 

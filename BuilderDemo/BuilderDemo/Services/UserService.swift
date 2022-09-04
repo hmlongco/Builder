@@ -62,6 +62,10 @@ struct UserService: UserServiceType {
             .observe(on: MainScheduler.instance)
     }
 
+    private struct UserResultType: Codable {
+        let results: [User]
+    }
+
 }
 
 #if MOCK
@@ -111,8 +115,3 @@ struct MockErrorUserService: UserServiceType {
     }
 }
 #endif
-
-
-struct UserResultType: Codable {
-    let results: [User]
-}

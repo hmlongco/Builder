@@ -30,8 +30,6 @@ extension ClientRequestBuilder {
     func delete() -> Single<Data> {
         execute(.delete)
     }
-    
-
 
     func execute(_ method: HTTPMethod = .get) -> Single<Data> {
         execute(method)

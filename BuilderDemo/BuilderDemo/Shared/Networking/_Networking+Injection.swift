@@ -42,7 +42,7 @@ extension Container {
     }
 
     private static let clientSessionManagerAPI = Factory<ClientSessionManager> {
-        URLSessionManager(base: "https://randomuser.me/api", session: urlSession())
+        BaseSessionManager(base: "https://randomuser.me/api", session: urlSession())
             .interceptor(StatusErrorMappingInterceptor())
             .interceptor(StandardHeadersInterceptor())
             .interceptor(SSOAuthenticationInterceptor())
@@ -57,7 +57,7 @@ extension Container {
         MockURLProtocol.set(forPath: "/test", status: 200, json: "{\"name\":\"Michael\":}")
         MockURLProtocol.setupDefaultJSONBundleHandler()
 
-        return URLSessionManager(base: "/", session: urlSession())
+        return BaseSessionManager(base: "/", session: urlSession())
             .interceptor(StatusErrorMappingInterceptor())
             .interceptor(StandardHeadersInterceptor())
             .interceptor(SSOAuthenticationInterceptor())
@@ -66,7 +66,7 @@ extension Container {
     }
 
     private static let clientSessionManagerTest = Factory<ClientSessionManager> {
-        URLSessionManager(base: "/", session: urlSession())
+        BaseSessionManager(base: "/", session: urlSession())
             .interceptor(StatusErrorMappingInterceptor())
             .interceptor(StandardHeadersInterceptor())
             .interceptor(SSOAuthenticationInterceptor())
