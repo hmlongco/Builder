@@ -95,12 +95,12 @@
 		4C60E449285E4EAB00EC87A0 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4C60E448285E4EAB00EC87A0 /* RxCocoa */; };
 		4C60E44B285E4EAB00EC87A0 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 4C60E44A285E4EAB00EC87A0 /* RxRelay */; };
 		4C60E44D285E4EAB00EC87A0 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4C60E44C285E4EAB00EC87A0 /* RxSwift */; };
-		4C60E450285E4F5C00EC87A0 /* Builder in Frameworks */ = {isa = PBXBuildFile; productRef = 4C60E44F285E4F5C00EC87A0 /* Builder */; };
 		4C60E456285E8CFF00EC87A0 /* MainViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E451285E8CFF00EC87A0 /* MainViewModelSpec.swift */; };
 		4C60E457285E8CFF00EC87A0 /* TestExrtensionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E452285E8CFF00EC87A0 /* TestExrtensionsSpec.swift */; };
 		4C60E458285E8CFF00EC87A0 /* UserImageCacheSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E453285E8CFF00EC87A0 /* UserImageCacheSpec.swift */; };
 		4C60E459285E8CFF00EC87A0 /* XCTTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E454285E8CFF00EC87A0 /* XCTTest+Extensions.swift */; };
 		4C60E45A285E8CFF00EC87A0 /* Factory+XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E455285E8CFF00EC87A0 /* Factory+XCTest.swift */; };
+		4C6EB3FA28D6709D00D17E7D /* Builder in Frameworks */ = {isa = PBXBuildFile; productRef = 4C6EB3F928D6709D00D17E7D /* Builder */; };
 		4CB198C228791909000922B5 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 4CB198C128791909000922B5 /* Factory */; };
 /* End PBXBuildFile section */
 
@@ -139,7 +139,6 @@
 		4C60E386285E4AF500EC87A0 /* BuilderDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BuilderDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C60E38A285E4AF500EC87A0 /* BuilderDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuilderDemoUITests.swift; sourceTree = "<group>"; };
 		4C60E38C285E4AF500EC87A0 /* BuilderDemoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuilderDemoUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		4C60E39A285E4B2000EC87A0 /* Builder */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Builder; path = ..; sourceTree = "<group>"; };
 		4C60E39C285E4CA900EC87A0 /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		4C60E39D285E4CA900EC87A0 /* _Services+Injection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "_Services+Injection.swift"; sourceTree = "<group>"; };
 		4C60E39E285E4CA900EC87A0 /* UserImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCache.swift; sourceTree = "<group>"; };
@@ -218,6 +217,7 @@
 		4C60E454285E8CFF00EC87A0 /* XCTTest+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTTest+Extensions.swift"; sourceTree = "<group>"; };
 		4C60E455285E8CFF00EC87A0 /* Factory+XCTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Factory+XCTest.swift"; sourceTree = "<group>"; };
 		4C60E463285E984700EC87A0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		4C6EB3F828D6708100D17E7D /* Builder */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Builder; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,7 +227,7 @@
 			files = (
 				4C60E44B285E4EAB00EC87A0 /* RxRelay in Frameworks */,
 				4C60E449285E4EAB00EC87A0 /* RxCocoa in Frameworks */,
-				4C60E450285E4F5C00EC87A0 /* Builder in Frameworks */,
+				4C6EB3FA28D6709D00D17E7D /* Builder in Frameworks */,
 				4CB198C228791909000922B5 /* Factory in Frameworks */,
 				4C60E44D285E4EAB00EC87A0 /* RxSwift in Frameworks */,
 			);
@@ -325,7 +325,7 @@
 		4C60E399285E4B2000EC87A0 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				4C60E39A285E4B2000EC87A0 /* Builder */,
+				4C6EB3F828D6708100D17E7D /* Builder */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -580,8 +580,8 @@
 				4C60E448285E4EAB00EC87A0 /* RxCocoa */,
 				4C60E44A285E4EAB00EC87A0 /* RxRelay */,
 				4C60E44C285E4EAB00EC87A0 /* RxSwift */,
-				4C60E44F285E4F5C00EC87A0 /* Builder */,
 				4CB198C128791909000922B5 /* Factory */,
+				4C6EB3F928D6709D00D17E7D /* Builder */,
 			);
 			productName = BuilderDemo;
 			productReference = 4C60E366285E4AF400EC87A0 /* BuilderDemo.app */;
@@ -1439,7 +1439,7 @@
 			package = 4C60E447285E4EAB00EC87A0 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
 		};
-		4C60E44F285E4F5C00EC87A0 /* Builder */ = {
+		4C6EB3F928D6709D00D17E7D /* Builder */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Builder;
 		};
