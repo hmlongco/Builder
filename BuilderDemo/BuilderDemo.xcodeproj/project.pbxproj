@@ -419,14 +419,14 @@
 		4C60E3BD285E4CA900EC87A0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				4C60E3BE285E4CA900EC87A0 /* UIViewController+Extensions.swift */,
-				4C60E3BF285E4CA900EC87A0 /* UIView+Extensions.swift */,
+				4C60E3C5285E4CA900EC87A0 /* Functions+Extensions.swift */,
+				4C60E3C4285E4CA900EC87A0 /* Rx+Extensions.swift */,
 				4C60E3C0285E4CA900EC87A0 /* String+Extensions.swift */,
 				4C60E3C1285E4CA900EC87A0 /* UIColor+Extensions.swift */,
 				4C60E3C2285E4CA900EC87A0 /* UIImage+Extensions.swift */,
 				4C60E3C3285E4CA900EC87A0 /* UITextField+Styles.swift */,
-				4C60E3C4285E4CA900EC87A0 /* Rx+Extensions.swift */,
-				4C60E3C5285E4CA900EC87A0 /* Functions+Extensions.swift */,
+				4C60E3BF285E4CA900EC87A0 /* UIView+Extensions.swift */,
+				4C60E3BE285E4CA900EC87A0 /* UIViewController+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";

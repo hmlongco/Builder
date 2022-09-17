@@ -15,11 +15,9 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let imageView = ImageView(named: "Logo-DK")
+        navigationItem.titleView = ImageView(named: "Logo-DK")
             .frame(height: 50, width: 50)
             .build()
-
-        navigationItem.titleView = imageView
 
         view.backgroundColor = .systemBackground
         view.embed(MenuStackView())
@@ -34,6 +32,7 @@ struct MenuStackView: ViewBuilder {
     var body: View {
         ZStackView {
             ImageView(named: "vector")
+
             VerticalScrollView {
                 VStackView {
                     MenuHeaderView()
@@ -42,10 +41,7 @@ struct MenuStackView: ViewBuilder {
                         MenuOptionView(option: option)
                     }
 
-                    LabelView("Created by Michael Long, 2022")
-                        .alignment(.center)
-                        .font(.footnote)
-                        .color(.secondaryLabel)
+                    MenuFootnoteView()
 
                     SpacerView()
                 }
@@ -90,7 +86,20 @@ struct MenuOptionView: ViewBuilder {
         .cornerRadius(10)
         .shadow(color: .black.withAlphaComponent(0.5), radius: 3, offset: CGSize(width: 3, height: 3))
         .onTapGesture { context in
-            context.push(option.destination())
+            context.view.addHighlightOverlay(animated: true, removeAfter: 0.3)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                context.push(option.destination())
+            }
         }
     }
 }
+
+struct MenuFootnoteView: ViewBuilder {
+    var body: View {
+        LabelView("Created by Michael Long, 2022")
+            .alignment(.center)
+            .font(.footnote)
+            .color(.secondaryLabel)
+    }
+}
+
