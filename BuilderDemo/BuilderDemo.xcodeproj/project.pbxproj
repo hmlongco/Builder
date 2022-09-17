@@ -101,6 +101,8 @@
 		4C60E459285E8CFF00EC87A0 /* XCTTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E454285E8CFF00EC87A0 /* XCTTest+Extensions.swift */; };
 		4C60E45A285E8CFF00EC87A0 /* Factory+XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C60E455285E8CFF00EC87A0 /* Factory+XCTest.swift */; };
 		4C6EB3FA28D6709D00D17E7D /* Builder in Frameworks */ = {isa = PBXBuildFile; productRef = 4C6EB3F928D6709D00D17E7D /* Builder */; };
+		4C6EB3FC28D6717500D17E7D /* MenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6EB3FB28D6717500D17E7D /* MenuTableViewController.swift */; };
+		4C6EB3FE28D67DEF00D17E7D /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6EB3FD28D67DEF00D17E7D /* MenuOption.swift */; };
 		4CB198C228791909000922B5 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 4CB198C128791909000922B5 /* Factory */; };
 /* End PBXBuildFile section */
 
@@ -218,6 +220,8 @@
 		4C60E455285E8CFF00EC87A0 /* Factory+XCTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Factory+XCTest.swift"; sourceTree = "<group>"; };
 		4C60E463285E984700EC87A0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4C6EB3F828D6708100D17E7D /* Builder */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Builder; path = ..; sourceTree = "<group>"; };
+		4C6EB3FB28D6717500D17E7D /* MenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewController.swift; sourceTree = "<group>"; };
+		4C6EB3FD28D67DEF00D17E7D /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -509,7 +513,9 @@
 			isa = PBXGroup;
 			children = (
 				4C60E3E7285E4CA900EC87A0 /* Main.storyboard */,
+				4C6EB3FD28D67DEF00D17E7D /* MenuOption.swift */,
 				4C60E3E9285E4CA900EC87A0 /* MenuViewController.swift */,
+				4C6EB3FB28D6717500D17E7D /* MenuTableViewController.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -757,6 +763,7 @@
 				4C60E36A285E4AF400EC87A0 /* AppDelegate.swift in Sources */,
 				4C60E41D285E4CA900EC87A0 /* LabelView+Styles.swift in Sources */,
 				4C60E406285E4CA900EC87A0 /* MockURLProtocol.swift in Sources */,
+				4C6EB3FE28D67DEF00D17E7D /* MenuOption.swift in Sources */,
 				4C60E423285E4CA900EC87A0 /* NextAccessoryView.swift in Sources */,
 				4C60E410285E4CA900EC87A0 /* MockDelayInterceptor.swift in Sources */,
 				4C60E443285E4CEC00EC87A0 /* _Main+Injection.swift in Sources */,
@@ -766,6 +773,7 @@
 				4C60E411285E4CA900EC87A0 /* SSOAuthenticationInterceptor.swift in Sources */,
 				4C60E430285E4CA900EC87A0 /* LoginViewModel.swift in Sources */,
 				4C60E41B285E4CA900EC87A0 /* Functions+Extensions.swift in Sources */,
+				4C6EB3FC28D6717500D17E7D /* MenuTableViewController.swift in Sources */,
 				4C60E401285E4CA900EC87A0 /* TestViewController.swift in Sources */,
 				4C60E431285E4CA900EC87A0 /* LoginViewController.swift in Sources */,
 				4C60E403285E4CA900EC87A0 /* TestViews.swift in Sources */,

@@ -14,9 +14,15 @@ class MenuViewController: UIViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Builder Demo"
+
+        let imageView = ImageView(named: "Logo-DK")
+            .frame(height: 50, width: 50)
+            .build()
+
+        navigationItem.titleView = imageView
+
         view.backgroundColor = .systemBackground
-        view.embed(MenuTableView())
+        view.embed(MenuStackView())
 
 //        let vc = ContactFormViewController()
 //        navigationController?.pushViewController(vc, animated: false)
@@ -24,51 +30,51 @@ class MenuViewController: UIViewController {
 
 }
 
-struct MenuTableView: ViewBuilder {
-
-    struct Option {
-        let name: String
-        let description: String
-        let destination: () -> UIViewController
-    }
-
-    let options: [Option] = [
-        Option(name: "Login View Test", description: "A basic login field.") {
-            LoginViewController()
-        },
-        Option(name: "Contact Form Test", description: "A basic contact form screen with a few twists.") {
-            ContactFormViewController()
-        },
-        Option(name: "Table View Test", description: "A basic master/detail table view with user data pulled from an API.") {
-            MainViewController()
-        },
-        Option(name: "Stack View Test", description: "A basic master/detail dynamic stack view with user data pulled from an API.") {
-            MainStackViewController()
-        },
-        Option(name: "Tab Bar Test View", description: "A basic view that tests a new tab bar layour.") {
-            CustomTabBarViewController()
-        },
-        Option(name: "Test Views", description: "A basic view that tests many elements of ViewBuilder.") {
-            TestViewController()
-        }
-    ]
-
+struct MenuStackView: ViewBuilder {
     var body: View {
-        TableView(StaticViewBuilder {
-            ForEach(options) {
-                MenuTableViewCell(option: $0)
-            }
-        })
-    }
+        ZStackView {
+            ImageView(named: "vector")
+            VerticalScrollView {
+                VStackView {
+                    MenuHeaderView()
 
+                    ForEach(MenuOption.options) { option in
+                        MenuOptionView(option: option)
+                    }
+
+                    LabelView("Created by Michael Long, 2022")
+                        .alignment(.center)
+                        .font(.footnote)
+                        .color(.secondaryLabel)
+
+                    SpacerView()
+                }
+                .spacing(15)
+                .padding(30)
+            }
+        }
+
+    }
 }
 
-struct MenuTableViewCell: ViewBuilder {
-
-    let option: MenuTableView.Option
-
+struct MenuHeaderView: ViewBuilder {
     var body: View {
-        TableViewCell {
+        VStackView {
+            LabelView("Builder Demo")
+                .font(.title1)
+            LabelView("Version 1.0")
+                .font(.footnote)
+                .color(.secondaryLabel)
+        }
+        .alignment(.center)
+        .spacing(0)
+    }
+}
+
+struct MenuOptionView: ViewBuilder {
+    let option: MenuOption
+    var body: View {
+        ContainerView {
             VStackView {
                 LabelView(option.name)
                     .font(.headline)
@@ -78,61 +84,13 @@ struct MenuTableViewCell: ViewBuilder {
                     .numberOfLines(0)
             }
             .spacing(2)
+            .padding(16)
         }
-        .accessoryType(.disclosureIndicator)
-        .onSelect { (context) in
+        .backgroundColor(UIColor.systemGroupedBackground.withAlphaComponent(0.5))
+        .cornerRadius(10)
+        .shadow(color: .black.withAlphaComponent(0.5), radius: 3, offset: CGSize(width: 3, height: 3))
+        .onTapGesture { context in
             context.push(option.destination())
-            return false
         }
     }
-
-}
-
-struct MenuTableViewOLD: ViewBuilder {
-
-    var body: View {
-        TableView(StaticViewBuilder {
-            MenuTableViewCellOLD(name: "Login View Test", description: "A basic login field.") {
-                LoginViewController()
-            }
-
-            MenuTableViewCellOLD(name: "Table View Test", description: "A basic master/detail table view with user data pulled from an API.") {
-                MainViewController()
-            }
-            MenuTableViewCellOLD(name: "Stack View Test", description: "A basic master/detail dynamic stack view with user data pulled from an API.") {
-                MainStackViewController()
-            }
-            MenuTableViewCellOLD(name: "Test Views", description: "A basic view that tests many elements of ViewBuilder.") {
-                TestViewController()
-            }
-        })
-    }
-
-}
-
-struct MenuTableViewCellOLD: ViewBuilder {
-
-    let name: String
-    let description: String
-    let destination: () -> UIViewController
-
-    var body: View {
-        TableViewCell {
-            VStackView {
-                LabelView(name)
-                    .font(.headline)
-                LabelView(description)
-                    .font(.footnote)
-                    .color(.secondaryLabel)
-                    .numberOfLines(0)
-            }
-            .spacing(2)
-        }
-        .accessoryType(.disclosureIndicator)
-        .onSelect { (context) in
-            context.push(destination())
-            return false
-        }
-    }
-
 }
