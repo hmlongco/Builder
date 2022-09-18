@@ -47,7 +47,7 @@ struct LoginView: ViewBuilder {
 
     var body: View {
         ZStackView {
-            ImageView(UIImage(named: "vector2"))
+            ImageView(UIImage(named: "vector"))
 
             VerticalScrollView {
                 VStackView {

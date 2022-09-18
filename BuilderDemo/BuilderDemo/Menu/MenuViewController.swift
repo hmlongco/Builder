@@ -32,24 +32,18 @@ struct MenuStackView: ViewBuilder {
     var body: View {
         ZStackView {
             ImageView(named: "vector")
-
             VerticalScrollView {
                 VStackView {
                     MenuHeaderView()
-
                     ForEach(MenuOption.options) { option in
                         MenuOptionView(option: option)
                     }
-
                     MenuFootnoteView()
-
-                    SpacerView()
                 }
                 .spacing(15)
                 .padding(30)
             }
         }
-
     }
 }
 
@@ -87,7 +81,7 @@ struct MenuOptionView: ViewBuilder {
         .shadow(color: .black.withAlphaComponent(0.5), radius: 3, offset: CGSize(width: 3, height: 3))
         .onTapGesture { context in
             context.view.addHighlightOverlay(animated: true, removeAfter: 0.3)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                 context.push(option.destination())
             }
         }
