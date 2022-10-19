@@ -401,12 +401,11 @@ Builder just lets me do some of those things *today*.
 
 ## Author
 
-Builder was designed, implemented, documented, and maintained by [Michael Long](https://www.linkedin.com/in/hmlong/), a Senior Lead iOS engineer at [CRi Solutions](https://www.clientresourcesinc.com/solutions/). CRi is a leader in developing cutting edge iOS, Android, and mobile web applications and solutions for our corporate and financial clients.
+Builder is designed, implemented, documented, and maintained by [Michael Long](https://www.linkedin.com/in/hmlong/), a Lead iOS Software Engineer and a Top 1,000 Technology Writer on Medium.
 
-* Email: [mlong@clientresourcesinc.com](mailto:mlong@clientresourcesinc.com)
+* LinkedIn: [@hmlong](https://www.linkedin.com/in/hmlong/)
+* Medium: [@michaellong](https://medium.com/@michaellong)
 * Twitter: @hmlco
-
-Michael was also one of Google's [Open Source Peer Reward](https://opensource.googleblog.com/2021/09/announcing-latest-open-source-peer-bonus-winners.html) winners in 2021 for his work on Resolver.
 
 ## Additional Resources
 
