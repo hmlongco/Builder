@@ -1,5 +1,11 @@
 # Builder: A Declarative UIKit Library
 
+**This project is deprecated.** With the release of iOS 26, the N-2 rule makes iOS 17 the minimum supported version of iOS and SwiftUI, and the introduction of iOS 27 is just a few short months away. iOS 17 has support for async/await, Observation, and NavigationStack, and from my perspective all of that pretty much obviates the need for a SwiftUI look-alike based on UIKit.
+
+If, however, you *do* want a version of Builder for UIKit, checkout Bayu Kurniawan's [Construkt](https://github.com/MainActorDev/Construkt), a continuation of Builder that's been updated with new features, including Combine support.
+
+As always, thanks for your support. It's been fun.
+
 ## Overview
 
 Builder lets you define your UIKit-based user interfaces using a simple, declarative format similar to that used by SwiftUI and Flutter. Builder is also based on RxSwift, with means that you have all of the reactive data binding and user interface control and functionality you'd expect from such a marriage.
